@@ -1,0 +1,302 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"fro",
+				"is_former_employee"
+			],
+			[
+				"get",
+				"get_the_excerpt"
+			],
+			[
+				"cons",
+				"consbio_person_type"
+			],
+			[
+				"c",
+				"common"
+			],
+			[
+				"new",
+				"new_texture_index"
+			],
+			[
+				"text",
+				"texture_path"
+			],
+			[
+				"Textur",
+				"TextureHandler"
+			],
+			[
+				"chun",
+				"chunk_list"
+			],
+			[
+				"glD",
+				"glDeleteShader"
+			],
+			[
+				"glGet",
+				"glGetProgramInfoLog"
+			],
+			[
+				"fr",
+				"fragment"
+			],
+			[
+				"vert",
+				"vertex"
+			],
+			[
+				"glCre",
+				"glCreateProgram"
+			],
+			[
+				"mous",
+				"mouseY"
+			],
+			[
+				"mouse",
+				"mouseY"
+			],
+			[
+				"onmouse",
+				"onmousemove"
+			],
+			[
+				"piece",
+				"pieceData"
+			],
+			[
+				"gri",
+				"grid-template-rows"
+			],
+			[
+				"grid",
+				"grid-template-columns"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"conver",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/assets/sass/layouts/_person.scss",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/assets/sass/layouts/_common.scss",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/search.php",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/single-consbio_person.php",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/template-parts/person/person-excerpt.php",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/page-board.php",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/page-our-team.php",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/update-theme.sh",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/plugins/consbio-features/update-plugin.sh",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/update-plugin.sh",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/plugins/consbio-features/update-plugin-example.sh",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/assets/sass/style.scss",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/plugins/consbio-features/consbio-features.php",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/plugins/consbio-features/package.json",
+		"/home/jesudas/projects/cbi/consbio-cbi-website/themes/consbio/package.json",
+		"/home/jesudas/projects/personal/mechloop-learn/src/main.cpp",
+		"/home/jesudas/projects/personal/mechloop-learn/src/lib/glm/glm.hpp",
+		"/home/jesudas/projects/personal/mechloop-learn/src/lib/glm/ext/vector_common.inl",
+		"/home/jesudas/projects/personal/mechloop-learn/src/lib/glm/ext/vector_double1.hpp",
+		"/home/jesudas/projects/personal/mechloop-learn/src/lib/glm/detail/type_vec3.inl",
+		"/home/jesudas/projects/personal/mechloop-learn/src/lib/glm/ext/vector_float3.hpp",
+		"/home/jesudas/projects/personal/mechloop-learn/src/lib/glm/vec3.hpp",
+		"/home/jesudas/projects/personal/mechloop/src/common/map.hpp",
+		"/home/jesudas/projects/personal/mechloop/src/client/render_objects.cpp",
+		"/home/jesudas/projects/personal/mechloop/src/client/texture_handler.hpp",
+		"/home/jesudas/projects/personal/mechloop/src/makefile",
+		"/home/jesudas/projects/personal/mechloop/src/client/texture_handler.cpp",
+		"/home/jesudas/projects/personal/mechloop/src/main.cpp",
+		"/home/jesudas/projects/personal/mechloop-learn/src/shader.h",
+		"/home/jesudas/projects/personal/mechloop-learn/src/shaders/basic.vs",
+		"/home/jesudas/projects/personal/mechloop-learn/src/shaders/basic.fs",
+		"/home/jesudas/projects/personal/mechloop-learn/src/Shaders/basic.fs",
+		"/home/jesudas/projects/personal/mechloop-learn/src/Shaders/basic.vs",
+		"/home/jesudas/projects/personal/learn-quarto/svelte/src/components/Piece.svelte",
+		"/home/jesudas/projects/personal/learn-quarto/svelte/src/stores.js",
+		"/home/jesudas/projects/personal/learn-quarto/svelte/src/components/Board.svelte",
+		"/home/jesudas/projects/personal/learn-quarto/svelte/src/components/Game.svelte",
+		"/home/jesudas/projects/personal/learn-quarto/svelte/src/App.svelte",
+		"/home/jesudas/.config/sublime-merge/Packages/User/Preferences.sublime-settings",
+		"/home/jesudas/id_ed25519.pub"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "budget-nuggets.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 325.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
