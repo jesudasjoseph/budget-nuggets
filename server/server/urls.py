@@ -13,12 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.contrib.staticfiles.views import serve
 from django.urls import path, include
-from server import settings
+from auth import urls
 
 
 urlpatterns = [
-    path("auth/", include('knox.urls')),
+    path("auth/", include(urls)),
 ]
