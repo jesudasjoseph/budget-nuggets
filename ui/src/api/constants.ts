@@ -1,0 +1,1 @@
+export const base_url = 'http://localhose:8000'

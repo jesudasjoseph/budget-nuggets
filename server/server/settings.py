@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "knox",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -79,9 +81,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "HOSTNAME": "localhost",
-        "NAME": "budget-nuggets",
-        "USER": "budget-nuggets-user",
-        "PASSWORD": "budget-nuggets-user",
+        "NAME": "budget_nuggets_db",
+        "USER": "budget_nuggets_user",
+        "PASSWORD": "budget_nuggets_user",
         "OPTIONS": {},
     }
 }
@@ -131,4 +133,8 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",)}
+REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ['knox.auth.TokenAuthentication',]}
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173'
+]
