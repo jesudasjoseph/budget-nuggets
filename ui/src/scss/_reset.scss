@@ -1,8 +1,34 @@
-@import 'colors';
+@import 'fonts';
+@import 'variables';
+
+:global(html) {
+    font-size: 62.5%;
+    font-family: 'Comfortaa', sans-serif;
+}
 
 :global(body) {
     margin: 0;
     padding: 0;
     background-color: $primary-background;
     color: $primary-font-color;
+    height: 100vh;
+    width: 100vw;
+}
+
+:global(body,form,input,button,textarea){
+    font-size: 1.6rem;
+    font-family: 'Comfortaa', sans-serif;
+}
+
+:global(input){
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+:global(*) {
+    box-sizing: border-box;
+}
+
+:global(h2) {
+    margin: 0;
 }
