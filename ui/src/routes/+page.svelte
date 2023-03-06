@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { APIToken, APITokenExpiry, isAuthenticated } from '../stores';
+	import { APIToken, APITokenExpiry, isLoggedIn } from '../stores';
 	import { goto } from '$app/navigation';
 	import Button from '../components/Button.svelte';
 	import Modal from '../components/Modal.svelte';
+	import { onMount } from 'svelte';
 	let showLoginModal = false;
 	let username = '';
 	let password = '';
 
-	function resetLoginModal(){
+	function resetLoginModal() {
 		username = '';
 		password = '';
 	}
@@ -24,12 +25,17 @@
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				$APIToken = data.token;
-				$APITokenExpiry = data.token;
-				goto("/dashboard");
+				APIToken.set(data.token);
+				APITokenExpiry.set(data.expiry);
+				goto('/dashboard');
 			});
 	}
 
+	onMount(() => {
+		if ($isLoggedIn) {
+			goto('/dashboard');
+		}
+	});
 </script>
 
 <main>
@@ -38,23 +44,28 @@
 		<p>A simple budgeting app</p>
 	</div>
 	<div id="options">
-		<Button variant="primary" type='submit' label="Login" on:click={() => showLoginModal=true}/>
-		<Button variant="secondary" label="Create Account"/>
+		<Button
+			variant="primary"
+			type="submit"
+			label="Login"
+			on:click={() => (showLoginModal = true)}
+		/>
+		<Button variant="secondary" label="Create Account" />
 	</div>
 	<Modal bind:visible={showLoginModal} on:reset={resetLoginModal}>
 		<form class="form-layout">
 			<h2>Login</h2>
 			<label>
 				<span class="sr-only">Username</span>
-				<input type="text" placeholder="Username" bind:value={username}/>
+				<input type="text" placeholder="Username" bind:value={username} />
 			</label>
 			<label>
 				<span class="sr-only">Password</span>
-				<input type="password" placeholder="Password" bind:value={password}/>
+				<input type="password" placeholder="Password" bind:value={password} />
 			</label>
 			<div class="button-layout">
-				<Button variant="close" label="Close" on:click={() => showLoginModal=false} />
-				<Button variant="primary" label="Login" on:click={getAPIKey}/>
+				<Button variant="close" label="Close" on:click={() => (showLoginModal = false)} />
+				<Button variant="primary" label="Login" on:click={getAPIKey} />
 			</div>
 		</form>
 	</Modal>
@@ -101,7 +112,7 @@
 		justify-content: space-between;
 	}
 
-	@include breakpoint(tablet){
+	@include breakpoint(tablet) {
 		main {
 			padding: 10rem 2rem;
 		}
@@ -110,5 +121,4 @@
 			width: 200px;
 		}
 	}
-
 </style>
