@@ -4,6 +4,7 @@
 	import Button from '../components/Button.svelte';
 	import Modal from '../components/Modal.svelte';
 	import { onMount } from 'svelte';
+	import { loginAPICall } from '../api/util';
 	let showLoginModal = false;
 	let username = '';
 	let password = '';
@@ -15,20 +16,9 @@
 
 	function getAPIKey(e: Event) {
 		e.preventDefault();
-		fetch('http://127.0.0.1:8000/auth/login/', {
-			method: 'POST',
-			mode: 'cors',
-			body: JSON.stringify({ username: username, password: password }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				APIToken.set(data.token);
-				APITokenExpiry.set(data.expiry);
-				goto('/dashboard');
-			});
+		loginAPICall(username, password).then(() => {
+			goto('/dashboard');
+		});
 	}
 
 	onMount(() => {

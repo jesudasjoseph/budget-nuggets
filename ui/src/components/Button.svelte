@@ -2,7 +2,7 @@
 	export let label: string;
 	export let variant: 'primary' | 'secondary' | 'close';
 	export let href: string = '';
-	export let type:  'button' | 'submit' | 'reset' = 'button';
+	export let type: 'button' | 'submit' | 'reset' = 'button';
 </script>
 
 {#if href}
@@ -11,9 +11,14 @@
 	<button {type} on:click|preventDefault class={`${variant}-button`}>
 		{#if variant == 'close'}
 			<span class="sr-only">{label}</span>
-			<svg fill="white" transform="rotate(45)" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-				<rect x=40 y=0 width="20" height="100" />
-				<rect x=0 y=40 width="100" height="20"/>
+			<svg
+				fill="white"
+				transform="rotate(45)"
+				viewBox="0 0 100 100"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<rect x="40" y="0" width="20" height="100" />
+				<rect x="0" y="40" width="100" height="20" />
 				Close
 			</svg>
 		{:else}
