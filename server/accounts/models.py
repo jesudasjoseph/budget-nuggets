@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Account(models.Model):
     user = models.ManyToManyField(User, through="AccountUser")
+    account_name = models.CharField(max_length=128)
+    created = models.DateField(auto_now_add=True)
 
 
 class AccountUser(models.Model):
