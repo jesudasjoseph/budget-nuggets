@@ -6,13 +6,24 @@
 	import { onMount } from 'svelte';
 	import { loginAPICall } from '../api/util';
 	let showLoginModal = false;
+	let showCreateAccountModal = false;
 	let username = '';
 	let password = '';
+
+	let create_username = '';
+	let create_email = '';
+	let create_firstname = '';
+	let create_lastname = '';
+	let create_password = '';
 
 	function resetLoginModal() {
 		username = '';
 		password = '';
 	}
+
+	function resetCreateAccountModal() {}
+
+	function createAccount() {}
 
 	function getAPIKey(e: Event) {
 		e.preventDefault();
@@ -40,7 +51,11 @@
 			label="Login"
 			on:click={() => (showLoginModal = true)}
 		/>
-		<Button variant="secondary" label="Create Account" />
+		<Button
+			variant="secondary"
+			label="Create Account"
+			on:click={() => (showCreateAccountModal = true)}
+		/>
 	</div>
 	<Modal bind:visible={showLoginModal} on:reset={resetLoginModal}>
 		<form class="form-layout">
@@ -56,6 +71,35 @@
 			<div class="button-layout">
 				<Button variant="close" label="Close" on:click={() => (showLoginModal = false)} />
 				<Button variant="primary" label="Login" on:click={getAPIKey} />
+			</div>
+		</form>
+	</Modal>
+	<Modal bind:visible={showCreateAccountModal} on:reset={resetCreateAccountModal}>
+		<form class="form-layout">
+			<h2>Create User</h2>
+			<label>
+				<span class="sr-only">Username</span>
+				<input type="text" placeholder="Username" bind:value={create_username} />
+			</label>
+			<label>
+				<span class="sr-only">First Name</span>
+				<input type="text" placeholder="Firt Name" bind:value={create_firstname} />
+			</label>
+			<label>
+				<span class="sr-only">Last Name</span>
+				<input type="text" placeholder="Last Name" bind:value={create_lastname} />
+			</label>
+			<label>
+				<span class="sr-only">Email</span>
+				<input type="email" placeholder="Email" bind:value={create_email} />
+			</label>
+			<label>
+				<span class="sr-only">Password</span>
+				<input type="password" placeholder="Password" bind:value={create_password} />
+			</label>
+			<div class="button-layout">
+				<Button variant="close" label="Close" on:click={() => (showCreateAccountModal = false)} />
+				<Button variant="primary" label="Login" on:click={createAccount} />
 			</div>
 		</form>
 	</Modal>

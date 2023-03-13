@@ -14,8 +14,8 @@ export async function authenticatedAPICall(method: 'POST' | 'GET', endpoint: str
         if (!response.ok) {
             throw new Error(`Network Error: ${response.status} - ${response.statusText}`);
         }
-        if (response.status !== 204)
-            return response.json();
+
+        return response
     }).catch((error) => {
         console.error(error);
     });
