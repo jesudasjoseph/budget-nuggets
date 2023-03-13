@@ -2,10 +2,10 @@ import { get } from "svelte/store";
 import { APIToken, APITokenExpiry } from "../stores";
 
 export async function authenticatedAPICall(method: 'POST' | 'GET', endpoint: string, body: Object = {}) {
-    const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+    return fetch(`http://127.0.0.1:8000/${endpoint}`, {
         method: method,
         mode: 'cors',
-        body: JSON.stringify(body),
+        body: method === 'POST' ? JSON.stringify(body) : undefined,
         headers: {
             Authorization: `Token ${get(APIToken)}`,
             'Content-Type': 'application/json'
