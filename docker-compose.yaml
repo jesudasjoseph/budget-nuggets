@@ -1,0 +1,21 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    build: ./docker/database
+    volumes:
+    - ./docker/database/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    restart: always
+    command: postgres -c client_encoding=UTF8 -c default_transaction_isolation="read committed" -c timezone=PST8
+    environment:
+      POSTGRES_PASSWORD: dev
+    ports:
+      - 15432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

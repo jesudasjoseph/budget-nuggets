@@ -1,10 +1,11 @@
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOSTNAME": "localhost",
-        "NAME": "budget-nuggets",
-        "USER": "budget-nuggets-user",
-        "PASSWORD": "budget-nuggets-user",
+        "HOST": "localhost",
+        "PORT": "15432",
+        "NAME": "budget_nuggets_db",
+        "USER": "budget_nuggets_user",
+        "PASSWORD": "dev_password",
         "OPTIONS": {},
     }
 }
