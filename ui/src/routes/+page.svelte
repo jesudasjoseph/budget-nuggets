@@ -5,6 +5,7 @@
 	import Modal from '../components/Modal.svelte';
 	import { onMount } from 'svelte';
 	import { loginAPICall } from '../api/util';
+	import { prevent_default } from 'svelte/internal';
 	let showLoginModal = false;
 	let showCreateAccountModal = false;
 	let username = '';
@@ -25,11 +26,12 @@
 
 	function createAccount() {}
 
-	function getAPIKey(e: Event) {
-		e.preventDefault();
+	let loginForm: HTMLFormElement;
+	function onLoginSubmit(event: SubmitEvent) {
 		loginAPICall(username, password).then(() => {
 			goto('/dashboard');
 		});
+		event.preventDefault();
 	}
 
 	onMount(() => {
@@ -58,19 +60,19 @@
 		/>
 	</div>
 	<Modal bind:visible={showLoginModal} on:reset={resetLoginModal}>
-		<form class="form-layout">
+		<form class="form-layout" on:submit={onLoginSubmit} bind:this={loginForm}>
 			<h2>Login</h2>
 			<label>
 				<span class="sr-only">Username</span>
-				<input type="text" placeholder="Username" bind:value={username} />
+				<input type="text" placeholder="Username" required bind:value={username} />
 			</label>
 			<label>
 				<span class="sr-only">Password</span>
-				<input type="password" placeholder="Password" bind:value={password} />
+				<input type="password" placeholder="Password" required bind:value={password} />
 			</label>
 			<div class="button-layout">
 				<Button variant="close" label="Close" on:click={() => (showLoginModal = false)} />
-				<Button variant="primary" label="Login" on:click={getAPIKey} />
+				<Button variant="primary" label="Login" type="submit" />
 			</div>
 		</form>
 	</Modal>
@@ -99,7 +101,7 @@
 			</label>
 			<div class="button-layout">
 				<Button variant="close" label="Close" on:click={() => (showCreateAccountModal = false)} />
-				<Button variant="primary" label="Login" on:click={createAccount} />
+				<Button variant="primary" label="Login" type="submit" on:click={createAccount} />
 			</div>
 		</form>
 	</Modal>

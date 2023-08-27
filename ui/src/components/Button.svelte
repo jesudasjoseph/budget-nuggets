@@ -8,7 +8,7 @@
 {#if href}
 	<a {href}>{label}</a>
 {:else}
-	<button {type} on:click|preventDefault class={`${variant}-button`}>
+	<button {type} on:click class={`${variant}-button`}>
 		{#if variant == 'close'}
 			<span class="sr-only">{label}</span>
 			<svg
