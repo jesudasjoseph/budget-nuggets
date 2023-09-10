@@ -4,31 +4,31 @@ from django.contrib.auth.models import User
 
 # Create your tests here.
 class AuthAPITests(TestCase):
-    def setUp(cls):
+    def setUp(self):
         super().setUpClass()
-        cls.user = User.objects.create_user(
+        self.user = User.objects.create_user(
             username="test", password="test", email="example@example.com"
         )
-        cls.user.password = "test"
+        self.user.password = "test"
 
-    def test_login(cls):
-        response = cls.client.post(
+    def test_login(self):
+        response = self.client.post(
             "/auth/login/",
-            {"username": cls.user.username, "password": cls.user.password},
+            {"username": self.user.username, "password": self.user.password},
         )
-        cls.assertEqual(response.status_code, 200)
-        cls.assertTrue(response.json()["token"])
-        cls.assertTrue(response.json()["expiry"])
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["token"])
+        self.assertTrue(response.json()["expiry"])
 
-    def test_logout(cls):
-        response = cls.client.post(
+    def test_logout(self):
+        response = self.client.post(
             "/auth/login/",
-            {"username": cls.user.username, "password": cls.user.password},
+            {"username": self.user.username, "password": self.user.password},
         )
 
         token = response.json()["token"]
 
-        test_response = cls.client.post(
+        test_response = self.client.post(
             "/auth/logout/",
             content_type="application/json",
             headers={
@@ -36,25 +36,25 @@ class AuthAPITests(TestCase):
             },
         )
 
-        cls.assertEqual(test_response.status_code, 204)
+        self.assertEqual(test_response.status_code, 204)
 
-    def test_logoutall(cls):
-        response = cls.client.post(
+    def test_logoutall(self):
+        response = self.client.post(
             "/auth/login/",
-            {"username": cls.user.username, "password": cls.user.password},
+            {"username": self.user.username, "password": self.user.password},
         )
-        response1 = cls.client.post(
+        response1 = self.client.post(
             "/auth/login/",
-            {"username": cls.user.username, "password": cls.user.password},
+            {"username": self.user.username, "password": self.user.password},
         )
 
         token = response.json()["token"]
         token1 = response1.json()["token"]
 
-        test_response = cls.client.post(
+        test_response = self.client.post(
             "/auth/logoutall/",
             content_type="application/json",
             headers={"Authorization": "Token " + token},
         )
 
-        cls.assertEqual(test_response.status_code, 204)
+        self.assertEqual(test_response.status_code, 204)
