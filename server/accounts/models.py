@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Account(models.Model):
     account_name = models.CharField(max_length=128)
     created = models.DateField(auto_now_add=True)
-    users = models.ManyToManyField(User, through="AccountUser")
+    users = models.ManyToManyField(User, through="AccountUser", blank=True)
 
 
 class AccountUser(models.Model):
