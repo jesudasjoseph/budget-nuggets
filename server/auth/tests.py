@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
+from django.forms import ValidationError
+from .utils import create_user
 
 
-# Create your tests here.
-class AuthAPITests(TestCase):
+class AuthAPITestCase(TransactionTestCase):
     def setUp(self):
         super().setUpClass()
         self.user = User.objects.create_user(
@@ -58,3 +59,24 @@ class AuthAPITests(TestCase):
         )
 
         self.assertEqual(test_response.status_code, 204)
+
+
+class CreateUserTestCase(TestCase):
+    def test_successful_creation(self):
+        user = create_user(username="jesudas", password="acomplexpassword342@$#")
+        user_in_database = User.objects.get(username="jesudas")
+        assert type(user) is User
+        assert user == user_in_database
+
+    def test_duplicate_creation(self):
+        create_user(username="jesudas", password="acomplexpassword342@$#")
+
+        self.assertRaises(
+            ValueError,
+            create_user,
+            "jesudas",
+            "acomplexpassword342@$#",
+        )
+
+
+# class CreateUserAPITestCase(TestCase):
