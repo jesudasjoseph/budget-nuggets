@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { isLoggedIn, APIToken, APITokenExpiry } from '../stores';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { authenticatedAPICall } from '../api/util';
 	import Button from '../components/Button.svelte';
+	import { onMount } from 'svelte';
 
 	function logOut(e: Event) {
 		e.preventDefault();
@@ -11,6 +13,10 @@
 			$APITokenExpiry = '';
 			goto('/');
 		});
+	}
+
+	$: if (!$isLoggedIn && !['/login'].includes($page.url.pathname)) {
+		goto('/login');
 	}
 </script>
 

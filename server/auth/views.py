@@ -1,10 +1,13 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
+from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from knox import views
+
+from .utils import create_user
 
 
 # Create your views here.
@@ -38,5 +41,8 @@ class AuthViewSet(viewsets.ViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request):
-        print(request.data)
-        return Response(status=status.HTTP_201_CREATED)
+        try:
+            user = create_user(**request.data)
+            return Response(data=user, status=status.HTTP_201_CREATED)
+        except ValueError as e:
+            return Response(data=e.errors, status=status.HTTP_400_BAD_REQUEST)
