@@ -30,60 +30,20 @@ class AuthAPITestCase(TestCase):
         self.assertTrue(response.json()["expiry"])
 
 
-# class CreateUserTestCase(TestCase):
-#     def test_successful_creation(self):
-#         user = create_user(
-#             username="test_user",
-#             password="acomplexpassword342@$#",
-#             password_confirmation="acomplexpassword342@$#",
-#         )
-#         self.assertTrue(User.objects.filter(username="test_user").exists())
+class CreateUserTestCase(TestCase):
+    def test_user_creation(self):
+        response = self.client.post(
+            "/api/user/create/",
+            {
+                "email": "jess@gmail.com",
+                "first_name": "Jesudas",
+                "last_name": "Joseph",
+                "password": "123456789123456789",
+                "password_confirmation": "123456789123456789",
+            },
+            content_type="application/json",
+        )
 
-#     def test_bypass_password_confirmation(self):
-#         user = create_user(
-#             username="test_user",
-#             password="acomplexpassword342@$#",
-#             bypass_confirmation_password=True,
-#         )
-
-#         self.assertTrue(User.objects.filter(username="test_user").exists())
-
-#     def test_duplicate_creation(self):
-#         original_user = create_user(
-#             username="test_user",
-#             password="acomplexpassword342@$#",
-#             bypass_confirmation_password=True,
-#         )
-
-#         self.assertRaises(
-#             ValueError,
-#             create_user,
-#             username="test_user",
-#             password="acomplexpassword342@$#",
-#             bypass_confirmation_password=True,
-#         )
-
-#     def test_non_matching_passwords(self):
-#         self.assertRaises(ValueError, create_user, username="test_user", password="")
-
-
-# class CreateUserAPITestCase(TestCase):
-#     @classmethod
-#     def setUpClass(cls):
-#         super().setUpClass()
-#         cls.user = User.objects.create_user(
-#             username="test", password="test", email="example@example.com"
-#         )
-
-#     def test_basic(self):
-#         authenticated_client = Client()
-#         authenticated_client.force_login(self.user)
-#         response = authenticated_client.post(
-#             "/auth/create/",
-#             {
-#                 "username": "jess",
-#                 "password": "hello",
-#                 "password_confirmation": "hello",
-#             },
-#             content_type="application/json",
-#         )
+        assert response.status_code == 201
+        user = User.objects.get(email="jess@gmail.com")
+        assert user.first_name == "Jesudas"

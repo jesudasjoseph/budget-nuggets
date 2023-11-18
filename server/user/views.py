@@ -12,22 +12,54 @@ from .utils import create_user
 User = get_user_model()
 
 
-# Create your views here.
 class LoginView(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
 
-    def post(self, request, format=None):
+    def post(self, request):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         login(request, user)
-        return super(LoginView, self).post(request, format=None)
+        return super(LoginView, self).post(request)
 
 
 class CreateView(views.APIView):
-    def create(self, request):
-        try:
-            user = create_user(**request.data)
-            return Response(data=user, status=status.HTTP_201_CREATED)
-        except ValueError as e:
-            return Response(data=e.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = (permissions.AllowAny,)
+
+    class UserCreationSerializer(serializers.Serializer):
+        email = serializers.EmailField()
+        first_name = serializers.CharField()
+        last_name = serializers.CharField()
+        password = serializers.CharField(min_length=16)
+        password_confirmation = serializers.CharField(min_length=16)
+
+        def validate(self, data):
+            """
+            Check password constraints
+            """
+
+            if data["password"] != data["password_confirmation"]:
+                raise serializers.ValidationError("Passwords do not match.")
+
+            del data["password_confirmation"]
+
+            return data
+
+    class UserSerializer(serializers.Serializer):
+        email = serializers.EmailField()
+        first_name = serializers.CharField()
+        last_name = serializers.CharField()
+
+    def post(self, request):
+        serializer = self.UserCreationSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                user = create_user(**serializer.validated_data)
+                serializer = self.UserSerializer(user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except ValueError as e:
+                return Response(e.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(
+                serializer.validated_data, status=status.HTTP_400_BAD_REQUEST
+            )
