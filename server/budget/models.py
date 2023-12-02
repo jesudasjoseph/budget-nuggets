@@ -12,9 +12,24 @@ class BudgetRole(models.Model):
 
 
 class Budget(models.Model):
+    ANNUAL = "AN"
+    MONTHLY = "MN"
+    BI_WEEKLY = "BW"
+    WEEKLY = "W"
+    EVENT = "EV"
+
+    TYPE_CHOICES = [
+        (ANNUAL, "Annual"),
+        (MONTHLY, "Monthly"),
+        (BI_WEEKLY, "Biweekly"),
+        (WEEKLY, "Weekly"),
+        (EVENT, "Event"),
+    ]
+
     users = models.ManyToManyField(
         User, through="BudgetUsers", through_fields=("budget", "user")
     )
+    type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=MONTHLY)
 
 
 class BudgetUsers(models.Model):
