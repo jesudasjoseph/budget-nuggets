@@ -6,7 +6,7 @@ export async function authenticatedAPICall(
 	endpoint: string,
 	body: Object = {}
 ) {
-	return fetch(`http://127.0.0.1:8000/${endpoint}`, {
+	return fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
 		method: method,
 		mode: 'cors',
 		body: method === 'POST' ? JSON.stringify(body) : undefined,
@@ -28,7 +28,7 @@ export async function authenticatedAPICall(
 }
 
 export async function loginAPICall(username: string, password: string) {
-	const response = await fetch(`http://127.0.0.1:8000/auth/login/`, {
+	const response = await fetch(`http://127.0.0.1:8000/api/auth/login/`, {
 		method: 'POST',
 		mode: 'cors',
 		body: JSON.stringify({ username: username, password: password }),
