@@ -26,10 +26,14 @@ class Budget(models.Model):
         (EVENT, "Event"),
     ]
 
+    name = models.CharField()
+    type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=MONTHLY)
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="budget_owner"
+    )
     users = models.ManyToManyField(
         User, through="BudgetUsers", through_fields=("budget", "user")
     )
-    type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=MONTHLY)
 
 
 class BudgetUsers(models.Model):

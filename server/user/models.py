@@ -6,8 +6,8 @@ class UserManager(BaseUserManager):
     def create_user(
         self,
         email,
-        first_name,
-        last_name,
+        first_name=None,
+        last_name=None,
         password=None,
     ):
         if not email:
@@ -38,8 +38,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
-    first_name = models.CharField()
-    last_name = models.CharField()
+    first_name = models.CharField(null=True)
+    last_name = models.CharField(null=True)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

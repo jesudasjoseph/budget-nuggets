@@ -47,3 +47,17 @@ class CreateUserTestCase(TestCase):
         assert response.status_code == 201
         user = User.objects.get(email="jess@gmail.com")
         assert user.first_name == "Jesudas"
+
+    def test_user_creation_validation(self):
+        response = self.client.post(
+            "/api/user/create/",
+            {
+                "email": "This is not a valid email",
+                "last_name": "Joseph",
+                "password": "123123123",
+                "password_confirmation": "",
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 400

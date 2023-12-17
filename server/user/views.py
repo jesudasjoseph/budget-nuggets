@@ -52,14 +52,10 @@ class CreateView(views.APIView):
 
     def post(self, request):
         serializer = self.UserCreationSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             try:
                 user = create_user(**serializer.validated_data)
                 serializer = self.UserSerializer(user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except ValueError as e:
                 return Response(e.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(
-                serializer.validated_data, status=status.HTTP_400_BAD_REQUEST
-            )
