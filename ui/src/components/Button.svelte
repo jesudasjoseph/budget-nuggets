@@ -28,9 +28,7 @@
 {/if}
 
 <style lang="scss">
-	@import '../scss/variables';
-	@import '../scss/common';
-
+	@import '../scss/global.scss';
 	button {
 		color: $primary-font-color;
 		box-shadow: 1px 2px 1px 0 $boxshadow-color;

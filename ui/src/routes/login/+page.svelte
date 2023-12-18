@@ -21,7 +21,7 @@
 	});
 </script>
 
-<form class="form-layout">
+<form>
 	<h2>Login</h2>
 	<label>
 		<span class="sr-only">Username</span>
@@ -36,3 +36,7 @@
 		<Button variant="primary" label="Login" on:click={login} />
 	</div>
 </form>
+
+<style lang="scss">
+	@import '../../scss/global';
+</style>
