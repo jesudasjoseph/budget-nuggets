@@ -1,11 +1,17 @@
 html {
 	font-size: 62.5%;
 	font-family: 'Comfortaa', sans-serif;
+	height: 100%;
 }
 
 body, form, input, button, textarea {
 	font-size: 1.6rem;
 	font-family: 'Comfortaa', sans-serif;
+	height: 100%;
+}
+
+body {
+	margin: 0;
 }
 
 input {
@@ -15,8 +21,4 @@ input {
 
 * {
 	box-sizing: border-box;
-}
-
-h2 {
-	margin: 0;
 }

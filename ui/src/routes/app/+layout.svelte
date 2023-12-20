@@ -14,9 +14,9 @@
 		});
 	}
 
-	/* $: if (!$isLoggedIn && !['/login'].includes($page.url.pathname)) {
-		goto('/login');
-	} */
+	$: if (!$isLoggedIn && !['/'].includes($page.url.pathname)) {
+		goto('/');
+	}
 </script>
 
 {#if $isLoggedIn}
@@ -37,6 +37,7 @@
 		padding-right: 1rem;
 	}
 
+	/* desktop */
 	@media screen and (min-width: 1280px) {
 		main {
 			padding-left: 25%;
