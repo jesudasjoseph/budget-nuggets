@@ -39,4 +39,9 @@
 
 <style lang="scss">
 	@import '../../scss/global';
+
+	form {
+		display: flex;
+		flex-direction: column;
+	}
 </style>

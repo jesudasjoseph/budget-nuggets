@@ -29,12 +29,25 @@
 </main>
 
 <style lang="scss">
-	@import '../scss/variables';
-	@import '../scss/reset';
+	@import '../scss/global';
 
 	main {
+		display: flex;
+		flex-direction: column;
+
+		align-items: center;
+		justify-content: stretch;
+
 		width: 100%;
 		height: 100%;
+
+		padding-left: 1rem;
+		padding-right: 1rem;
+
+		@include breakpoint(desktop) {
+			padding-left: 25%;
+			padding-right: 25%;
+		}
 	}
 
 	nav {
