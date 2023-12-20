@@ -20,15 +20,13 @@
 <svelte:window on:keydown={onKeyDown} />
 
 {#if visible}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div transition:fade on:click={() => (visible = false)} />
+	<div role="presentation" transition:fade on:click={() => (visible = false)} />
 	<section transition:slide>
 		<slot />
 	</section>
 {/if}
 
-<style lang="scss">
-	@import '../scss/global';
+<style>
 	div {
 		position: absolute;
 		top: 0;
@@ -36,7 +34,7 @@
 		left: 0;
 		right: 0;
 		opacity: 20%;
-		background-color: $white;
+		background-color: var(--white);
 	}
 	section {
 		position: absolute;
@@ -47,6 +45,6 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 1rem;
-		background-color: $secondary-background;
+		background-color: var(--secondary-background);
 	}
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { loginAPICall } from '../../api/util';
+	import { loginAPICall } from '@api/util';
 	let username: string;
 	let password: string;
 	let result = '';
@@ -51,7 +51,7 @@
 	<p class="error">{error}</p>
 </div>
 
-<style lang="scss">
+<style>
 	section {
 		padding: 1rem;
 	}
@@ -61,8 +61,8 @@
 		left: 0;
 		right: 0;
 		padding: 1rem;
-		.error {
-			color: red;
-		}
+	}
+	div .error {
+		color: red;
 	}
 </style>

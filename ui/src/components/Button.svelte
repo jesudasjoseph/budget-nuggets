@@ -1,14 +1,15 @@
 <script lang="ts">
 	export let label: string;
 	export let variant: 'primary' | 'secondary' | 'close';
+	export let classes: string = '';
 	export let href: string = '';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 </script>
 
 {#if href}
-	<a {href}>{label}</a>
+	<a {href} class={classes}>{label}</a>
 {:else}
-	<button {type} on:click class={`${variant}-button`}>
+	<button {type} on:click class={`${variant}-button ${classes}`}>
 		{#if variant == 'close'}
 			<span class="sr-only">{label}</span>
 			<svg
@@ -27,52 +28,46 @@
 	</button>
 {/if}
 
-<style lang="scss">
-	@import '../scss/global.scss';
+<style>
 	button {
-		color: $primary-font-color;
-		box-shadow: 1px 2px 1px 0 $boxshadow-color;
+		color: var(--primary-font-color);
+		box-shadow: 1px 2px 1px 0 var(--boxshadow-color);
 		cursor: pointer;
 		border: none;
 		border-radius: 5px;
 		padding: 1rem;
-
-		&:active {
-			box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 80%);
-		}
+	}
+	button:active {
+		box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 80%);
 	}
 
 	.primary-button {
-		background-color: $primary-accent;
+		background-color: var(--primary-accent-6);
 		min-width: 15rem;
-
-		&:hover {
-			background-color: lighten($primary-accent, 5%);
-		}
+	}
+	.primary-button:hover {
+		background-color: var(--primary-accent-5);
 	}
 
 	.secondary-button {
-		background-color: $secondary-accent;
+		background-color: var(--secondary-accent-6);
 		min-width: 15rem;
-
-		&:hover {
-			background-color: lighten($secondary-accent, 5%);
-		}
+	}
+	.secondary-button:hover {
+		background-color: var(--secondary-accent-5);
 	}
 
 	.close-button {
-		background-color: $red;
+		background-color: var(--red-5);
 		position: relative;
-
-		svg {
-			position: relative;
-			vertical-align: middle;
-			height: 1em;
-			width: 1em;
-		}
-
-		&:hover {
-			background-color: lighten($red, 5%);
-		}
+	}
+	.close-button:hover {
+		background-color: var(--red-4);
+	}
+	.close-button svg {
+		position: relative;
+		vertical-align: middle;
+		height: 1em;
+		width: 1em;
 	}
 </style>

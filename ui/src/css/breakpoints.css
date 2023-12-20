@@ -1,0 +1,31 @@
+/* mobile */
+@media screen and (max-width: 540px) {
+}
+
+/* media */
+@media (min-width: 541px) {
+}
+
+/* media-only */
+@media (min-width: 541px) and (max-width: 799px) {
+}
+
+/* until-tablet */
+@media (max-width: 767px) {
+}
+
+/* tablet */
+@media (min-width: 768px) {
+}
+
+/* desktop */
+@media only screen and (min-width: 1280px) {
+}
+
+/* large-desktop */
+@media only screen and (min-width: 1800px) {
+}
+
+/* hover */
+@media (hover: hover) {
+}

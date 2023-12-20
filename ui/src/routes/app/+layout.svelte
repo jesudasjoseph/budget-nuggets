@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { isLoggedIn, APIToken, APITokenExpiry } from '../stores';
+	import { isLoggedIn, APIToken, APITokenExpiry } from '@/stores/auth';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { authenticatedAPICall } from '../api/util';
-	import Button from '../components/Button.svelte';
-	import { onMount } from 'svelte';
+	import { authenticatedAPICall } from '@api/util';
+	import Button from '@components/Button.svelte';
 
 	function logOut(e: Event) {
 		e.preventDefault();
@@ -15,9 +14,9 @@
 		});
 	}
 
-	$: if (!$isLoggedIn && !['/login'].includes($page.url.pathname)) {
+	/* $: if (!$isLoggedIn && !['/login'].includes($page.url.pathname)) {
 		goto('/login');
-	}
+	} */
 </script>
 
 {#if $isLoggedIn}
@@ -25,13 +24,30 @@
 {/if}
 
 <main>
-	<slot />
+	<div>
+		<slot />
+	</div>
 </main>
 
-<style lang="scss">
-	@import '../scss/global';
-
+<style>
 	main {
+		height: 100%;
+
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	@media screen and (min-width: 1280px) {
+		main {
+			padding-left: 25%;
+			padding-right: 25%;
+		}
+	}
+
+	main div {
+		position: relative;
+
+		background-color: var(--secondary-background);
 		display: flex;
 		flex-direction: column;
 
@@ -40,14 +56,6 @@
 
 		width: 100%;
 		height: 100%;
-
-		padding-left: 1rem;
-		padding-right: 1rem;
-
-		@include breakpoint(desktop) {
-			padding-left: 25%;
-			padding-right: 25%;
-		}
 	}
 
 	nav {

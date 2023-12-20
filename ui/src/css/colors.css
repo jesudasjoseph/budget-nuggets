@@ -1,0 +1,62 @@
+:root{
+    --green-0: #eef6f7;
+    --green-1: #cce4e6;
+    --green-2: #aad2d5;
+    --green-3: #88c0c4;
+    --green-4: #66aeb3;
+    --green-5: #4c9599;
+    --green-6: #3b7477;
+    --green-7: #2a5355;
+    --green-8: #193233;
+    --green-9: #081111;
+
+    --blue-0: #eef0f7;
+    --blue-1: #ccd3e6;
+    --blue-2: #aab6d5;
+    --blue-3: #8898c4;
+    --blue-4: #667bb3;
+    --blue-5: #4c6299;
+    --blue-6: #3b4c77;
+    --blue-7: #2a3655;
+    --blue-8: #192133;
+    --blue-9: #080b11;
+
+    --red-0: #f7eded;
+    --red-1: #e8caca;
+    --red-2: #d8a6a6;
+    --red-3: #c98383;
+    --red-4: #b95f5f;
+    --red-5: #a04646;
+    --red-6: #7c3636;
+    --red-7: #592727;
+    --red-8: #592727;
+    --red-9: #120808;
+
+    --primary-accent-0: var(--green-0);
+    --primary-accent-1: var(--green-1);
+    --primary-accent-2: var(--green-2);
+    --primary-accent-3: var(--green-3);
+    --primary-accent-4: var(--green-4);
+    --primary-accent-5: var(--green-5);
+    --primary-accent-6: var(--green-6);
+    --primary-accent-7: var(--green-7);
+    --primary-accent-8: var(--green-8);
+    --primary-accent-9: var(--green-9);
+
+    --secondary-accent-0: var(--blue-0);
+    --secondary-accent-1: var(--blue-1);
+    --secondary-accent-2: var(--blue-2);
+    --secondary-accent-3: var(--blue-3);
+    --secondary-accent-4: var(--blue-4);
+    --secondary-accent-5: var(--blue-5);
+    --secondary-accent-6: var(--blue-6);
+    --secondary-accent-7: var(--blue-7);
+    --secondary-accent-8: var(--blue-8);
+    --secondary-accent-9: var(--blue-9);
+
+    --primary-background: #32323D;
+    --secondary-background: #332A3E;
+    --white: #fff;
+    --primary-font-color: #fff;
+    --boxshadow-color: rgba(0, 0, 0, 0.5);
+}

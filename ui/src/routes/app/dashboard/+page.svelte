@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { authenticatedAPICall } from '../../api/util';
+	import { authenticatedAPICall } from '@api/util';
 	let text: any;
 
 	function getAccounts() {

@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { APIToken, APITokenExpiry, isLoggedIn } from '../stores';
+	import { APIToken, APITokenExpiry, isLoggedIn } from '@/stores/auth';
 	import { goto } from '$app/navigation';
-	import Button from '../components/Button.svelte';
-	import Modal from '../components/Modal.svelte';
+	import Button from '@components/Button.svelte';
+	import Modal from '@components/Modal.svelte';
 	import { onMount } from 'svelte';
-	import { loginAPICall } from '../api/util';
-	import { prevent_default } from 'svelte/internal';
+	import { loginAPICall } from '@api/util';
 	let showLoginModal = false;
 	let showCreateAccountModal = false;
 	let username = '';
@@ -29,23 +28,21 @@
 	let loginForm: HTMLFormElement;
 	function onLoginSubmit(event: SubmitEvent) {
 		loginAPICall(username, password).then(() => {
-			goto('/dashboard');
+			goto('/app/dashboard');
 		});
 		event.preventDefault();
 	}
 
 	onMount(() => {
 		if ($isLoggedIn) {
-			goto('/dashboard');
+			goto('/app/dashboard');
 		}
 	});
 </script>
 
-<main>
-	<div>
-		<h1>Budget Nuggets.</h1>
-		<p>A simple budgeting app</p>
-	</div>
+<div class="main">
+	<h1>Budget Nuggets.</h1>
+	<p>A simple budgeting app</p>
 	<div id="options">
 		<Button
 			variant="primary"
@@ -59,60 +56,56 @@
 			on:click={() => (showCreateAccountModal = true)}
 		/>
 	</div>
-	<Modal bind:visible={showLoginModal} on:reset={resetLoginModal}>
-		<form class="form-layout" on:submit={onLoginSubmit} bind:this={loginForm}>
-			<h2>Login</h2>
-			<label>
-				<span class="sr-only">Username</span>
-				<input type="text" placeholder="Username" required bind:value={username} />
-			</label>
-			<label>
-				<span class="sr-only">Password</span>
-				<input type="password" placeholder="Password" required bind:value={password} />
-			</label>
-			<div class="button-layout">
-				<Button variant="close" label="Close" on:click={() => (showLoginModal = false)} />
-				<Button variant="primary" label="Login" type="submit" />
-			</div>
-		</form>
-	</Modal>
-	<Modal bind:visible={showCreateAccountModal} on:reset={resetCreateAccountModal}>
-		<form class="form-layout">
-			<h2>Create User</h2>
-			<label>
-				<span class="sr-only">Username</span>
-				<input type="text" placeholder="Username" bind:value={create_username} />
-			</label>
-			<label>
-				<span class="sr-only">First Name</span>
-				<input type="text" placeholder="Firt Name" bind:value={create_firstname} />
-			</label>
-			<label>
-				<span class="sr-only">Last Name</span>
-				<input type="text" placeholder="Last Name" bind:value={create_lastname} />
-			</label>
-			<label>
-				<span class="sr-only">Email</span>
-				<input type="email" placeholder="Email" bind:value={create_email} />
-			</label>
-			<label>
-				<span class="sr-only">Password</span>
-				<input type="password" placeholder="Password" bind:value={create_password} />
-			</label>
-			<div class="button-layout">
-				<Button variant="close" label="Close" on:click={() => (showCreateAccountModal = false)} />
-				<Button variant="primary" label="Login" type="submit" on:click={createAccount} />
-			</div>
-		</form>
-	</Modal>
-</main>
+</div>
+<Modal bind:visible={showLoginModal} on:reset={resetLoginModal}>
+	<form class="form-layout" on:submit={onLoginSubmit} bind:this={loginForm}>
+		<h2>Login</h2>
+		<label>
+			<span class="sr-only">Username</span>
+			<input type="text" placeholder="Username" required bind:value={username} />
+		</label>
+		<label>
+			<span class="sr-only">Password</span>
+			<input type="password" placeholder="Password" required bind:value={password} />
+		</label>
+		<div class="button-layout">
+			<Button variant="close" label="Close" on:click={() => (showLoginModal = false)} />
+			<Button variant="primary" label="Login" type="submit" />
+		</div>
+	</form>
+</Modal>
+<Modal bind:visible={showCreateAccountModal} on:reset={resetCreateAccountModal}>
+	<form class="form-layout">
+		<h2>Create User</h2>
+		<label>
+			<span class="sr-only">Username</span>
+			<input type="text" placeholder="Username" bind:value={create_username} />
+		</label>
+		<label>
+			<span class="sr-only">First Name</span>
+			<input type="text" placeholder="Firt Name" bind:value={create_firstname} />
+		</label>
+		<label>
+			<span class="sr-only">Last Name</span>
+			<input type="text" placeholder="Last Name" bind:value={create_lastname} />
+		</label>
+		<label>
+			<span class="sr-only">Email</span>
+			<input type="email" placeholder="Email" bind:value={create_email} />
+		</label>
+		<label>
+			<span class="sr-only">Password</span>
+			<input type="password" placeholder="Password" bind:value={create_password} />
+		</label>
+		<div class="button-layout">
+			<Button variant="close" label="Close" on:click={() => (showCreateAccountModal = false)} />
+			<Button variant="primary" label="Login" type="submit" on:click={createAccount} />
+		</div>
+	</form>
+</Modal>
 
-<style lang="scss">
-	@import '../scss/variables';
-	@import '../scss/breakpoints';
-	@import '../scss/common';
-
-	main {
+<style>
+	.main {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -135,10 +128,9 @@
 		row-gap: 1rem;
 		width: 100%;
 		padding: 2rem;
-
-		input {
-			width: 100%;
-		}
+	}
+	.form-layout input {
+		width: 100%;
 	}
 
 	.button-layout {
@@ -146,15 +138,5 @@
 		column-gap: 1rem;
 		width: 100%;
 		justify-content: space-between;
-	}
-
-	@include breakpoint(tablet) {
-		main {
-			padding: 10rem 2rem;
-		}
-
-		#options {
-			width: 200px;
-		}
 	}
 </style>

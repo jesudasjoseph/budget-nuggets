@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { APIToken, APITokenExpiry } from '../stores';
+import { APIToken, APITokenExpiry } from '@stores/auth';
 
 export async function authenticatedAPICall(
 	method: 'POST' | 'GET',
