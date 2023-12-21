@@ -20,10 +20,11 @@
 <svelte:window on:keydown={onKeyDown} />
 
 {#if visible}
-	<div role="presentation" transition:fade on:click={() => (visible = false)} />
-	<section transition:slide>
-		<slot />
-	</section>
+	<div role="presentation" in:fade={{ delay: 100 }} on:click|self={() => (visible = false)}>
+		<section role="dialog" in:fade={{ delay: 100 }}>
+			<slot />
+		</section>
+	</div>
 {/if}
 
 <style>
@@ -33,18 +34,15 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		opacity: 20%;
-		background-color: var(--white);
+		background-color: rgba(100, 100, 100, 0.5);
 	}
 	section {
 		position: absolute;
-		border-radius: 15px 15px 0 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		display: flex;
-		flex-direction: column;
-		row-gap: 1rem;
 		background-color: var(--secondary-background);
+		border-radius: 1rem;
+		left: 50%;
+		top: 50%;
+
+		transform: translateY(-50%) translateX(-50%);
 	}
 </style>

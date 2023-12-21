@@ -35,7 +35,7 @@
 		cursor: pointer;
 		border: none;
 		border-radius: 5px;
-		padding: 1rem;
+		padding: 0.6rem;
 	}
 	button:active {
 		box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 80%);
