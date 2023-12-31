@@ -28,14 +28,14 @@
 	let loginForm: HTMLFormElement;
 	function onLoginSubmit(event: SubmitEvent) {
 		loginAPICall(username, password).then(() => {
-			goto('/app/dashboard');
+			goto('/app');
 		});
 		event.preventDefault();
 	}
 
 	onMount(() => {
 		if ($isLoggedIn) {
-			goto('/app/dashboard');
+			goto('/app');
 		}
 	});
 </script>

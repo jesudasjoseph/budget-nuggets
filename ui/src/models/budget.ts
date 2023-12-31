@@ -1,0 +1,1 @@
+export type Types  = 'AN' | 'MN' | 'BW' | 'W' | 'EV';

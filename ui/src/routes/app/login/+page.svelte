@@ -11,12 +11,12 @@
 	function login(e: Event) {
 		e.preventDefault();
 		loginAPICall(username, password).then(() => {
-			goto('/app/dashboard');
+			goto('/app');
 		});
 	}
 	onMount(() => {
 		if ($isLoggedIn) {
-			goto('/app/dashboard');
+			goto('/app');
 		}
 	});
 </script>

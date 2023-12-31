@@ -10,10 +10,11 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		alias: {
-			'@': 'src',
 			'@api': 'src/api',
 			'@stores': 'src/stores',
 			'@components': 'src/components',
+			'@models': 'src/models',
+			'@': 'src',
 		},
 	}
 };

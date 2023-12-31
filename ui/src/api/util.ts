@@ -4,7 +4,8 @@ import { APIToken, APITokenExpiry } from '@stores/auth';
 export async function authenticatedAPICall(
 	method: 'POST' | 'GET',
 	endpoint: string,
-	body: Object = {}
+	body: Object = {},
+	parseJSON: boolean = false
 ) {
 	return fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
 		method: method,
@@ -21,6 +22,10 @@ export async function authenticatedAPICall(
 			}
 
 			return response;
+		}).then((response) => {
+			if (parseJSON) {
+				return response.json();
+			}
 		})
 		.catch((error) => {
 			console.error(error);
