@@ -7,17 +7,16 @@
 	import { loginAPICall } from '@api/util';
 	let showLoginModal = false;
 	let showCreateAccountModal = false;
-	let username = '';
+	let email = '';
 	let password = '';
 
-	let create_username = '';
 	let create_email = '';
 	let create_firstname = '';
 	let create_lastname = '';
 	let create_password = '';
 
 	function resetLoginModal() {
-		username = '';
+		email = '';
 		password = '';
 	}
 
@@ -27,7 +26,7 @@
 
 	let loginForm: HTMLFormElement;
 	function onLoginSubmit(event: SubmitEvent) {
-		loginAPICall(username, password).then(() => {
+		loginAPICall(email, password).then(() => {
 			goto('/app');
 		});
 		event.preventDefault();
@@ -63,8 +62,8 @@
 	<form class="form-layout" on:submit={onLoginSubmit} bind:this={loginForm}>
 		<h2>Login</h2>
 		<label>
-			<span class="sr-only">Username</span>
-			<input type="text" placeholder="Username" required bind:value={username} />
+			<span class="sr-only">Email</span>
+			<input type="text" placeholder="example@example.com" required bind:value={email} />
 		</label>
 		<label>
 			<span class="sr-only">Password</span>
@@ -80,8 +79,8 @@
 	<form class="form-layout">
 		<h2>Create User</h2>
 		<label>
-			<span class="sr-only">Username</span>
-			<input type="text" placeholder="Username" bind:value={create_username} />
+			<span class="sr-only">Email</span>
+			<input type="email" placeholder="Email" bind:value={create_email} />
 		</label>
 		<label>
 			<span class="sr-only">First Name</span>
@@ -90,10 +89,6 @@
 		<label>
 			<span class="sr-only">Last Name</span>
 			<input type="text" placeholder="Last Name" bind:value={create_lastname} />
-		</label>
-		<label>
-			<span class="sr-only">Email</span>
-			<input type="email" placeholder="Email" bind:value={create_email} />
 		</label>
 		<label>
 			<span class="sr-only">Password</span>
