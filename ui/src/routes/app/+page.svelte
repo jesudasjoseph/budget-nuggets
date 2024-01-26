@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '@components/Button.svelte';
 	import Modal from '@components/Modal.svelte';
+	import BudgetCard from '@components/BudgetCard.svelte';
 	import { createBudget, listBudgets } from '@api/budget';
 	import type { Types } from '@models/budget';
 	import { onMount } from 'svelte';
@@ -35,9 +36,13 @@
 
 <Button label="Add Budget" variant="primary" on:click={() => (showAddBudgetModal = true)} />
 
-{#each budgets as bud}
-	<h2>{bud.name}</h2>
-{/each}
+<ul>
+	{#each budgets as budget}
+		<li>
+			<BudgetCard id={budget.id} name={budget.name} type={budget.type} />
+		</li>
+	{/each}
+</ul>
 
 <Modal bind:visible={showAddBudgetModal}>
 	<form class="form-layout" on:submit={onAdd}>
@@ -62,3 +67,13 @@
 		</div>
 	</form>
 </Modal>
+
+<style>
+	ul {
+		display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
+		width: 100%;
+		padding: 1rem;
+	}
+</style>

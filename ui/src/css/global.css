@@ -2,41 +2,41 @@
 @import 'breakpoints';
 @import 'common';
 @import 'colors';
+@import 'variables';
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
 
-body, p, button, input {
-    font-size: 1rem;
+body,
+p,
+button,
+input {
+	font-size: var(--font-size-normal);
 }
 
 html {
-    background-color: var(--primary-background);
-    color: var(--primary-font-color);
-    font-family: 'Comfortaa', sans-serif;
-    height: 100%;
+	background-color: var(--primary-background);
+	color: var(--primary-font-color);
+	font-family: 'Comfortaa', sans-serif;
+	height: 100%;
 }
 
 body {
-    height: 100%;
+	height: 100%;
 }
 
 h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+	font-size: var(--font-size-extra-large);
+	margin-bottom: 1rem;
 }
 
 h2 {
-    font-size: 2rem;
+	font-size: var(--font-size-large);
 }
 
 h3 {
-    font-size: 2rem;
-}
-
-p {
-    font-size: 1rem;
+	font-size: var(--font-size-large);
 }
 
 input {
-    border-radius: 0.2rem;
-    padding: 0.4rem
+	border-radius: 0.2rem;
+	padding: 0.4rem;
 }
