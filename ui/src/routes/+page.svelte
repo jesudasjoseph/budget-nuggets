@@ -45,12 +45,7 @@
 		<p>A simple budgeting app</p>
 	</div>
 	<div class="options">
-		<Button
-			variant="primary"
-			type="submit"
-			label="Login"
-			on:click={() => (showLoginModal = true)}
-		/>
+		<Button variant="primary" type="submit" href="/app/login" label="Login" />
 		<Button
 			variant="secondary"
 			label="Create Account"

@@ -1,5 +1,17 @@
 import { get } from 'svelte/store';
 import { APIToken, APITokenExpiry } from '@stores/auth';
+import { APIUrl } from './base';
+
+export class NetworkError {
+	status: number;
+	message: string;
+	response: Response;
+	constructor(status: number, message: string, response: Response) {
+		this.status = status;
+		this.message = message;
+		this.response = response;
+	}
+}
 
 export async function authenticatedAPICall(
 	method: 'POST' | 'GET',
@@ -7,7 +19,7 @@ export async function authenticatedAPICall(
 	body: Object = {},
 	parseJSON: boolean = false
 ) {
-	return fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+	return fetch(`${APIUrl}/api/${endpoint}`, {
 		method: method,
 		mode: 'cors',
 		body: method === 'POST' ? JSON.stringify(body) : undefined,
@@ -17,18 +29,13 @@ export async function authenticatedAPICall(
 		}
 	})
 		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`Network Error: ${response.status} - ${response.statusText}`);
-			}
-
+			if (!response.ok) throw new NetworkError(response.status, response.statusText, response);
 			return response;
-		}).then((response) => {
+		})
+		.then((response) => {
 			if (parseJSON) {
 				return response.json();
 			}
-		})
-		.catch((error) => {
-			console.error(error);
 		});
 }
 
@@ -43,7 +50,7 @@ export async function loginAPICall(username: string, password: string) {
 	})
 		.then((response) => {
 			if (!response.ok) {
-				throw new Error(`Network Error: ${response.status} - ${response.statusText}`);
+				throw new NetworkError(response.status, response.statusText, response);
 			}
 			return response.json();
 		})

@@ -4,25 +4,39 @@
 	import { page } from '$app/stores';
 	import { authenticatedAPICall } from '@api/util';
 	import Button from '@components/Button.svelte';
+	import { onMount } from 'svelte';
+
+	let loggingOut = false;
 
 	function logOut(e: Event) {
 		e.preventDefault();
+
 		authenticatedAPICall('POST', 'auth/logoutall/').then(() => {
+			loggingOut = true;
+			goto('/');
 			$APIToken = '';
 			$APITokenExpiry = '';
-			goto('/');
 		});
 	}
 
-	$: if (!$isLoggedIn && !['/'].includes($page.url.pathname)) {
-		goto('/');
+	function redirectToLogin() {
+		if (!['/', '/app/login', '/app/signup'].includes($page.url.pathname) && !loggingOut) {
+			goto(`/app/login?ref=${$page.url.pathname}`);
+		}
 	}
+
+	onMount(() => {
+		if (!$isLoggedIn) {
+			redirectToLogin();
+		}
+	});
+
+	$: if (!$isLoggedIn) redirectToLogin();
 </script>
 
 {#if $isLoggedIn}
 	<nav><Button label="Logout" variant="secondary" on:click={logOut} /></nav>
 {/if}
-
 <main>
 	<div>
 		<slot />
@@ -40,15 +54,13 @@
 	/* desktop */
 	@media screen and (min-width: 1280px) {
 		main {
-			padding-left: 25%;
-			padding-right: 25%;
+			padding-left: 20%;
+			padding-right: 20%;
 		}
 	}
 
 	main div {
 		position: relative;
-
-		background-color: var(--secondary-background);
 		display: flex;
 		flex-direction: column;
 
@@ -57,6 +69,9 @@
 
 		width: 100%;
 		height: 100%;
+
+		/* TODO: Remove */
+		border: 1px solid purple;
 	}
 
 	nav {

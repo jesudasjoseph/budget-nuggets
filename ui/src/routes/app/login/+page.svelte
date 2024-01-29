@@ -1,61 +1,78 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import Button from '@components/Button.svelte';
-	import { isLoggedIn } from '@/stores/auth';
+	import { isLoggedIn } from '@stores/auth';
 	import { loginAPICall } from '@api/util';
-	let username = '';
-	let password = '';
-	let showLoginModal = false;
 
-	function login(e: Event) {
-		e.preventDefault();
-		loginAPICall(username, password).then(() => {
-			goto('/app');
+	const REF = $page.url.searchParams.get('ref') || '/app';
+
+	let email = '';
+	let password = '';
+
+	let loginForm: HTMLFormElement;
+	function onLoginSubmit(event: SubmitEvent) {
+		loginAPICall(email, password).then(() => {
+			goto(REF);
 		});
+		event.preventDefault();
 	}
 	onMount(() => {
 		if ($isLoggedIn) {
-			goto('/app');
+			goto(REF);
 		}
 	});
 </script>
 
-<form>
-	<h2>Login</h2>
-	<label>
-		<span class="sr-only">Username</span>
-		<input type="text" placeholder="Username" bind:value={username} />
-	</label>
-	<label>
-		<span class="sr-only">Password</span>
-		<input type="password" placeholder="Password" bind:value={password} />
-	</label>
-	<div class="button-layout">
-		<Button variant="close" label="Close" on:click={() => (showLoginModal = false)} />
-		<Button classes="login-button" variant="primary" label="Login" on:click={login} />
-	</div>
-</form>
+<div class="main">
+	{#if $page.url.searchParams.get('ref')}
+		<p>You are not logged in yet! Please log in to continue.</p>
+	{/if}
+	<form class="form-layout" on:submit={onLoginSubmit} bind:this={loginForm}>
+		<h2>Login</h2>
+		<label>
+			<span class="sr-only">Email</span>
+			<input type="text" placeholder="example@example.com" required bind:value={email} />
+		</label>
+		<label>
+			<span class="sr-only">Password</span>
+			<input type="password" placeholder="Password" required bind:value={password} />
+		</label>
+		<div class="button-layout">
+			<Button variant="primary" label="Login" type="submit" />
+		</div>
+		<p>Don't have an account yet? <a href="/app/signup">Signup here</a></p>
+	</form>
+	<Button variant="secondary" label="Back to homepage!" href="/" />
+</div>
 
 <style>
-	form {
-		height: 100%;
+	.main {
 		display: flex;
 		flex-direction: column;
-		align-items: stretch;
-		justify-content: end;
-		row-gap: 0.5rem;
-		padding-bottom: 1rem;
+		row-gap: 3rem;
+		width: 100%;
+		padding: 2rem;
+		height: 100%;
+		justify-content: space-between;
+		max-width: 30rem;
 	}
-
-	form .button-layout {
+	.form-layout {
 		display: flex;
-		align-items: stretch;
-
-		column-gap: 0.5rem;
+		flex-direction: column;
+		row-gap: 1rem;
+		width: 100%;
+	}
+	.form-layout input {
+		width: 100%;
 	}
 
-	:global(form .button-layout .login-button) {
-		flex-grow: 2;
+	.button-layout {
+		display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
+		width: 100%;
+		justify-content: space-between;
 	}
 </style>

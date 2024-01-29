@@ -7,3 +7,7 @@ export async function createBudget(name: string, type: 'AN' | 'MN' | 'BW' | 'W' 
 export async function listBudgets() {
 	return authenticatedAPICall('GET', 'budget/', undefined, true);
 }
+
+export async function getBudget(id: number) {
+	return authenticatedAPICall('GET', `budget/${id}/`, undefined, true);
+}

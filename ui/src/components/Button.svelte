@@ -7,7 +7,7 @@
 </script>
 
 {#if href}
-	<a {href} class={classes}>{label}</a>
+	<a {href} class={`${variant}-button ${classes}`}>{label}</a>
 {:else}
 	<button {type} on:click class={`${variant}-button ${classes}`}>
 		{#if variant == 'close'}
@@ -29,14 +29,22 @@
 {/if}
 
 <style>
-	button {
+	button,
+	a {
 		color: var(--primary-font-color);
 		box-shadow: 1px 2px 1px 0 var(--boxshadow-color);
 		cursor: pointer;
 		border: none;
 		border-radius: 5px;
 		padding: 0.6rem;
+		text-align: center;
+		font-size: var(--font-size-normal);
 	}
+
+	a {
+		text-decoration: none;
+	}
+
 	button:active {
 		box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 80%);
 	}

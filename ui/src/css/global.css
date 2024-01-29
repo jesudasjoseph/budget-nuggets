@@ -10,6 +10,7 @@ p,
 button,
 input {
 	font-size: var(--font-size-normal);
+	font-family: 'Comfortaa', sans-serif;
 }
 
 html {
@@ -39,4 +40,8 @@ h3 {
 input {
 	border-radius: 0.2rem;
 	padding: 0.4rem;
+}
+
+a {
+	color: var(--secondary-accent-2);
 }

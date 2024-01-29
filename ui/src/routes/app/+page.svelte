@@ -24,7 +24,6 @@
 		listBudgets().then((data) => {
 			if (data) {
 				budgets = data;
-				console.log(budgets, data);
 			}
 		});
 	}
