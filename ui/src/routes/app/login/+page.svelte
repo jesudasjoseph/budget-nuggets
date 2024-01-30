@@ -4,9 +4,9 @@
 	import { page } from '$app/stores';
 	import Button from '@components/Button.svelte';
 	import { isLoggedIn } from '@stores/auth';
-	import { loginAPICall } from '@api/util';
+	import { loginAPICall } from '@api/auth';
 
-	const REF = $page.url.searchParams.get('ref') || '/app';
+	const REF = $page.url.searchParams.get('ref') || '/app/dashboard';
 
 	let email = '';
 	let password = '';

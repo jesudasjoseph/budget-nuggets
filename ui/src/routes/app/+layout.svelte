@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { isLoggedIn, APIToken, APITokenExpiry } from '@/stores/auth';
-	import { goto } from '$app/navigation';
+	import { logoutallAPICall } from '@api/auth';
+	import { fatalNavigationError } from '@stores/error';
+	import { goto, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { authenticatedAPICall } from '@api/util';
-	import Button from '@components/Button.svelte';
 	import { onMount } from 'svelte';
+
+	import Button from '@components/Button.svelte';
 
 	let loggingOut = false;
 
 	function logOut(e: Event) {
 		e.preventDefault();
 
-		authenticatedAPICall('POST', 'auth/logoutall/').then(() => {
+		logoutallAPICall().then((data) => {
 			loggingOut = true;
 			goto('/');
 			$APIToken = '';
@@ -31,17 +33,31 @@
 		}
 	});
 
+	beforeNavigate(() => {
+		$fatalNavigationError = false;
+	});
+
 	$: if (!$isLoggedIn) redirectToLogin();
 </script>
 
 {#if $isLoggedIn}
-	<nav><Button label="Logout" variant="secondary" on:click={logOut} /></nav>
+	<nav>
+		<a href="/app/dashboard">Dashboard</a>
+		<a href="/app/budgets">Budgets</a>
+		<Button label="Logout" variant="secondary" on:click={logOut} />
+	</nav>
 {/if}
-<main>
-	<div>
-		<slot />
-	</div>
-</main>
+{#if !$fatalNavigationError}
+	<main>
+		<div>
+			<slot />
+		</div>
+	</main>
+{:else}
+	<main class="error">
+		<h2>404 Not Found!</h2>
+	</main>
+{/if}
 
 <style>
 	main {
@@ -51,12 +67,11 @@
 		padding-right: 1rem;
 	}
 
-	/* desktop */
-	@media screen and (min-width: 1280px) {
-		main {
-			padding-left: 20%;
-			padding-right: 20%;
-		}
+	main.error {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 4rem;
 	}
 
 	main div {
@@ -80,5 +95,13 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+	}
+
+	/* desktop */
+	@media screen and (min-width: 1280px) {
+		main {
+			padding-left: 20%;
+			padding-right: 20%;
+		}
 	}
 </style>

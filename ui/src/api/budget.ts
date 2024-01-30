@@ -9,5 +9,5 @@ export async function listBudgets() {
 }
 
 export async function getBudget(id: number) {
-	return authenticatedAPICall('GET', `budget/${id}/`, undefined, true);
+	return authenticatedAPICall('GET', `budget/${id}/`, undefined, true, true);
 }

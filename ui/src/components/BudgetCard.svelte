@@ -15,7 +15,7 @@
 </script>
 
 <article>
-	<a href={`app/budget/${id}`}>
+	<a href={`/app/budgets/${id}`}>
 		<h2>{name}</h2>
 		<p>{BUDGET_TYPE_MAP[type]}</p>
 	</a>
