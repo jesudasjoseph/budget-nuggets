@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "knox",
     "corsheaders",
     "budget",
+    "transaction",
 ]
 
 MIDDLEWARE = [

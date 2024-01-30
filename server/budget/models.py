@@ -32,11 +32,11 @@ class Budget(models.Model):
         User, on_delete=models.CASCADE, related_name="budget_owner"
     )
     users = models.ManyToManyField(
-        User, through="BudgetUsers", through_fields=("budget", "user")
+        User, through="BudgetUser", through_fields=("budget", "user")
     )
 
 
-class BudgetUsers(models.Model):
+class BudgetUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.ForeignKey(BudgetRole, on_delete=models.CASCADE)
     budget = models.ForeignKey(
@@ -51,7 +51,21 @@ class BudgetUsers(models.Model):
         ]
 
 
-class BudgetPeriods(models.Model):
+class BudgetPeriod(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["start_date", "end_date", "budget"], name="unique budget period"
+            )
+        ]
+
+
+class BudgetCategory(models.Model):
+    label = models.CharField()
+    value = models.DecimalField(max_digits=12, decimal_places=2)
+    color = models.CharField(max_length=6)
+    budget_period = models.ForeignKey(BudgetPeriod, on_delete=models.CASCADE)

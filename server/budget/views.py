@@ -25,7 +25,7 @@ class BudgetDetailAPIView(APIView):
 
 
 class BudgetDeleteAPIView(APIView):
-    def post(seflt, request, budget_id):
+    def post(self, request, budget_id):
         try:
             budget = Budget.objects.get(pk=budget_id)
         except Budget.DoesNotExist:
