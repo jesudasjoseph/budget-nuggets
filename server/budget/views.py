@@ -25,7 +25,7 @@ class BudgetDetailAPIView(APIView):
 
 
 class BudgetDeleteAPIView(APIView):
-    def post(self, request, budget_id):
+    def delete(self, request, budget_id):
         try:
             budget = Budget.objects.get(pk=budget_id)
         except Budget.DoesNotExist:
@@ -66,9 +66,6 @@ class BudgetUpdateAPIView(APIView):
         budget.update(**serializer.validated_data)
 
         return Response(BudgetDetailSerializer(budget[0]).data, status=200)
-
-    def put(self, request, budget_id):
-        self.patch(request, budget_id)
 
 
 class BudgetListAPIView(APIView):

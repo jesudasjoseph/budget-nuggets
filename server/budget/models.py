@@ -49,23 +49,3 @@ class BudgetUser(models.Model):
                 fields=["user", "role", "budget"], name="user unique budget roles"
             )
         ]
-
-
-class BudgetPeriod(models.Model):
-    start_date = models.DateField()
-    end_date = models.DateField()
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["start_date", "end_date", "budget"], name="unique budget period"
-            )
-        ]
-
-
-class BudgetCategory(models.Model):
-    label = models.CharField()
-    value = models.DecimalField(max_digits=12, decimal_places=2)
-    color = models.CharField(max_length=6)
-    budget_period = models.ForeignKey(BudgetPeriod, on_delete=models.CASCADE)

@@ -12,12 +12,9 @@ User = get_user_model()
 class BudgetAPITestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user1 = User.objects.create_user(
-            email="jess@example.com",
-        )
-        cls.user2 = User.objects.create_user(
-            email="bob@example.com",
-        )
+        cls.user1 = User.objects.create_user(email="jess@example.com")
+        cls.user2 = User.objects.create_user(email="bob@example.com")
+
         cls.budget = Budget(name="Test Budget", type=Budget.ANNUAL, owner=cls.user1)
         cls.budget.save()
 
@@ -53,7 +50,7 @@ class BudgetAPITestCase(TestCase):
     def test_budget_delete_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.post(f"/api/budget/{self.budget.id}/delete/")
+        response = client.delete(f"/api/budget/{self.budget.id}/delete/")
 
         assert response.status_code == 204
         assert not Budget.objects.filter(id=self.budget.id).exists()
@@ -61,14 +58,14 @@ class BudgetAPITestCase(TestCase):
     def test_budget_delete_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.post(f"/api/budget/{self.budget.id}/delete/")
+        response = client.delete(f"/api/budget/{self.budget.id}/delete/")
 
         assert response.status_code == 403
         assert Budget.objects.filter(id=self.budget.id).exists()
 
     def test_budget_delete_api_unauthenticated(self):
         client = APIClient()
-        response = client.post(f"/api/budget/{self.budget.id}/delete/")
+        response = client.delete(f"/api/budget/{self.budget.id}/delete/")
 
         assert response.status_code == 401
         assert Budget.objects.filter(id=self.budget.id).exists()
@@ -122,7 +119,6 @@ class BudgetAPITestCase(TestCase):
         client.force_authenticate(self.user2)
         response = client.patch(f"/api/budget/{self.budget.id}/update/", {})
 
-        data = response.data
         assert response.status_code == 403
         budget = Budget.objects.get(id=self.budget.id)
         assert budget.name == self.budget.name
