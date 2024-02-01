@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from datetime import date
 
 from rest_framework.test import APIClient
 
@@ -72,7 +73,11 @@ class PeriodAPITestCase(TestCase):
         client.force_authenticate(self.user1)
         response = client.post(
             "/api/period/create/",
-            {"start_date": "2023-01-03", "end_date": "2023-01-07", "budget": 1},
+            {
+                "start_date": "2023-01-03",
+                "end_date": "2023-01-07",
+                "budget": self.budget.id,
+            },
         )
 
         assert response.status_code == 201
@@ -82,7 +87,11 @@ class PeriodAPITestCase(TestCase):
         client.force_authenticate(self.user2)
         response = client.post(
             "/api/period/create/",
-            {"start_date": "2023-01-03", "end_date": "2023-01-07", "budget": 1},
+            {
+                "start_date": "2023-01-03",
+                "end_date": "2023-01-07",
+                "budget": self.budget.id,
+            },
         )
 
         assert response.status_code == 403
@@ -91,7 +100,11 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         response = client.post(
             "/api/period/create/",
-            {"start_date": "2023-01-03", "end_date": "2023-01-07", "budget": 1},
+            {
+                "start_date": "2023-01-03",
+                "end_date": "2023-01-07",
+                "budget": self.budget.id,
+            },
         )
 
         assert response.status_code == 401
@@ -116,4 +129,5 @@ class PeriodAPITestCase(TestCase):
 
         assert response.status_code == 200
         updated_period = Period.objects.get(pk=self.period.id)
-        # finish data asserts
+        assert updated_period.start_date == date.fromisoformat("2023-01-09")
+        assert updated_period.end_date == date.fromisoformat("2023-01-22")
