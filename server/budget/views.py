@@ -55,7 +55,7 @@ class BudgetUpdateAPIView(APIView):
         serializer = BudgetUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        budget = Budget.objects.filter(id=budget_id)
+        budget = Budget.objects.filter(pk=budget_id)
 
         if not budget.exists():
             raise NotFound()

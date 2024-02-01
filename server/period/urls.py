@@ -6,7 +6,6 @@ urlpatterns = [
         "period/",
         include(
             [
-                # path("", view=views.BudgetListAPIView.as_view()),
                 path("create/", view=views.PeriodCreateAPIView.as_view()),
                 path(
                     "<int:period_id>/",

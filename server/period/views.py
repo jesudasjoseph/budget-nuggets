@@ -60,16 +60,14 @@ class PeriodUpdateAPIView(APIView):
         serializer = PeriodUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        try:
-            period = Period.objects.get(pk=period_id)
-        except Period.DoesNotExist:
+        period = Period.objects.filter(pk=period_id)
+
+        if not period.exists():
             raise NotFound()
 
-        if period.budget.owner != request.user:
+        if period[0].budget.owner != request.user:
             raise PermissionDenied()
 
-        period.start_date = serializer.validated_data["start_date"]
-        period.end_date = serializer.validated_data["end_date"]
-        period.save()
+        period.update(**serializer.validated_data)
 
-        return Response(PeriodDetailSerializer(period).data, status=200)
+        return Response(PeriodDetailSerializer(period[0]).data, status=200)

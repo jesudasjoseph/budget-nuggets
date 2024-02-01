@@ -22,7 +22,9 @@ class PeriodAPITestCase(TestCase):
         cls.budget.save()
 
         cls.period = Period(
-            start_date="2023-01-01", end_date="2023-01-31", budget=cls.budget
+            start_date=date.fromisoformat("2023-01-01"),
+            end_date=date.fromisoformat("2023-01-31"),
+            budget=cls.budget,
         )
         cls.period.save()
 
@@ -131,3 +133,35 @@ class PeriodAPITestCase(TestCase):
         updated_period = Period.objects.get(pk=self.period.id)
         assert updated_period.start_date == date.fromisoformat("2023-01-09")
         assert updated_period.end_date == date.fromisoformat("2023-01-22")
+
+    def test_period_update_api_partial(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.patch(
+            f"/api/period/{self.period.id}/update/",
+            {"start_date": "2023-01-09"},
+        )
+
+        assert response.status_code == 200
+        updated_period = Period.objects.get(pk=self.period.id)
+        assert updated_period.start_date == date.fromisoformat("2023-01-09")
+        assert updated_period.end_date == self.period.end_date
+
+    def test_period_update_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+        response = client.patch(
+            f"/api/period/{self.period.id}/update/",
+            {"start_date": "2023-01-09", "end_date": "2023-01-22"},
+        )
+
+        assert response.status_code == 403
+
+    def test_period_update_api_unauthenticated(self):
+        client = APIClient()
+        response = client.patch(
+            f"/api/period/{self.period.id}/update/",
+            {"start_date": "2023-01-09", "end_date": "2023-01-22"},
+        )
+
+        assert response.status_code == 401
