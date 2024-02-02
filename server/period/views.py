@@ -96,3 +96,17 @@ class PeriodUpdateAPIView(APIView):
         period.update(**serializer.validated_data)
 
         return Response(PeriodDetailSerializer(period[0]).data, status=200)
+
+
+class PeriodListAPIView(APIView):
+    def get(self, request):
+        period_qs = Period.objects.filter(budget=request.query_params["budget"])
+
+        if request.query_params["date"]:
+            requested_date = date.fromisoformat(request.query_params["date"])
+            period_qs.filter(
+                start_date__gte=requested_date, end_date__lte=requested_date
+            )
+
+        serializer = PeriodDetailSerializer(period_qs, many=True)
+        return Response(serializer.data, status=200)

@@ -7,6 +7,7 @@ urlpatterns = [
         include(
             [
                 path("create/", view=views.PeriodCreateAPIView.as_view()),
+                path("", view=views.PeriodListAPIView.as_view()),
                 path(
                     "<int:period_id>/",
                     include(
