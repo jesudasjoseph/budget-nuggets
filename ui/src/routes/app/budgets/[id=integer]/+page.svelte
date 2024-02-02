@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { getBudget } from '@api/budget';
 	import { getPeriodByDate, createPeriod } from '@api/period';
+	import BudgetPeriod from '@components/BudgetPeriod.svelte';
+	import Button from '@components/Button.svelte';
 	import { onMount } from 'svelte';
 
 	interface Period {
@@ -43,12 +45,8 @@
 	});
 </script>
 
-{name}
-{type}
-{id}
-{users}
-{owner}
+<h2>{name}</h2>
 
 {#if period}
-	{period.label}
+	<BudgetPeriod budget_id={id} period_id={period.id} label={period.label} />
 {/if}
