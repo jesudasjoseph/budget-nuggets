@@ -76,8 +76,7 @@ class PeriodAPITestCase(TestCase):
         response = client.post(
             "/api/period/create/",
             {
-                "start_date": "2023-01-03",
-                "end_date": "2023-01-07",
+                "date": "2023-02-03",
                 "budget": self.budget.id,
             },
         )
@@ -90,8 +89,7 @@ class PeriodAPITestCase(TestCase):
         response = client.post(
             "/api/period/create/",
             {
-                "start_date": "2023-01-03",
-                "end_date": "2023-01-07",
+                "date": "2023-02-03",
                 "budget": self.budget.id,
             },
         )
@@ -103,8 +101,7 @@ class PeriodAPITestCase(TestCase):
         response = client.post(
             "/api/period/create/",
             {
-                "start_date": "2023-01-03",
-                "end_date": "2023-01-07",
+                "date": "2023-02-03",
                 "budget": self.budget.id,
             },
         )
@@ -116,7 +113,7 @@ class PeriodAPITestCase(TestCase):
         client.force_authenticate(self.user1)
         response = client.post(
             "/api/period/create/",
-            {"start_date": "2023-01-03", "end_date": "2023-01-07", "budget": 99},
+            {"date": "2023-02-03", "budget": 99},
         )
 
         assert response.status_code == 400

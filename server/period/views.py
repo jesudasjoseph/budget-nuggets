@@ -1,3 +1,6 @@
+from datetime import date
+from calendar import monthrange
+
 from rest_framework.views import APIView
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.response import Response
@@ -46,10 +49,32 @@ class PeriodCreateAPIView(APIView):
         serializer = PeriodCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        if serializer.validated_data["budget"].owner != request.user:
+        budget = serializer.validated_data["budget"]
+
+        if budget.owner != request.user:
             raise PermissionDenied()
 
-        period = Period(**serializer.validated_data)
+        requested_date = serializer.validated_data["date"]
+
+        def last_day_of_month(year: int, month: int):
+            return monthrange(year, month)[1]
+
+        start_date = date.today()
+        end_date = date.today()
+        if budget.type == Budget.MONTHLY:
+            start_date = date(requested_date.year, requested_date.month, 1)
+            end_date = date(
+                requested_date.year,
+                requested_date.month,
+                last_day_of_month(requested_date.year, requested_date.month),
+            )
+        elif budget.type == Budget.ANNUAL:
+            start_date = date(requested_date.year, 1, 1)
+            end_date = date(
+                requested_date.year, 12, last_day_of_month(requested_date.year, 12)
+            )
+
+        period = Period(start_date=start_date, end_date=end_date, budget=budget)
         period.save()
 
         return Response(PeriodDetailSerializer(period).data, status=201)
