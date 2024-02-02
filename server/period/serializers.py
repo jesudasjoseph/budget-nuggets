@@ -4,6 +4,8 @@ from .models import Period
 
 
 class PeriodDetailSerializer(serializers.ModelSerializer):
+    label = serializers.CharField()
+
     class Meta:
         model = Period
         fields = "__all__"
