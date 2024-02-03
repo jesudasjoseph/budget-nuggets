@@ -7,8 +7,8 @@ from rest_framework.response import Response
 
 from budget.models import Budget
 
-from .models import Period
-from .serializers import (
+from ..models import Period
+from ..serializers import (
     PeriodDetailSerializer,
     PeriodCreateSerializer,
     PeriodUpdateSerializer,
@@ -16,7 +16,7 @@ from .serializers import (
 
 
 class PeriodDetailAPIView(APIView):
-    def get(self, request, period_id):
+    def get(self, request, budget_id, period_id):
         try:
             period = Period.objects.get(pk=period_id)
         except Period.DoesNotExist:
@@ -30,7 +30,7 @@ class PeriodDetailAPIView(APIView):
 
 
 class PeriodDeleteAPIView(APIView):
-    def delete(self, request, period_id):
+    def delete(self, request, budget_id, period_id):
         try:
             period = Period.objects.get(pk=period_id)
         except Period.DoesNotExist:
@@ -45,11 +45,14 @@ class PeriodDeleteAPIView(APIView):
 
 
 class PeriodCreateAPIView(APIView):
-    def post(self, request):
+    def post(self, request, budget_id):
         serializer = PeriodCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        budget = serializer.validated_data["budget"]
+        try:
+            budget = Budget.objects.get(pk=budget_id)
+        except Budget.DoesNotExist:
+            raise NotFound()
 
         if budget.owner != request.user:
             raise PermissionDenied()
@@ -81,7 +84,7 @@ class PeriodCreateAPIView(APIView):
 
 
 class PeriodUpdateAPIView(APIView):
-    def patch(self, request, period_id):
+    def patch(self, request, budget_id, period_id):
         serializer = PeriodUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -99,8 +102,8 @@ class PeriodUpdateAPIView(APIView):
 
 
 class PeriodListAPIView(APIView):
-    def get(self, request):
-        period_qs = Period.objects.filter(budget=request.query_params["budget"])
+    def get(self, request, budget_id):
+        period_qs = Period.objects.filter(budget_id=budget_id)
 
         if request.query_params["date"]:
             requested_date = date.fromisoformat(request.query_params["date"])

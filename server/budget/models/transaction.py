@@ -1,10 +1,9 @@
 from django.db import models
-
 from django.contrib.auth import get_user_model
 
-from budget.models import Budget
-from category.models import Category
-from period.models import Period
+from .budget import Budget
+from .period import Period
+from .category import Category
 
 User = get_user_model()
 

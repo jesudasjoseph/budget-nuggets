@@ -1,6 +1,6 @@
 from django.db import models
 
-from budget.models import Budget
+from .budget import Budget
 
 
 class Period(models.Model):
