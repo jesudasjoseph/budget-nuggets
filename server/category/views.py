@@ -4,8 +4,8 @@ from rest_framework.response import Response
 
 from budget.models import Budget
 
-from ..models import Category
-from ..serializers import (
+from .models import Category
+from .serializers import (
     CategoryDetailSerializer,
     CategoryCreateSerializer,
     CategoryUpdateSerializer,
@@ -13,7 +13,7 @@ from ..serializers import (
 
 
 class CategoryDetailAPIView(APIView):
-    def get(self, request, budget_id, period_id, category_id):
+    def get(self, request, category_id):
         try:
             category = Category.objects.get(pk=category_id)
         except Category.DoesNotExist:

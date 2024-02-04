@@ -1,6 +1,6 @@
 from django.db import models
 
-from .period import Period
+from period.models import Period
 
 
 class Category(models.Model):

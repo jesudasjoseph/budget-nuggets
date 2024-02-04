@@ -5,7 +5,10 @@ from django.contrib.auth import get_user_model
 
 from rest_framework.test import APIClient
 
-from ..models import Budget, Period, Category
+from budget.models import Budget
+from period.models import Period
+
+from .models import Category
 
 User = get_user_model()
 
@@ -34,26 +37,20 @@ class CategoryAPITestCase(TestCase):
     def test_category_detail_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.get(
-            f"/api/budget/{self.budget.id}/period/{self.period.id}/category/{self.category.id}/"
-        )
+        response = client.get(f"/api/category/{self.category.id}/")
 
         assert response.status_code == 200
         assert response.data["id"] == self.category.id
 
-    def test_period_detail_api_unauthorized(self):
+    def test_category_detail_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.get(
-            f"/api/budget/{self.budget.id}/period/{self.period.id}/category/{self.category.id}/"
-        )
+        response = client.get(f"/api/category/{self.category.id}/")
 
         assert response.status_code == 403
 
-    def test_period_detail_api_unauthenticated(self):
+    def test_category_detail_api_unauthenticated(self):
         client = APIClient()
-        response = client.get(
-            f"/api/budget/{self.budget.id}/period/{self.period.id}/category/{self.category.id}/"
-        )
+        response = client.get(f"/api/category/{self.category.id}/")
 
         assert response.status_code == 401

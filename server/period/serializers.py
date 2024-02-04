@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from ..models import Period
+from budget.models import Budget
+
+from .models import Period
 
 
 class PeriodDetailSerializer(serializers.ModelSerializer):
@@ -13,6 +15,7 @@ class PeriodDetailSerializer(serializers.ModelSerializer):
 
 class PeriodCreateSerializer(serializers.Serializer):
     date = serializers.DateField()
+    budget = serializers.PrimaryKeyRelatedField(queryset=Budget.objects.all())
 
 
 class PeriodUpdateSerializer(serializers.Serializer):

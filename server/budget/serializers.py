@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from ..models import Budget, Period
+from .models import Budget
+
+from period.models import Period
 
 
 class BudgetDetailSerializer(serializers.ModelSerializer):
