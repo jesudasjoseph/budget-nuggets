@@ -103,7 +103,7 @@ class PeriodUpdateAPIView(APIView):
 
 class PeriodListAPIView(APIView):
     def get(self, request, budget_id):
-        period_qs = Period.objects.filter(budget_id=budget_id)
+        period_qs = Period.objects.filter(budget=budget_id)
 
         if request.query_params["date"]:
             requested_date = date.fromisoformat(request.query_params["date"])

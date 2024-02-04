@@ -82,6 +82,24 @@ urlpatterns = [
                                                         "update/",
                                                         view=views.PeriodUpdateAPIView.as_view(),
                                                     ),
+                                                    path(
+                                                        "category/",
+                                                        include(
+                                                            [
+                                                                path(
+                                                                    "<int:category_id>/",
+                                                                    include(
+                                                                        [
+                                                                            path(
+                                                                                "",
+                                                                                view=views.CategoryDetailAPIView.as_view(),
+                                                                            )
+                                                                        ]
+                                                                    ),
+                                                                )
+                                                            ]
+                                                        ),
+                                                    ),
                                                 ]
                                             ),
                                         ),

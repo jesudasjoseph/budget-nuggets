@@ -1,12 +1,11 @@
+from datetime import date
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from datetime import date
 
 from rest_framework.test import APIClient
 
-from budget.models import Budget
-
-from ..models import Period
+from ..models import Budget, Period
 
 User = get_user_model()
 
