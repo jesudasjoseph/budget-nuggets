@@ -19,8 +19,24 @@ class CategoryDetailAPIView(APIView):
         except Category.DoesNotExist:
             raise NotFound()
 
-        if category.period.budget.owner != request.user:
+        if category.budget.owner != request.user:
             raise PermissionDenied()
 
         serializer = CategoryDetailSerializer(category)
         return Response(serializer.data)
+
+
+class CategoryCreateAPIView(APIView):
+    def post(self, request):
+        serializer = CategoryCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        budget = serializer.validated_data["budget"]
+
+        if budget.owner != request.user:
+            raise PermissionDenied()
+
+        category = Category(**serializer.validated_data)
+        category.save()
+
+        return Response(CategoryDetailSerializer(category).data, status=201)

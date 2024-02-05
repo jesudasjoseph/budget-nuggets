@@ -6,6 +6,7 @@ urlpatterns = [
         "category/",
         include(
             [
+                path("create/", view=views.CategoryCreateAPIView.as_view()),
                 path(
                     "<int:category_id>/",
                     include(
@@ -16,7 +17,7 @@ urlpatterns = [
                             ),
                         ]
                     ),
-                )
+                ),
             ]
         ),
     )

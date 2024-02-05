@@ -1,10 +1,9 @@
 from django.db import models
 
-from period.models import Period
+from budget.models import Budget
 
 
 class Category(models.Model):
     label = models.CharField()
-    value = models.DecimalField(max_digits=12, decimal_places=2)
-    color = models.CharField(max_length=6)
-    period = models.ForeignKey(Period, on_delete=models.CASCADE)
+    color = models.CharField(max_length=6, null=True)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)

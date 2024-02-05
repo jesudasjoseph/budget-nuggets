@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from period.models import Period
+
 from .models import Category
 
 
@@ -19,5 +21,4 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
 class CategoryUpdateSerializer(serializers.Serializer):
     label = serializers.CharField(required=False)
-    value = serializers.CharField(required=False)
     color = serializers.CharField(max_length=6, required=False)

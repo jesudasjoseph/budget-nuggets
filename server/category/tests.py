@@ -29,9 +29,7 @@ class CategoryAPITestCase(TestCase):
         )
         cls.period.save()
 
-        cls.category = Category(
-            label="Savings", value=4.3, color="FFFFFF", period=cls.period
-        )
+        cls.category = Category(label="Savings", color="FFFFFF", budget=cls.budget)
         cls.category.save()
 
     def test_category_detail_api(self):
@@ -52,5 +50,57 @@ class CategoryAPITestCase(TestCase):
     def test_category_detail_api_unauthenticated(self):
         client = APIClient()
         response = client.get(f"/api/category/{self.category.id}/")
+
+        assert response.status_code == 401
+
+    def test_category_create_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        category_data = {
+            "label": "Savings",
+            "color": "123ABC",
+            "budget": self.budget.id,
+        }
+
+        response = client.post(
+            f"/api/category/create/",
+            category_data,
+        )
+
+        assert response.status_code == 201
+        del response.data["id"]
+        assert response.data == category_data
+
+    def test_category_create_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        category_data = {
+            "label": "Savings",
+            "color": "123ABC",
+            "budget": self.budget.id,
+        }
+
+        response = client.post(
+            f"/api/category/create/",
+            category_data,
+        )
+
+        assert response.status_code == 403
+
+    def test_category_create_api_unauthenticated(self):
+        client = APIClient()
+
+        category_data = {
+            "label": "Savings",
+            "color": "123ABC",
+            "budget": self.budget.id,
+        }
+
+        response = client.post(
+            f"/api/category/create/",
+            category_data,
+        )
 
         assert response.status_code == 401
