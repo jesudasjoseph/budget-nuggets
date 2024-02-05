@@ -14,17 +14,25 @@ class Transaction(models.Model):
     notes = models.CharField()
     date = models.DateField(auto_now_add=True)
 
-    category = models.ManyToManyField(
-        Category,
-        through="TransactionCategory",
-        through_fields=("transaction", "category"),
+    budget = models.ManyToManyField(
+        Budget,
+        through="TransactionBudget",
+        through_fields=("transaction", "budget"),
     )
-    budget_period = models.ForeignKey(Period, on_delete=models.CASCADE)
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class TransactionCategory(models.Model):
+class TransactionBudget(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
+    period = models.ForeignKey(Period, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    partial_value = models.DecimalField(max_digits=12, decimal_places=2)
+    value = models.DecimalField(max_digits=12, decimal_places=2)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["transaction", "budget", "period", "category"],
+                name="unique transactions on budget",
+            )
+        ]
