@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from budget.models import Budget
+from category.serializers import CategoryDetailSerializer
 
 from .models import Period
 
@@ -21,3 +22,8 @@ class PeriodCreateSerializer(serializers.Serializer):
 class PeriodUpdateSerializer(serializers.Serializer):
     start_date = serializers.DateField(required=False)
     end_date = serializers.DateField(required=False)
+
+
+class PeriodCategorySerializer(serializers.Serializer):
+    category = CategoryDetailSerializer()
+    value = serializers.DecimalField(max_digits=12, decimal_places=2)

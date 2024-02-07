@@ -6,8 +6,9 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
 from budget.models import Budget
+from category.models import Category
 
-from .models import Period
+from .models import Period, PeriodCategory
 
 User = get_user_model()
 
@@ -27,6 +28,19 @@ class PeriodAPITestCase(TestCase):
             budget=cls.budget,
         )
         cls.period.save()
+
+        cls.category0 = Category(label="Test 1", budget=cls.budget)
+        cls.category0.save()
+
+        cls.category1 = Category(label="Test 2", budget=cls.budget)
+        cls.category1.save()
+
+        PeriodCategory.objects.create(
+            category=cls.category0, value=45.00, period=cls.period
+        )
+        PeriodCategory.objects.create(
+            category=cls.category1, value=55.00, period=cls.period
+        )
 
     def test_period_detail_api(self):
         client = APIClient()
@@ -153,3 +167,12 @@ class PeriodAPITestCase(TestCase):
         )
 
         assert response.status_code == 401
+
+    def test_period_category_list_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        response = client.get(f"/api/periods/{self.period.id}/categories/")
+
+        print(response)
+        print(response.data)

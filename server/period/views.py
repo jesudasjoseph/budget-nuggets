@@ -6,12 +6,14 @@ from rest_framework.exceptions import NotFound, PermissionDenied, ValidationErro
 from rest_framework.response import Response
 
 from budget.models import Budget
+from category.models import Category
 
-from .models import Period
+from .models import Period, PeriodCategory
 from .serializers import (
     PeriodDetailSerializer,
     PeriodCreateSerializer,
     PeriodUpdateSerializer,
+    PeriodCategorySerializer,
 )
 
 
@@ -105,3 +107,19 @@ class PeriodViewSet(ViewSet):
         period.delete()
 
         return Response(status=204)
+
+
+class PeriodCategoryViewSet(ViewSet):
+    def list(self, request, period_id):
+        try:
+            period = Period.objects.get(pk=period_id)
+        except Period.DoesNotExist:
+            raise NotFound()
+
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
+
+        period_categories = PeriodCategory.objects.filter(period=period)
+
+        serializer = PeriodCategorySerializer(period_categories, many=True)
+        return Response(serializer.data, status=200)
