@@ -32,10 +32,13 @@ class CategoryAPITestCase(TestCase):
         cls.category = Category(label="Savings", color="FFFFFF", budget=cls.budget)
         cls.category.save()
 
+        cls.category1 = Category(label="Checking", color="123456", budget=cls.budget)
+        cls.category1.save()
+
     def test_category_detail_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.get(f"/api/category/{self.category.id}/")
+        response = client.get(f"/api/categories/{self.category.id}/")
 
         assert response.status_code == 200
         assert response.data["id"] == self.category.id
@@ -43,13 +46,13 @@ class CategoryAPITestCase(TestCase):
     def test_category_detail_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.get(f"/api/category/{self.category.id}/")
+        response = client.get(f"/api/categories/{self.category.id}/")
 
         assert response.status_code == 403
 
     def test_category_detail_api_unauthenticated(self):
         client = APIClient()
-        response = client.get(f"/api/category/{self.category.id}/")
+        response = client.get(f"/api/categories/{self.category.id}/")
 
         assert response.status_code == 401
 
@@ -64,7 +67,7 @@ class CategoryAPITestCase(TestCase):
         }
 
         response = client.post(
-            f"/api/category/create/",
+            f"/api/categories/",
             category_data,
         )
 
@@ -83,7 +86,7 @@ class CategoryAPITestCase(TestCase):
         }
 
         response = client.post(
-            f"/api/category/create/",
+            f"/api/categories/",
             category_data,
         )
 
@@ -99,8 +102,76 @@ class CategoryAPITestCase(TestCase):
         }
 
         response = client.post(
-            f"/api/category/create/",
+            f"/api/categories/",
             category_data,
         )
 
         assert response.status_code == 401
+
+    def test_category_delete_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        response = client.delete(f"/api/categories/{self.category.id}/")
+
+        assert response.status_code == 204
+        assert not Category.objects.filter(pk=self.category.id).exists()
+
+    def test_category_delete_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        response = client.delete(f"/api/categories/{self.category.id}/")
+
+        assert response.status_code == 403
+        assert Category.objects.filter(pk=self.category.id).exists()
+
+    def test_category_delete_api_unauthenticated(self):
+        client = APIClient()
+
+        response = client.delete(f"/api/categories/{self.category.id}/")
+
+        assert response.status_code == 401
+        assert Category.objects.filter(pk=self.category.id).exists()
+
+    def test_category_update_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        response = client.patch(
+            f"/api/categories/{self.category.id}/",
+            {"label": "Car", "color": "123456"},
+        )
+
+        assert response.status_code == 200
+        assert response.data["label"] == "Car"
+        assert response.data["color"] == "123456"
+
+    def test_category_update_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        response = client.patch(
+            f"/api/categories/{self.category.id}/",
+            {"label": "Car", "color": "123456"},
+        )
+
+        assert response.status_code == 403
+
+    def test_category_update_api_unauthenticated(self):
+        client = APIClient()
+
+        response = client.patch(
+            f"/api/categories/{self.category.id}/",
+            {"label": "Car", "color": "123456"},
+        )
+
+        assert response.status_code == 401
+
+    def test_category_list_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.get(f"/api/categories/?budget={self.budget.id}")
+
+        assert response.status_code == 200
+        assert len(response.data) == 2

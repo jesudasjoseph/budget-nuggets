@@ -1,24 +1,7 @@
-from django.urls import path, include
+from rest_framework.routers import SimpleRouter
 from . import views
 
-urlpatterns = [
-    path(
-        "category/",
-        include(
-            [
-                path("create/", view=views.CategoryCreateAPIView.as_view()),
-                path(
-                    "<int:category_id>/",
-                    include(
-                        [
-                            path(
-                                "",
-                                view=views.CategoryDetailAPIView.as_view(),
-                            ),
-                        ]
-                    ),
-                ),
-            ]
-        ),
-    )
-]
+router = SimpleRouter()
+router.register(r"categories", views.CategoryViewSet, "category")
+
+urlpatterns = router.urls
