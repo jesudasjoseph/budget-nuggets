@@ -1,7 +1,7 @@
 from datetime import date
 from calendar import monthrange
 
-from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.response import Response
 
@@ -15,37 +15,23 @@ from .serializers import (
 )
 
 
-class PeriodDetailAPIView(APIView):
-    def get(self, request, period_id):
-        try:
-            period = Period.objects.get(pk=period_id)
-        except Period.DoesNotExist:
-            raise NotFound()
+class PeriodViewSet(ViewSet):
+    def list(self, request):
+        if not request.query_params["budget"]:
+            raise ValidationError("No budget search parameter provided")
 
-        if period.budget.owner != request.user:
-            raise PermissionDenied()
+        period_qs = Period.objects.filter(budget=request.query_params["budget"])
 
-        serializer = PeriodDetailSerializer(period)
-        return Response(serializer.data)
+        if request.query_params["date"]:
+            requested_date = date.fromisoformat(request.query_params["date"])
+            period_qs.filter(
+                start_date__gte=requested_date, end_date__lte=requested_date
+            )
 
+        serializer = PeriodDetailSerializer(period_qs, many=True)
+        return Response(serializer.data, status=200)
 
-class PeriodDeleteAPIView(APIView):
-    def delete(self, request, period_id):
-        try:
-            period = Period.objects.get(pk=period_id)
-        except Period.DoesNotExist:
-            raise NotFound()
-
-        if period.budget.owner != request.user:
-            raise PermissionDenied()
-
-        period.delete()
-
-        return Response(status=204)
-
-
-class PeriodCreateAPIView(APIView):
-    def post(self, request):
+    def create(self, request):
         serializer = PeriodCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -79,13 +65,23 @@ class PeriodCreateAPIView(APIView):
 
         return Response(PeriodDetailSerializer(period).data, status=201)
 
+    def retrieve(self, request, pk=None):
+        try:
+            period = Period.objects.get(pk=pk)
+        except Period.DoesNotExist:
+            raise NotFound()
 
-class PeriodUpdateAPIView(APIView):
-    def patch(self, request, period_id):
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
+
+        serializer = PeriodDetailSerializer(period)
+        return Response(serializer.data)
+
+    def partial_update(Self, request, pk=None):
         serializer = PeriodUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        period = Period.objects.filter(pk=period_id)
+        period = Period.objects.filter(pk=pk)
 
         if not period.exists():
             raise NotFound()
@@ -97,20 +93,15 @@ class PeriodUpdateAPIView(APIView):
 
         return Response(PeriodDetailSerializer(period[0]).data, status=200)
 
+    def destroy(self, request, pk=None):
+        try:
+            period = Period.objects.get(pk=pk)
+        except Period.DoesNotExist:
+            raise NotFound()
 
-class PeriodListAPIView(APIView):
-    def get(self, request):
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
 
-        if not request.query_params["budget"]:
-            raise ValidationError("No budget search parameter provided")
+        period.delete()
 
-        period_qs = Period.objects.filter(budget=request.query_params["budget"])
-
-        if request.query_params["date"]:
-            requested_date = date.fromisoformat(request.query_params["date"])
-            period_qs.filter(
-                start_date__gte=requested_date, end_date__lte=requested_date
-            )
-
-        serializer = PeriodDetailSerializer(period_qs, many=True)
-        return Response(serializer.data, status=200)
+        return Response(status=204)

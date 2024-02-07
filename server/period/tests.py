@@ -31,7 +31,7 @@ class PeriodAPITestCase(TestCase):
     def test_period_detail_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.get(f"/api/period/{self.period.id}/")
+        response = client.get(f"/api/periods/{self.period.id}/")
 
         assert response.status_code == 200
         assert response.data["id"] == self.period.id
@@ -39,20 +39,20 @@ class PeriodAPITestCase(TestCase):
     def test_period_detail_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.get(f"/api/period/{self.period.id}/")
+        response = client.get(f"/api/periods/{self.period.id}/")
 
         assert response.status_code == 403
 
     def test_period_detail_api_unauthenticated(self):
         client = APIClient()
-        response = client.get(f"/api/period/{self.period.id}/")
+        response = client.get(f"/api/periods/{self.period.id}/")
 
         assert response.status_code == 401
 
     def test_period_delete_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.delete(f"/api/period/{self.period.id}/delete/")
+        response = client.delete(f"/api/periods/{self.period.id}/")
 
         assert response.status_code == 204
         assert not Period.objects.filter(id=self.period.id).exists()
@@ -60,13 +60,13 @@ class PeriodAPITestCase(TestCase):
     def test_period_delete_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.delete(f"/api/period/{self.period.id}/delete/")
+        response = client.delete(f"/api/periods/{self.period.id}/")
 
         assert response.status_code == 403
 
     def test_period_delete_api_unauthenticated(self):
         client = APIClient()
-        response = client.delete(f"/api/period/{self.period.id}/delete/")
+        response = client.delete(f"/api/periods/{self.period.id}/")
 
         assert response.status_code == 401
 
@@ -74,7 +74,7 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user1)
         response = client.post(
-            f"/api/period/create/",
+            f"/api/periods/",
             {"date": "2023-02-03", "budget": self.budget.id},
         )
 
@@ -84,7 +84,7 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user2)
         response = client.post(
-            f"/api/period/create/",
+            f"/api/periods/",
             {"date": "2023-02-03", "budget": self.budget.id},
         )
 
@@ -93,7 +93,7 @@ class PeriodAPITestCase(TestCase):
     def test_period_create_api_unauthenticated(self):
         client = APIClient()
         response = client.post(
-            f"/api/period/create/",
+            f"/api/periods/",
             {"date": "2023-02-03", "budget": self.budget.id},
         )
 
@@ -103,7 +103,7 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user1)
         response = client.post(
-            "/api/period/create/",
+            "/api/periods/",
             {"date": "2023-02-03", "budget": 99},
         )
 
@@ -113,7 +113,7 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user1)
         response = client.patch(
-            f"/api/period/{self.period.id}/update/",
+            f"/api/periods/{self.period.id}/",
             {"start_date": "2023-01-09", "end_date": "2023-01-22"},
         )
 
@@ -126,7 +126,7 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user1)
         response = client.patch(
-            f"/api/period/{self.period.id}/update/",
+            f"/api/periods/{self.period.id}/",
             {"start_date": "2023-01-09"},
         )
 
@@ -139,7 +139,7 @@ class PeriodAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user2)
         response = client.patch(
-            f"/api/period/{self.period.id}/update/",
+            f"/api/periods/{self.period.id}/",
             {"start_date": "2023-01-09", "end_date": "2023-01-22"},
         )
 
@@ -148,7 +148,7 @@ class PeriodAPITestCase(TestCase):
     def test_period_update_api_unauthenticated(self):
         client = APIClient()
         response = client.patch(
-            f"/api/period/{self.period.id}/update/",
+            f"/api/periods/{self.period.id}/",
             {"start_date": "2023-01-09", "end_date": "2023-01-22"},
         )
 
