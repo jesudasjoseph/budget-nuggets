@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.response import Response
 
@@ -10,10 +10,25 @@ from .serializers import (
 )
 
 
-class BudgetDetailAPIView(APIView):
-    def get(self, request, budget_id):
+class BudgetViewSet(ViewSet):
+    def list(self, request):
+        budget_qs = Budget.objects.filter(owner=request.user)
+
+        serializer = BudgetDetailSerializer(budget_qs, many=True)
+        return Response(serializer.data, status=200)
+
+    def create(self, request):
+        serializer = BudgetCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        budget = Budget(**serializer.validated_data, owner=self.request.user)
+        budget.save()
+
+        return Response(BudgetDetailSerializer(budget).data, status=201)
+
+    def retrieve(self, request, pk=None):
         try:
-            budget = Budget.objects.get(pk=budget_id)
+            budget = Budget.objects.get(pk=pk)
         except Budget.DoesNotExist:
             raise NotFound()
 
@@ -23,39 +38,11 @@ class BudgetDetailAPIView(APIView):
         serializer = BudgetDetailSerializer(budget)
         return Response(serializer.data)
 
-
-class BudgetDeleteAPIView(APIView):
-    def delete(self, request, budget_id):
-        try:
-            budget = Budget.objects.get(pk=budget_id)
-        except Budget.DoesNotExist:
-            raise NotFound()
-
-        if budget.owner != request.user:
-            raise PermissionDenied()
-
-        budget.delete()
-
-        return Response(status=204)
-
-
-class BudgetCreateAPIView(APIView):
-    def post(self, request):
-        serializer = BudgetCreateSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        budget = Budget(**serializer.validated_data, owner=self.request.user)
-        budget.save()
-
-        return Response(BudgetDetailSerializer(budget).data, status=201)
-
-
-class BudgetUpdateAPIView(APIView):
-    def patch(self, request, budget_id):
+    def partial_update(self, request, pk=None):
         serializer = BudgetUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        budget = Budget.objects.filter(pk=budget_id)
+        budget = Budget.objects.filter(pk=pk)
 
         if not budget.exists():
             raise NotFound()
@@ -67,10 +54,15 @@ class BudgetUpdateAPIView(APIView):
 
         return Response(BudgetDetailSerializer(budget[0]).data, status=200)
 
+    def destroy(self, request, pk=None):
+        try:
+            budget = Budget.objects.get(pk=pk)
+        except Budget.DoesNotExist:
+            raise NotFound()
 
-class BudgetListAPIView(APIView):
-    def get(self, request):
-        budget_qs = Budget.objects.filter(owner=request.user)
+        if budget.owner != request.user:
+            raise PermissionDenied()
 
-        serializer = BudgetDetailSerializer(budget_qs, many=True)
-        return Response(serializer.data, status=200)
+        budget.delete()
+
+        return Response(status=204)

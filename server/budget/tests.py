@@ -29,7 +29,7 @@ class BudgetAPITestCase(TestCase):
     def test_budget_detail_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.get(f"/api/budget/{self.budget.id}/")
+        response = client.get(f"/api/budgets/{self.budget.id}/")
 
         assert response.status_code == 200
         assert response.data["id"] == self.budget.id
@@ -37,20 +37,20 @@ class BudgetAPITestCase(TestCase):
     def test_budget_detail_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.get(f"/api/budget/{self.budget.id}/")
+        response = client.get(f"/api/budgets/{self.budget.id}/")
 
         assert response.status_code == 403
 
     def test_budget_detail_api_unauthenticated(self):
         client = APIClient()
-        response = client.get(f"/api/budget/{self.budget.id}/")
+        response = client.get(f"/api/budgets/{self.budget.id}/")
 
         assert response.status_code == 401
 
     def test_budget_delete_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.delete(f"/api/budget/{self.budget.id}/delete/")
+        response = client.delete(f"/api/budgets/{self.budget.id}/")
 
         assert response.status_code == 204
         assert not Budget.objects.filter(id=self.budget.id).exists()
@@ -58,14 +58,14 @@ class BudgetAPITestCase(TestCase):
     def test_budget_delete_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.delete(f"/api/budget/{self.budget.id}/delete/")
+        response = client.delete(f"/api/budgets/{self.budget.id}/")
 
         assert response.status_code == 403
         assert Budget.objects.filter(id=self.budget.id).exists()
 
     def test_budget_delete_api_unauthenticated(self):
         client = APIClient()
-        response = client.delete(f"/api/budget/{self.budget.id}/delete/")
+        response = client.delete(f"/api/budgets/{self.budget.id}/")
 
         assert response.status_code == 401
         assert Budget.objects.filter(id=self.budget.id).exists()
@@ -73,9 +73,7 @@ class BudgetAPITestCase(TestCase):
     def test_budget_create_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.post(
-            f"/api/budget/create/", {"name": "Test Budget", "type": "W"}
-        )
+        response = client.post(f"/api/budgets/", {"name": "Test Budget", "type": "W"})
 
         data = response.data
         assert response.status_code == 201
@@ -84,9 +82,7 @@ class BudgetAPITestCase(TestCase):
 
     def test_budget_create_api_unauthenticated(self):
         client = APIClient()
-        response = client.post(
-            f"/api/budget/create/", {"name": "Test Budget", "type": "W"}
-        )
+        response = client.post(f"/api/budgets/", {"name": "Test Budget", "type": "W"})
 
         assert response.status_code == 401
         budget = Budget.objects.all().count() == 1
@@ -95,7 +91,7 @@ class BudgetAPITestCase(TestCase):
         client = APIClient()
         client.force_authenticate(self.user1)
         response = client.patch(
-            f"/api/budget/{self.budget.id}/update/", {"name": "Bob Budget"}
+            f"/api/budgets/{self.budget.id}/", {"name": "Bob Budget"}
         )
 
         data = response.data
@@ -107,7 +103,7 @@ class BudgetAPITestCase(TestCase):
     def test_budget_update_api_empty_fields(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.patch(f"/api/budget/{self.budget.id}/update/", {})
+        response = client.patch(f"/api/budgets/{self.budget.id}/", {})
 
         data = response.data
         assert response.status_code == 200
@@ -117,7 +113,7 @@ class BudgetAPITestCase(TestCase):
     def test_budget_update_api_unauthorized(self):
         client = APIClient()
         client.force_authenticate(self.user2)
-        response = client.patch(f"/api/budget/{self.budget.id}/update/", {})
+        response = client.patch(f"/api/budgets/{self.budget.id}/", {})
 
         assert response.status_code == 403
         budget = Budget.objects.get(id=self.budget.id)
@@ -125,7 +121,7 @@ class BudgetAPITestCase(TestCase):
 
     def test_budget_update_api_unauthenticated(self):
         client = APIClient()
-        response = client.patch(f"/api/budget/{self.budget.id}/update/", {})
+        response = client.patch(f"/api/budgets/{self.budget.id}/", {})
 
         assert response.status_code == 401
         budget = Budget.objects.get(id=self.budget.id)
@@ -134,7 +130,7 @@ class BudgetAPITestCase(TestCase):
     def test_budget_list_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
-        response = client.get("/api/budget/")
+        response = client.get("/api/budgets/")
 
         data = response.data
         assert response.status_code == 200
