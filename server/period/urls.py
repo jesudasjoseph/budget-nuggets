@@ -4,14 +4,10 @@ from . import views
 
 router = SimpleRouter()
 router.register(r"periods", views.PeriodViewSet, "period")
+router.register(
+    r"periods/(?P<period_id>[^/.]+)/categories",
+    views.PeriodCategoryViewSet,
+    basename="period-catgory",
+)
 
-category_router = SimpleRouter()
-category_router.register(r"categories", views.PeriodCategoryViewSet, "period-category")
-
-urlpatterns = [
-    path("", include(router.urls)),
-    path(
-        "periods/<int:period_id>/categories/",
-        views.PeriodCategoryViewSet.as_view({"get": "list"}),
-    ),
-]
+urlpatterns = router.urls

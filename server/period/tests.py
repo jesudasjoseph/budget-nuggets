@@ -35,10 +35,10 @@ class PeriodAPITestCase(TestCase):
         cls.category1 = Category(label="Test 2", budget=cls.budget)
         cls.category1.save()
 
-        PeriodCategory.objects.create(
+        cls.period_category0 = PeriodCategory.objects.create(
             category=cls.category0, value=45.00, period=cls.period
         )
-        PeriodCategory.objects.create(
+        cls.period_category1 = PeriodCategory.objects.create(
             category=cls.category1, value=55.00, period=cls.period
         )
 
@@ -174,5 +174,16 @@ class PeriodAPITestCase(TestCase):
 
         response = client.get(f"/api/periods/{self.period.id}/categories/")
 
-        print(response)
-        print(response.data)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 2
+        assert data[0] == {
+            "id": self.period_category0.id,
+            "category": {
+                "id": self.category0.id,
+                "label": self.category0.label,
+                "color": self.category0.color,
+                "budget": self.category0.budget.id,
+            },
+            "value": "45.00",
+        }

@@ -123,3 +123,15 @@ class PeriodCategoryViewSet(ViewSet):
 
         serializer = PeriodCategorySerializer(period_categories, many=True)
         return Response(serializer.data, status=200)
+
+    def create(self, request, period_id):
+        pass
+
+    def retrieve(self, request, period_id, pk=None):
+        pass
+
+    def partial_update(self, request, period_id, pk=None):
+        pass
+
+    def destroy(self, request, period_id, pk=None):
+        pass

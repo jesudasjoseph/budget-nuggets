@@ -25,5 +25,6 @@ class PeriodUpdateSerializer(serializers.Serializer):
 
 
 class PeriodCategorySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     category = CategoryDetailSerializer()
     value = serializers.DecimalField(max_digits=12, decimal_places=2)
