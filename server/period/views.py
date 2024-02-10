@@ -13,7 +13,8 @@ from .serializers import (
     PeriodDetailSerializer,
     PeriodCreateSerializer,
     PeriodUpdateSerializer,
-    PeriodCategorySerializer,
+    PeriodCategoryDetailSerializer,
+    PeriodCategoryCreateSerializer,
 )
 
 
@@ -114,18 +115,33 @@ class PeriodCategoryViewSet(ViewSet):
         try:
             period = Period.objects.get(pk=period_id)
         except Period.DoesNotExist:
-            raise NotFound()
+            raise ValidationError()
 
         if period.budget.owner != request.user:
             raise PermissionDenied()
 
         period_categories = PeriodCategory.objects.filter(period=period)
 
-        serializer = PeriodCategorySerializer(period_categories, many=True)
+        serializer = PeriodCategoryDetailSerializer(period_categories, many=True)
         return Response(serializer.data, status=200)
 
     def create(self, request, period_id):
-        pass
+        serializer = PeriodCategoryCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            period = Period.objects.get(pk=period_id)
+        except Period.DoesNotExist:
+            raise ValidationError()
+
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
+
+        period_category = PeriodCategory.objects.create(**serializer.validated_data)
+
+        return Response(
+            PeriodCategoryDetailSerializer(period_category).data, status=201
+        )
 
     def retrieve(self, request, period_id, pk=None):
         pass

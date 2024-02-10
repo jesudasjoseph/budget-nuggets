@@ -187,3 +187,18 @@ class PeriodAPITestCase(TestCase):
             },
             "value": "45.00",
         }
+
+    def test_period_create_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        category = Category.objects.create(
+            label="New Category", color="FFDGHR", budget=self.budget
+        )
+
+        response = client.post(
+            f"/api/periods/{self.period.id}/categories/",
+            {"category": category.id, "value": 230.54, "period": self.period.id},
+        )
+
+        assert response.status_code == 201
