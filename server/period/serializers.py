@@ -34,3 +34,7 @@ class PeriodCategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeriodCategory
         fields = "__all__"
+
+
+class PeriodCategoryUpdateSerializer(serializers.Serializer):
+    value = serializers.DecimalField(max_digits=12, decimal_places=2)

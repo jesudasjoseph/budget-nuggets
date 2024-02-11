@@ -15,6 +15,7 @@ from .serializers import (
     PeriodUpdateSerializer,
     PeriodCategoryDetailSerializer,
     PeriodCategoryCreateSerializer,
+    PeriodCategoryUpdateSerializer,
 )
 
 
@@ -144,10 +145,58 @@ class PeriodCategoryViewSet(ViewSet):
         )
 
     def retrieve(self, request, period_id, pk=None):
-        pass
+        try:
+            period = Period.objects.get(pk=period_id)
+        except Period.DoesNotExist:
+            raise ValidationError()
+
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
+
+        try:
+            period_category = PeriodCategory.objects.get(pk=pk)
+        except PeriodCategory.DoesNotExist:
+            raise NotFound()
+
+        return Response(PeriodCategoryDetailSerializer(period_category).data)
 
     def partial_update(self, request, period_id, pk=None):
-        pass
+        serializer = PeriodCategoryUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            period = Period.objects.get(pk=period_id)
+        except Period.DoesNotExist:
+            raise ValidationError()
+
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
+
+        period_category_qs = PeriodCategory.objects.filter(pk=pk)
+
+        if not period_category_qs.exists():
+            raise NotFound()
+
+        period_category_qs.update(**serializer.validated_data)
+
+        return Response(
+            PeriodCategoryDetailSerializer(period_category_qs[0]).data, status=204
+        )
 
     def destroy(self, request, period_id, pk=None):
-        pass
+        try:
+            period = Period.objects.get(pk=period_id)
+        except Period.DoesNotExist:
+            raise ValidationError()
+
+        if period.budget.owner != request.user:
+            raise PermissionDenied()
+
+        try:
+            period_category = PeriodCategory.objects.get(pk=pk)
+        except PeriodCategory.DoesNotExist:
+            raise NotFound()
+
+        period_category.delete()
+
+        return Response(status=204)

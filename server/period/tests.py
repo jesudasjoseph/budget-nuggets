@@ -188,7 +188,22 @@ class PeriodAPITestCase(TestCase):
             "value": "45.00",
         }
 
-    def test_period_create_api(self):
+    def test_period_category_list_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        response = client.get(f"/api/periods/{self.period.id}/categories/")
+
+        assert response.status_code == 403
+
+    def test_period_category_list_api_unauthenticated(self):
+        client = APIClient()
+
+        response = client.get(f"/api/periods/{self.period.id}/categories/")
+
+        assert response.status_code == 401
+
+    def test_period_category_create_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
 
@@ -202,3 +217,99 @@ class PeriodAPITestCase(TestCase):
         )
 
         assert response.status_code == 201
+
+    def test_period_category_create_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        category = Category.objects.create(
+            label="New Category", color="FFDGHR", budget=self.budget
+        )
+
+        response = client.post(
+            f"/api/periods/{self.period.id}/categories/",
+            {"category": category.id, "value": 230.54, "period": self.period.id},
+        )
+
+        assert response.status_code == 403
+
+    def test_period_category_create_api_unauthenticated(self):
+        client = APIClient()
+
+        category = Category.objects.create(
+            label="New Category", color="FFDGHR", budget=self.budget
+        )
+
+        response = client.post(
+            f"/api/periods/{self.period.id}/categories/",
+            {"category": category.id, "value": 230.54, "period": self.period.id},
+        )
+
+        assert response.status_code == 401
+
+    def test_period_category_update_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        response = client.patch(
+            f"/api/periods/{self.period.id}/categories/{self.period_category0.id}/",
+            {"value": "80.00"},
+        )
+
+        assert response.status_code == 204
+
+    def test_period_category_update_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        response = client.patch(
+            f"/api/periods/{self.period.id}/categories/{self.period_category0.id}/",
+            {"value": "80.00"},
+        )
+
+        assert response.status_code == 403
+
+    def test_period_category_update_api_unauthenticated(self):
+        client = APIClient()
+
+        response = client.patch(
+            f"/api/periods/{self.period.id}/categories/{self.category0.id}/",
+            {"value": "80.00"},
+        )
+
+        assert response.status_code == 401
+
+    def test_period_category_delete_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        response = client.delete(
+            f"/api/periods/{self.period.id}/categories/{self.period_category0.id}/"
+        )
+
+        assert response.status_code == 204
+        self.assertRaises(
+            PeriodCategory.DoesNotExist,
+            PeriodCategory.objects.get,
+            pk=self.period_category0.id,
+        )
+
+    def test_period_category_delete_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        response = client.delete(
+            f"/api/periods/{self.period.id}/categories/{self.period_category0.id}/"
+        )
+
+        assert response.status_code == 403
+        assert PeriodCategory.objects.filter(pk=self.period_category0.id).exists()
+
+    def test_period_category_delete_api_unauthenticated(self):
+        client = APIClient()
+
+        response = client.delete(
+            f"/api/periods/{self.period.id}/categories/{self.period_category0.id}/"
+        )
+
+        assert response.status_code == 401
