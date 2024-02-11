@@ -24,3 +24,7 @@ export async function getPeriodByDate(date: Date, budget_id: number) {
 		true
 	);
 }
+
+export async function listPeriodCategories(period_id: number) {
+	return authenticatedAPICall('GET', `periods/${period_id}/categories/`, undefined, true);
+}
