@@ -15,7 +15,7 @@ export class NetworkError {
 }
 
 export async function authenticatedAPICall(
-	method: 'POST' | 'GET',
+	method: 'POST' | 'GET' | 'DELETE',
 	endpoint: string,
 	body: Object = {},
 	parseJSON: boolean = false,

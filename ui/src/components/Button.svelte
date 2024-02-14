@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let label: string;
-	export let variant: 'primary' | 'secondary' | 'close';
+	export let variant: 'primary' | 'secondary' | 'close' = 'primary';
 	export let classes: string = '';
 	export let href: string = '';
 	export let type: 'button' | 'submit' | 'reset' = 'button';

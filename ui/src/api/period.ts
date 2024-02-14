@@ -28,3 +28,7 @@ export async function getPeriodByDate(date: Date, budget_id: number) {
 export async function listPeriodCategories(period_id: number) {
 	return authenticatedAPICall('GET', `periods/${period_id}/categories/`, undefined, true);
 }
+
+export async function deletePeriodCategories(period_id: number, period_category_id: number) {
+	return authenticatedAPICall('DELETE', `periods/${period_id}/categories/${period_category_id}/`);
+}
