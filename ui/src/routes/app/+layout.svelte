@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 
 	import Button from '@components/Button.svelte';
+	import Navigation from '@components/Navigation.svelte';
 
 	let loggingOut = false;
 
@@ -41,11 +42,14 @@
 </script>
 
 {#if $isLoggedIn}
-	<nav>
-		<a href="/app/dashboard">Dashboard</a>
-		<a href="/app/budgets">Budgets</a>
-		<Button label="Logout" variant="secondary" on:click={logOut} />
-	</nav>
+	<header>
+		<h1>Budget Nuggets</h1>
+		<Navigation>
+			<a href="/app/dashboard">Dashboard</a>
+			<a href="/app/budgets">Budgets</a>
+			<Button label="Logout" variant="secondary" on:click={logOut} />
+		</Navigation>
+	</header>
 {/if}
 {#if !$fatalNavigationError}
 	<main>
@@ -61,6 +65,7 @@
 
 <style>
 	main {
+		position: relative;
 		height: 100%;
 
 		padding-left: 1rem;
@@ -75,7 +80,6 @@
 	}
 
 	main div {
-		position: relative;
 		display: flex;
 		flex-direction: column;
 
@@ -89,12 +93,17 @@
 		border: 1px solid purple;
 	}
 
-	nav {
+	header {
 		padding: 1rem;
 		background-color: rgba(0, 0, 0, 0.1);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+	}
+
+	h1 {
+		font-size: var(--font-size-large);
+		margin: 0;
 	}
 
 	/* desktop */

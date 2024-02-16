@@ -2,13 +2,18 @@
 	import { onMount } from 'svelte';
 	import { deletePeriodCategories, listPeriodCategories } from '@api/period';
 	import PeriodCategory from '@components/PeriodCategory.svelte';
+	import Button from './Button.svelte';
+	import ConfirmationModal from '@components/Modals/ConfirmationModal.svelte';
 
-	export let budget_id: number;
 	export let period_id: number;
 	export let label: string;
 
+	let selectedPeriodCategory: number;
+
+	let showCreateCategoryModal = false;
+	let showConfirmationModal = false;
+
 	let categories: any[];
-	console.log(period_id);
 
 	function onDeleteCategory(id: number) {
 		console.log(id);
@@ -29,24 +34,49 @@
 
 <h3>{label}</h3>
 
-<div>
+<ul>
 	{#if categories}
 		{#each categories as category}
 			<PeriodCategory
 				label={category.category.label}
 				value={category.value}
 				id={category.id}
-				on:delete={(event) => onDeleteCategory(event.detail.id)}
+				on:delete={(event) => {
+					selectedPeriodCategory = event.detail.id;
+					showConfirmationModal = true;
+				}}
 			/>
 		{/each}
 	{/if}
-</div>
+	<li>
+		<Button
+			label="Add Category"
+			full
+			on:click={() => {
+				showCreateCategoryModal = true;
+			}}
+		/>
+	</li>
+</ul>
+
+<ConfirmationModal
+	label="Confirm"
+	bind:visible={showConfirmationModal}
+	on:ok={() => {
+		onDeleteCategory(selectedPeriodCategory);
+	}}
+>
+	Are you sure you want to remove this category?
+</ConfirmationModal>
 
 <style>
-	div {
+	ul {
 		display: flex;
 		flex-direction: column;
+		justify-content: stretch;
+		align-items: stretch;
 		row-gap: 0.5rem;
 		padding: 1rem;
+		width: 100%;
 	}
 </style>

@@ -1,40 +1,38 @@
 <script lang="ts">
 	import Button from '@components/Button.svelte';
+	import ConfirmationModal from '@components/Modals/ConfirmationModal.svelte';
+
 	import { createEventDispatcher } from 'svelte';
 	export let id: number;
 	export let value: string;
 	export let label: string;
 
 	const dispatch = createEventDispatcher();
+
+	let showConfirmationModal = false;
 </script>
 
-<div class="container">
+<li>
 	<p>{label}</p>
 
-	<div class="right">
-		<p>{value}</p>
-		<Button
-			variant="close"
-			label="D"
-			on:click={() => {
-				dispatch('delete', { id });
-			}}
-		/>
+	<div>
+		<p>${value}</p>
+		<Button variant="close" iconOnly label="Delete" on:click={() => dispatch('delete', { id })} />
 	</div>
-</div>
+</li>
 
 <style>
-	.container {
+	li {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem;
-		width: 20rem;
+		width: 100%;
 		background-color: var(--gray-7);
 		border-radius: 5px;
 	}
-	.right {
+	div {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-evenly;
@@ -43,6 +41,6 @@
 	}
 
 	p {
-		font-size: var(--font-size-medium);
+		font-size: var(--font-size-normal);
 	}
 </style>

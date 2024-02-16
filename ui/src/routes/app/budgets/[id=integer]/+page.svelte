@@ -48,5 +48,5 @@
 <h2>{name}</h2>
 
 {#if period}
-	<BudgetPeriod budget_id={id} period_id={period.id} label={period.label} />
+	<BudgetPeriod period_id={period.id} label={period.label} />
 {/if}

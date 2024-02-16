@@ -1,29 +1,43 @@
 <script lang="ts">
+	import type { FeatherIconNames } from 'feather-icons';
+	import Icon from './Icon.svelte';
+
 	export let label: string;
-	export let variant: 'primary' | 'secondary' | 'close' = 'primary';
+	export let variant: 'primary' | 'secondary' | 'close' | 'default' = 'default';
 	export let classes: string = '';
 	export let href: string = '';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
+	export let full = false;
+	export let icon: FeatherIconNames | undefined = undefined;
+	export let iconOnly = false;
 </script>
 
 {#if href}
-	<a {href} class={`${variant}-button ${classes}`}>{label}</a>
+	<a {href} class:full class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}>
+		<span class={iconOnly ? 'sr-only' : ''}>
+			{label}
+		</span>
+		{#if icon}
+			<Icon {icon} />
+		{/if}
+	</a>
 {:else}
-	<button {type} on:click class={`${variant}-button ${classes}`}>
+	<button
+		{type}
+		on:click
+		class:full
+		class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}
+	>
 		{#if variant == 'close'}
 			<span class="sr-only">{label}</span>
-			<svg
-				fill="white"
-				transform="rotate(45)"
-				viewBox="0 0 100 100"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<rect x="40" y="0" width="20" height="100" />
-				<rect x="0" y="40" width="100" height="20" />
-				Close
-			</svg>
+			<Icon icon="x" />
 		{:else}
-			{label}
+			<span class={iconOnly ? 'sr-only' : ''}>
+				{label}
+			</span>
+		{/if}
+		{#if icon}
+			<Icon {icon} />
 		{/if}
 	</button>
 {/if}
@@ -31,6 +45,9 @@
 <style>
 	button,
 	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		color: var(--primary-font-color);
 		box-shadow: 1px 2px 1px 0 var(--boxshadow-color);
 		cursor: pointer;
@@ -41,6 +58,14 @@
 		font-size: var(--font-size-normal);
 	}
 
+	.full {
+		width: 100%;
+	}
+
+	.icon-only {
+		padding: 0.4rem;
+	}
+
 	a {
 		text-decoration: none;
 	}
@@ -49,9 +74,15 @@
 		box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 80%);
 	}
 
+	.default-button {
+		background-color: var(--primary-accent-6);
+	}
+	.default-button:hover {
+		background-color: var(--primary-accent-5);
+	}
+
 	.primary-button {
 		background-color: var(--primary-accent-6);
-		min-width: 15rem;
 	}
 	.primary-button:hover {
 		background-color: var(--primary-accent-5);
@@ -59,7 +90,6 @@
 
 	.secondary-button {
 		background-color: var(--secondary-accent-6);
-		min-width: 15rem;
 	}
 	.secondary-button:hover {
 		background-color: var(--secondary-accent-5);
