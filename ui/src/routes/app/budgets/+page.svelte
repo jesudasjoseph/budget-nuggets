@@ -5,6 +5,8 @@
 	import { createBudget, listBudgets } from '@api/budget';
 	import type { Types } from '@models/budget';
 	import { onMount } from 'svelte';
+	import TextInput from '@components/TextInput.svelte';
+	import SelectInput from '@components/SelectInput.svelte';
 
 	let showAddBudgetModal = false;
 	let name = '';
@@ -18,6 +20,7 @@
 				getBudgets();
 			}
 		});
+		showAddBudgetModal = false;
 	}
 
 	function getBudgets() {
@@ -33,8 +36,6 @@
 	});
 </script>
 
-<Button label="Add Budget" variant="primary" on:click={() => (showAddBudgetModal = true)} />
-
 <ul>
 	{#each budgets as budget}
 		<li>
@@ -43,26 +44,33 @@
 	{/each}
 </ul>
 
+<Button
+	classes="add-budget"
+	label="Add Budget"
+	variant="primary"
+	on:click={() => (showAddBudgetModal = true)}
+/>
+
 <Modal bind:visible={showAddBudgetModal}>
-	<form class="form-layout" on:submit={onAdd}>
+	<form on:submit={onAdd}>
 		<h2>Add Budget</h2>
-		<label>
-			<span class="sr-only">Name</span>
-			<input type="text" placeholder="annual budget" required bind:value={name} />
-		</label>
-		<label>
-			<span class="sr-only">Type</span>
-			<select bind:value={type}>
-				<option value="AN">Annual</option>
-				<option value="MN">Monthly</option>
-				<option value="BW">Biweekly</option>
-				<option value="W">Weekly</option>
-				<option value="EV">Event (Single)</option>
-			</select>
-		</label>
+		<TextInput hideLabel label="Name" placeholder="Budget Name" required bind:value={name} />
+		<SelectInput
+			hideLabel
+			label="Type"
+			required
+			bind:value={type}
+			options={[
+				{ value: 'AN', label: 'Annual' },
+				{ value: 'MN', label: 'Monthly' },
+				{ value: 'BW', label: 'Biweekly' },
+				{ value: 'W', label: 'Weekly' },
+				{ value: 'EV', label: 'Event (Single)' }
+			]}
+		/>
 		<div class="button-layout">
 			<Button variant="close" label="Close" on:click={() => (showAddBudgetModal = false)} />
-			<Button variant="primary" label="Login" type="submit" />
+			<Button variant="primary" label="Create" type="submit" />
 		</div>
 	</form>
 </Modal>
@@ -73,6 +81,20 @@
 		flex-direction: column;
 		row-gap: 1rem;
 		width: 100%;
-		padding: 1rem;
+	}
+	:global(.add-budget) {
+		position: fixed;
+		bottom: var(--space-sm);
+		right: var(--space-sm);
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		row-gap: var(--space-sm);
+	}
+	.button-layout {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 </style>

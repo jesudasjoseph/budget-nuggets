@@ -130,7 +130,8 @@ table {
 }
 
 button,
-a {
+a,
+select {
 	cursor: pointer;
 }
 

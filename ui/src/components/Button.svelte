@@ -55,7 +55,7 @@
 		border-radius: 5px;
 		padding: 0.6rem;
 		text-align: center;
-		font-size: var(--font-size-normal);
+		font-size: var(--font-size);
 	}
 
 	.full {

@@ -3,7 +3,6 @@
 	import { getBudget } from '@api/budget';
 	import { getPeriodByDate, createPeriod } from '@api/period';
 	import BudgetPeriod from '@components/BudgetPeriod.svelte';
-	import Button from '@components/Button.svelte';
 	import { onMount } from 'svelte';
 
 	interface Period {

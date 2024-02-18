@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '@components/Button.svelte';
-	import Modal from '@components/Modal.svelte';
 </script>
 
 <div class="main">

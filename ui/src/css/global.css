@@ -9,7 +9,7 @@ body,
 p,
 button,
 input {
-	font-size: var(--font-size-normal);
+	font-size: var(--font-size);
 	font-family: 'Comfortaa', sans-serif;
 }
 
@@ -17,27 +17,34 @@ html {
 	background-color: var(--primary-background);
 	color: var(--primary-font-color);
 	font-family: 'Comfortaa', sans-serif;
-	height: 100%;
 }
 
 body {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+body > div {
 	height: 100%;
 }
 
 h1 {
-	font-size: var(--font-size-extra-large);
-	margin-bottom: 1rem;
+	font-size: var(--font-size-xl);
 }
 
 h2 {
-	font-size: var(--font-size-large);
+	font-size: var(--font-size-lg);
 }
 
 h3 {
-	font-size: var(--font-size-large);
+	font-size: var(--font-size-lg);
 }
 
-input {
+input,
+select {
 	border-radius: 0.2rem;
 	padding: 0.4rem;
 }

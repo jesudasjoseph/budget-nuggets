@@ -11,3 +11,7 @@ export async function listBudgets() {
 export async function getBudget(id: number) {
 	return authenticatedAPICall('GET', `budgets/${id}/`, undefined, true, true);
 }
+
+export async function deleteBudget(id: number) {
+	return authenticatedAPICall('DELETE', `budgets/${id}/`);
+}

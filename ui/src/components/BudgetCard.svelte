@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import Button from '@components/Button.svelte';
 
 	export let id: number;
@@ -14,12 +15,15 @@
 	};
 </script>
 
-<article>
-	<a href={`/app/budgets/${id}`}>
-		<h2>{name}</h2>
-		<p>{BUDGET_TYPE_MAP[type]}</p>
-	</a>
-</article>
+<div transition:fade>
+	<article>
+		<a href={`/app/budgets/${id}`}>
+			<h2>{name}</h2>
+			<p>{BUDGET_TYPE_MAP[type]}</p>
+		</a>
+	</article>
+	<Button icon="settings" iconOnly label={`${name} settings`} href={`budgets/${id}/settings`} />
+</div>
 
 <style>
 	article {
@@ -40,11 +44,18 @@
 		color: var(--primary-font-color);
 		text-decoration: none;
 		width: 100%;
-		padding: 0.2rem;
-		padding-right: 0.5rem;
+		padding: var(--space-xs) var(--space-sm);
 	}
 	p {
-		font-size: var(--font-size-small);
+		font-size: var(--font-size-sm);
 		color: var(--gray-2);
+	}
+	h2 {
+		font-size: var(--font-size-md);
+	}
+	div {
+		display: flex;
+		flex-direction: row;
+		column-gap: var(--space-xs);
 	}
 </style>

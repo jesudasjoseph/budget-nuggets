@@ -41,6 +41,6 @@
 	}
 
 	p {
-		font-size: var(--font-size-normal);
+		font-size: var(--font-size);
 	}
 </style>

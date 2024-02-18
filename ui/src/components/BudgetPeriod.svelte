@@ -2,8 +2,10 @@
 	import { onMount } from 'svelte';
 	import { deletePeriodCategories, listPeriodCategories } from '@api/period';
 	import PeriodCategory from '@components/PeriodCategory.svelte';
-	import Button from './Button.svelte';
+	import Button from '@components/Button.svelte';
 	import ConfirmationModal from '@components/Modals/ConfirmationModal.svelte';
+	import Modal from '@components/Modal.svelte';
+	import TextInput from '@components/TextInput.svelte';
 
 	export let period_id: number;
 	export let label: string;
@@ -24,6 +26,8 @@
 			})
 			.catch();
 	}
+
+	function onCreatePeriodCategory() {}
 
 	onMount(() => {
 		listPeriodCategories(period_id).then((data) => {
@@ -48,16 +52,38 @@
 			/>
 		{/each}
 	{/if}
-	<li>
-		<Button
-			label="Add Category"
-			full
-			on:click={() => {
-				showCreateCategoryModal = true;
-			}}
-		/>
-	</li>
 </ul>
+<Button
+	label="Add Category"
+	full
+	on:click={() => {
+		showCreateCategoryModal = true;
+	}}
+/>
+
+<!-- <Modal bind:visible={showCreateCategoryModal}>
+	<form on:submit={onCreatePeriodCategory}>
+		<h2>Add Budget</h2>
+		<TextInput hideLabel label="Name" placeholder="Budget Name" required bind:value={name} />
+		<SelectInput
+			hideLabel
+			label="Type"
+			required
+			bind:value={type}
+			options={[
+				{ value: 'AN', label: 'Annual' },
+				{ value: 'MN', label: 'Monthly' },
+				{ value: 'BW', label: 'Biweekly' },
+				{ value: 'W', label: 'Weekly' },
+				{ value: 'EV', label: 'Event (Single)' }
+			]}
+		/>
+		<div class="button-layout">
+			<Button variant="close" label="Close" on:click={() => (showAddBudgetModal = false)} />
+			<Button variant="primary" label="Create" type="submit" />
+		</div>
+	</form>
+</Modal> -->
 
 <ConfirmationModal
 	label="Confirm"
@@ -76,7 +102,6 @@
 		justify-content: stretch;
 		align-items: stretch;
 		row-gap: 0.5rem;
-		padding: 1rem;
 		width: 100%;
 	}
 </style>
