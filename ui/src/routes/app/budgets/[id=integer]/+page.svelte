@@ -47,5 +47,5 @@
 <h2>{name}</h2>
 
 {#if period}
-	<BudgetPeriod period_id={period.id} label={period.label} />
+	<BudgetPeriod budget_id={parseInt($page.params.id)} period_id={period.id} label={period.label} />
 {/if}

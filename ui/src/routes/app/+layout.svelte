@@ -41,6 +41,9 @@
 		position: relative;
 		height: 100%;
 		padding: var(--space);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	main.error {
