@@ -17,7 +17,13 @@
 
 	<div>
 		<p>${value}</p>
-		<Button variant="close" iconOnly label="Delete" on:click={() => dispatch('delete', { id })} />
+		<Button
+			variant="delete"
+			icon="x"
+			iconOnly
+			label="Delete"
+			on:click={() => dispatch('delete', { id })}
+		/>
 	</div>
 </li>
 

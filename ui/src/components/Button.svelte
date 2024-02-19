@@ -3,7 +3,7 @@
 	import Icon from './Icon.svelte';
 
 	export let label: string;
-	export let variant: 'primary' | 'secondary' | 'close' | 'default' = 'default';
+	export let variant: 'primary' | 'secondary' | 'delete' | 'default' = 'default';
 	export let classes: string = '';
 	export let href: string = '';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
@@ -28,14 +28,10 @@
 		class:full
 		class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}
 	>
-		{#if variant == 'close'}
-			<span class="sr-only">{label}</span>
-			<Icon icon="x" />
-		{:else}
-			<span class={iconOnly ? 'sr-only' : ''}>
-				{label}
-			</span>
-		{/if}
+		<span class={iconOnly ? 'sr-only' : ''}>
+			{label}
+		</span>
+
 		{#if icon}
 			<Icon {icon} />
 		{/if}
@@ -95,17 +91,10 @@
 		background-color: var(--secondary-accent-5);
 	}
 
-	.close-button {
+	.delete-button {
 		background-color: var(--red-5);
-		position: relative;
 	}
-	.close-button:hover {
+	.delete-button:hover {
 		background-color: var(--red-4);
-	}
-	.close-button svg {
-		position: relative;
-		vertical-align: middle;
-		height: 1em;
-		width: 1em;
 	}
 </style>

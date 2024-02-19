@@ -1,8 +1,5 @@
 <script lang="ts">
-	interface Options {
-		value: string;
-		label: string;
-	}
+	import type { Options } from '@models/general';
 
 	export let value: string | undefined = undefined;
 	export let label: string;

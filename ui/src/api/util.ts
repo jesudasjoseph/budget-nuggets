@@ -15,7 +15,7 @@ export class NetworkError {
 }
 
 export async function authenticatedAPICall(
-	method: 'POST' | 'GET' | 'DELETE',
+	method: 'POST' | 'GET' | 'DELETE' | 'PATCH',
 	endpoint: string,
 	body: Object = {},
 	parseJSON: boolean = false,
@@ -24,7 +24,7 @@ export async function authenticatedAPICall(
 	return fetch(`${APIUrl}/api/${endpoint}`, {
 		method: method,
 		mode: 'cors',
-		body: method === 'POST' ? JSON.stringify(body) : undefined,
+		body: ['POST', 'PATCH'].includes(method) ? JSON.stringify(body) : undefined,
 		headers: {
 			Authorization: `Token ${get(APIToken)}`,
 			'Content-Type': 'application/json'

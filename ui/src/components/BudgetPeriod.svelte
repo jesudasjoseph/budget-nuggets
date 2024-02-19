@@ -25,11 +25,9 @@
 	let budgetCategories: any[];
 
 	function onDeleteCategory(id: number) {
-		console.log(id);
 		deletePeriodCategories(period_id, id)
 			.then((response) => {
-				if (response.ok)
-					categories = categories.filter((periodCategory) => periodCategory.category.id != id);
+				categories = categories.filter((periodCategory) => periodCategory.id !== id);
 			})
 			.catch();
 	}
@@ -63,7 +61,7 @@
 		{/each}
 	{/if}
 </ul>
-<AddPeriodCategoryButton period_categories={categories} {budget_id} />
+<AddPeriodCategoryButton period_categories={categories} {period_id} {budget_id} />
 
 <ConfirmationModal
 	label="Confirm"

@@ -44,6 +44,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		row-gap: var(--space-lg);
 	}
 
 	main.error {
