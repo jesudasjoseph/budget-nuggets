@@ -11,3 +11,10 @@
 	<span class={hideLabel ? 'sr-only' : ''}>{label}</span>
 	<input type="text" {pattern} {placeholder} {required} bind:value />
 </label>
+
+<style>
+	input {
+		border-radius: var(--input-border-radius);
+		padding: var(--input-padding);
+	}
+</style>

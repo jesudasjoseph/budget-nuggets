@@ -16,4 +16,7 @@
 	--space-lg: 2rem;
 	--space-xl: 3rem;
 	--space-xxl: 4rem;
+
+	--input-border-radius: 5px;
+	--input-padding: var(--space-xs);
 }

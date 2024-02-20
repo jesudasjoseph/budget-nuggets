@@ -1,7 +1,7 @@
 import { authenticatedAPICall } from './util';
 
-export async function createCategoryAPI(budget: number, label: string) {
-    return authenticatedAPICall('POST', 'categories/', { budget, label }, true);
+export async function createCategoryAPI(budget: number, label: string, color: string | undefined = undefined) {
+    return authenticatedAPICall('POST', 'categories/', { budget, label, color }, true);
 }
 
 export async function listCategories(budget: number) {

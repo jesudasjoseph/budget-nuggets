@@ -1,8 +1,7 @@
 <script lang="ts">
+	import CategoryModal from '@/routes/app/budgets/[id=integer]/settings/components/CategoryModal.svelte';
 	import { updateCategory } from '@api/category';
 	import Button from '@components/Button.svelte';
-	import Modal from '@components/Modal.svelte';
-	import TextInput from '@components/TextInput.svelte';
 
 	export let id: number;
 	export let label: string;
@@ -20,12 +19,10 @@
 			color = updateColor;
 		});
 	}
-
-	$: console.log(color);
 </script>
 
 <div class="category-card" style:--color={color ? color : undefined}>
-	<p>{label}</p>
+	<p class="card-label">{label}</p>
 	<Button
 		label={`edit ${label} category`}
 		variant="secondary"
@@ -37,16 +34,17 @@
 	/>
 </div>
 
-<Modal bind:visible={openEditModal}>
-	<form on:submit={onEdit}>
-		<TextInput label="Label" bind:value={updateLabel} />
-		<label>
-			<p>Color</p>
-			<input type="color" bind:value={updateColor} />
-		</label>
-		<Button label="Save" variant="primary" type="submit" />
-	</form>
-</Modal>
+<CategoryModal
+	title="Edit Category"
+	bind:label={updateLabel}
+	bind:color={updateColor}
+	bind:visible={openEditModal}
+	on:submit={onEdit}
+	on:cancel={() => {
+		updateLabel = label;
+		updateColor = color;
+	}}
+/>
 
 <style>
 	.category-card {
@@ -57,10 +55,10 @@
 		border-radius: 5px;
 		padding: var(--space-xs);
 		padding-left: var(--space-sm);
-		border: 2px solid var(--color, var(--gray-8));
+		border-left: 4px solid var(--color, var(--gray-8));
 		background-color: var(--gray-8);
 	}
-	p {
+	.card-label {
 		font-size: var(--font-size-md);
 	}
 </style>

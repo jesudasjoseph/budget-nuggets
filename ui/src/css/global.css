@@ -27,7 +27,7 @@ body {
 	right: 0;
 }
 
-body > div {
+body>div {
 	height: 100%;
 }
 
@@ -41,12 +41,6 @@ h2 {
 
 h3 {
 	font-size: var(--font-size-lg);
-}
-
-input,
-select {
-	border-radius: 0.2rem;
-	padding: 0.4rem;
 }
 
 a {

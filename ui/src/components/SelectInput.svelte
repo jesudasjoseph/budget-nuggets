@@ -16,3 +16,10 @@
 		{/each}
 	</select>
 </label>
+
+<style>
+	select {
+		border-radius: var(--input-border-radius);
+		padding: var(--input-padding);
+	}
+</style>

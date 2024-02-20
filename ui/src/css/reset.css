@@ -131,7 +131,8 @@ table {
 
 button,
 a,
-select {
+select,
+input[type="color"] {
 	cursor: pointer;
 }
 

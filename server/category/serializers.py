@@ -12,7 +12,7 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
-    color = serializers.CharField(max_length=6, required=False)
+    color = serializers.CharField(max_length=7, allow_blank=True, required=False)
 
     class Meta:
         model = Category

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
-	import { slide, fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 	export let visible = false;
 
@@ -12,18 +11,19 @@
 			dispatch('cancel');
 		}
 	}
-
-	afterUpdate(() => {
-		if (!visible) {
-			dispatch('reset');
-		}
-	});
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
 
 {#if visible}
-	<div role="presentation" in:fade={{ delay: 100 }} on:click|self={() => (visible = false)} />
+	<div
+		role="presentation"
+		in:fade={{ delay: 100 }}
+		on:click|self={() => {
+			visible = false;
+			dispatch('cancel');
+		}}
+	/>
 	<section role="dialog" in:fade={{ delay: 100 }}>
 		<header><slot name="header" /></header>
 		<slot />
