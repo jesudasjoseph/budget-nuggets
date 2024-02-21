@@ -41,6 +41,7 @@
 		position: relative;
 		height: 100%;
 		padding: var(--space);
+		padding-top: var(--space-lg);
 		display: flex;
 		flex-direction: column;
 		align-items: center;

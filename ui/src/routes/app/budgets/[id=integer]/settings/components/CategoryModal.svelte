@@ -13,25 +13,23 @@
 	export let color: string | undefined;
 </script>
 
-<Modal bind:visible on:cancel>
-	<form on:submit>
-		<h2>{title}</h2>
-		<div class="input-section">
-			<TextInput label="Label" bind:value={label} />
-			<ColorInput label="Color" hideLabel bind:value={color} />
-		</div>
-		<div class="button-group">
-			<Button
-				label="Cancel"
-				variant="secondary"
-				on:click={() => {
-					visible = false;
-					dispatch('cancel');
-				}}
-			/>
-			<Button label="Save" variant="primary" type="submit" />
-		</div>
-	</form>
+<Modal variant="form" bind:visible on:cancel on:submit>
+	<h2 slot="header">{title}</h2>
+	<div class="input-section">
+		<TextInput label="Label" bind:value={label} />
+		<ColorInput label="Color" hideLabel bind:value={color} />
+	</div>
+	<div class="button-group">
+		<Button
+			label="Cancel"
+			variant="secondary"
+			on:click={() => {
+				visible = false;
+				dispatch('cancel');
+			}}
+		/>
+		<Button label="Save" variant="primary" type="submit" />
+	</div>
 </Modal>
 
 <style>
@@ -43,10 +41,5 @@
 	.button-group {
 		display: flex;
 		justify-content: space-between;
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		row-gap: var(--space);
 	}
 </style>

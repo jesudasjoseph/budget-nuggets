@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 	export let visible = false;
+	export let variant: 'default' | 'form' = 'default';
 
 	const dispatch = createEventDispatcher();
 
@@ -18,16 +18,21 @@
 {#if visible}
 	<div
 		role="presentation"
-		in:fade={{ delay: 100 }}
 		on:click|self={() => {
 			visible = false;
 			dispatch('cancel');
 		}}
 	/>
-	<section role="dialog" in:fade={{ delay: 100 }}>
+	<section role="dialog">
 		<header><slot name="header" /></header>
-		<slot />
-		<footer><slot name="footer" /></footer>
+		{#if variant === 'form'}
+			<form on:submit>
+				<slot />
+			</form>
+		{:else}
+			<slot />
+			<footer><slot name="footer" /></footer>
+		{/if}
 	</section>
 {/if}
 
@@ -43,7 +48,7 @@
 	section {
 		position: absolute;
 		background-color: var(--secondary-background);
-		border-radius: 1rem;
+		border-radius: 8px;
 		left: 50%;
 		top: 2rem;
 
@@ -55,5 +60,10 @@
 	}
 	footer {
 		padding-top: 1rem;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		row-gap: var(--space);
 	}
 </style>

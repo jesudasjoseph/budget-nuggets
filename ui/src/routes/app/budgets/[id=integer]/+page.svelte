@@ -3,6 +3,7 @@
 	import { getBudget } from '@api/budget';
 	import { getPeriodByDate, createPeriod } from '@api/period';
 	import BudgetPeriod from '@components/BudgetPeriod.svelte';
+	import Button from '@components/Button.svelte';
 	import { onMount } from 'svelte';
 
 	interface Period {
@@ -44,8 +45,25 @@
 	});
 </script>
 
-<h2>{name}</h2>
+<div class="header">
+	<h2>{name}</h2>
+	<Button
+		label="budget settings"
+		href={`/app/budgets/${id}/settings`}
+		icon="settings"
+		iconOnly
+		variant="secondary"
+	/>
+</div>
 
 {#if period}
 	<BudgetPeriod budget_id={parseInt($page.params.id)} period_id={period.id} label={period.label} />
 {/if}
+
+<style>
+	.header {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+	}
+</style>

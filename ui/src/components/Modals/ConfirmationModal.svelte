@@ -14,19 +14,19 @@
 	<slot />
 	<div class="modal-footer" slot="footer">
 		<Button
-			label="Yes"
-			variant="primary"
-			on:click={() => {
-				visible = false;
-				dispatch('ok');
-			}}
-		/>
-		<Button
 			label="No"
 			variant="secondary"
 			on:click={() => {
 				visible = false;
 				dispatch('cancel');
+			}}
+		/>
+		<Button
+			label="Yes"
+			variant="primary"
+			on:click={() => {
+				visible = false;
+				dispatch('ok');
 			}}
 		/>
 	</div>

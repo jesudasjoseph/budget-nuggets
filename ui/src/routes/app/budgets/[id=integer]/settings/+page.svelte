@@ -17,6 +17,10 @@
 	}
 </script>
 
+<div class="quick-actions">
+	<Button label="Go to Budget" href={`/app/budgets/${$page.params.id}`} icon="arrow-right" />
+</div>
+
 <CategoriesSection />
 
 <Widget title="Delete Budget">
@@ -33,3 +37,11 @@
 		transactions.
 	</p>
 </ConfirmationModal>
+
+<style>
+	.quick-actions {
+		width: 100%;
+		display: flex;
+		justify-content: end;
+	}
+</style>

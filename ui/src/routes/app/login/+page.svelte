@@ -5,6 +5,7 @@
 	import Button from '@components/Button.svelte';
 	import { isLoggedIn } from '@stores/auth';
 	import { loginAPICall } from '@api/auth';
+	import TextInput from '@components/TextInput.svelte';
 
 	const REF = $page.url.searchParams.get('ref') || '/app/dashboard';
 
@@ -31,14 +32,15 @@
 	{/if}
 	<form class="form-layout" on:submit={onLoginSubmit} bind:this={loginForm}>
 		<h2>Login</h2>
-		<label>
-			<span class="sr-only">Email</span>
-			<input type="text" placeholder="example@example.com" required bind:value={email} />
-		</label>
-		<label>
-			<span class="sr-only">Password</span>
-			<input type="password" placeholder="Password" required bind:value={password} />
-		</label>
+		<TextInput label="Email" hideLabel placeholder="jane@example.com" required bind:value={email} />
+		<TextInput
+			label="Password"
+			hideLabel
+			placeholder="password"
+			type="password"
+			required
+			bind:value={password}
+		/>
 		<div class="button-layout">
 			<Button variant="primary" label="Login" type="submit" />
 		</div>
