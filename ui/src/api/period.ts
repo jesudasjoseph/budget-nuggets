@@ -13,7 +13,11 @@ export async function createPeriod(date: Date, budget_id: number) {
 }
 
 export async function getPeriodByID(period_id: number) {
-	return authenticatedAPICall('GET', `periods/${period_id}/`, true);
+	return authenticatedAPICall('GET', `periods/${period_id}/`, undefined, true);
+}
+
+export async function listPeriods(budget_id: number) {
+	return authenticatedAPICall('GET', `periods/?budget=${budget_id}`, undefined, true)
 }
 
 export async function getPeriodByDate(date: Date, budget_id: number) {

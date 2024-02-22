@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { getBudget } from '@api/budget';
-	import { getPeriodByDate, createPeriod } from '@api/period';
+	import { getPeriodByDate, createPeriod, listPeriods } from '@api/period';
 	import BudgetPeriod from '@components/BudgetPeriod.svelte';
 	import Button from '@components/Button.svelte';
 	import { onMount } from 'svelte';
@@ -23,12 +23,16 @@
 	let today = new Date(Date.now());
 
 	let period: Period;
+	let currentPeriod: number;
 
 	function createThisBudgetPeriod() {
 		createPeriod(today, id).then((data: Period) => {
-			period = data;
+			periods.push(data);
+			currentPeriod = periods.length - 1;
 		});
 	}
+
+	let periods: [Period];
 
 	onMount(() => {
 		getBudget(id).then((data) => {
@@ -38,9 +42,14 @@
 			owner = data.owner;
 		});
 
-		getPeriodByDate(today, id).then((data: [Period]) => {
-			if (data.length) period = data[0];
-			else createThisBudgetPeriod();
+		listPeriods(id).then((data: [Period]) => {
+			if (data.length) {
+				periods = data;
+				currentPeriod = periods.length - 1;
+				console.log(periods);
+			} else {
+				createThisBudgetPeriod();
+			}
 		});
 	});
 </script>
@@ -56,8 +65,24 @@
 	/>
 </div>
 
-{#if period}
-	<BudgetPeriod budget_id={parseInt($page.params.id)} period_id={period.id} label={period.label} />
+{#if periods}
+	<div class="period-actions">
+		<Button
+			label="Previous Budget Period"
+			icon="arrow-left"
+			iconOnly
+			disabled={currentPeriod === 0}
+			on:click={() => currentPeriod--}
+		/>
+		<h3>{periods[currentPeriod].label}</h3>
+		<Button
+			label="Next Budget Period"
+			icon="arrow-right"
+			iconOnly
+			on:click={() => currentPeriod++}
+		/>
+	</div>
+	<BudgetPeriod period_id={periods[currentPeriod].id} />
 {/if}
 
 <style>
@@ -65,5 +90,10 @@
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
+	}
+	.period-actions {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
 	}
 </style>

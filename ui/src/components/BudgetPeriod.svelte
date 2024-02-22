@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { deletePeriodCategories, listPeriodCategories } from '@api/period';
 	import PeriodCategory from '@components/PeriodCategory.svelte';
 	import Button from '@components/Button.svelte';
@@ -10,9 +11,9 @@
 	import { listCategories } from '@api/category';
 	import AddPeriodCategoryButton from './AddPeriodCategoryButton.svelte';
 
-	export let budget_id: number;
 	export let period_id: number;
-	export let label: string;
+
+	const budget_id: number = parseInt($page.params.id);
 
 	let selectedPeriodCategory: number;
 	let selectedCategory: string;
@@ -43,8 +44,6 @@
 		});
 	});
 </script>
-
-<h3>{label}</h3>
 
 <ul>
 	{#if categories}

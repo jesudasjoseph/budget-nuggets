@@ -26,7 +26,7 @@ class PeriodViewSet(ViewSet):
 
         period_qs = Period.objects.filter(budget=request.query_params["budget"])
 
-        if request.query_params["date"]:
+        if "date" in request.query_params:
             requested_date = date.fromisoformat(request.query_params["date"])
             period_qs.filter(
                 start_date__gte=requested_date, end_date__lte=requested_date

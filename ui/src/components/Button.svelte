@@ -10,10 +10,16 @@
 	export let full = false;
 	export let icon: FeatherIconNames | undefined = undefined;
 	export let iconOnly = false;
+	export let disabled = false;
 </script>
 
 {#if href}
-	<a {href} class:full class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}>
+	<a
+		{href}
+		class:disabled
+		class:full
+		class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}
+	>
 		<span class={iconOnly ? 'sr-only' : ''}>
 			{label}
 		</span>
@@ -24,6 +30,7 @@
 {:else}
 	<button
 		{type}
+		{disabled}
 		on:click
 		class:full
 		class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}
@@ -52,6 +59,20 @@
 		padding: 0.6rem;
 		text-align: center;
 		font-size: var(--font-size);
+	}
+
+	button:disabled {
+		box-shadow: none;
+		background-color: var(--gray-3);
+		cursor: auto;
+	}
+
+	button:disabled:hover {
+		background-color: var(--gray-3);
+	}
+
+	button:disabled:active {
+		box-shadow: none;
 	}
 
 	.full {
