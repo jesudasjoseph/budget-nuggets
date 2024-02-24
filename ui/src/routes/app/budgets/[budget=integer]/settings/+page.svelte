@@ -1,27 +1,33 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 	import { goto } from '$app/navigation';
+
 	import { deleteBudget } from '@api/budget';
-	import Button from '@components/Button.svelte';
+	import type { Budget } from '@models/budget';
+
 	import ConfirmationModal from '@components/Modals/ConfirmationModal.svelte';
 	import Widget from '@components/Layouts/Widget.svelte';
+	import Button from '@components/Button.svelte';
+
 	import CategoriesSection from './components/CategoriesSection.svelte';
 
 	let confirmationDialogOpen = false;
-	let categories: any[];
+	const budget: Writable<Budget> = getContext('budget');
 
 	function onDeleteBudget() {
-		deleteBudget(parseInt($page.params.id)).then(() => {
+		deleteBudget($budget.id).then(() => {
 			goto('/app/budgets');
 		});
 	}
 </script>
 
-<div class="quick-actions">
-	<Button label="Go to Budget" href={`/app/budgets/${$page.params.id}`} icon="arrow-right" />
+<div class="page-header">
+	<h2>{$budget.name} - Settings</h2>
+	<Button label="Go to Budget" href={`/app/budgets/${$budget.id}`} icon="arrow-right" />
 </div>
 
-<CategoriesSection />
+<CategoriesSection budgetId={$budget.id} />
 
 <Widget title="Delete Budget">
 	<Button label="Delete Budget" variant="delete" on:click={() => (confirmationDialogOpen = true)} />
@@ -39,9 +45,10 @@
 </ConfirmationModal>
 
 <style>
-	.quick-actions {
+	.page-header {
 		width: 100%;
 		display: flex;
-		justify-content: end;
+		justify-content: space-between;
+		align-items: center;
 	}
 </style>

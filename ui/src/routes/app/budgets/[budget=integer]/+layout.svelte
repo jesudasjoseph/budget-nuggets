@@ -9,7 +9,7 @@
 	setContext('budget', budget);
 
 	onMount(() => {
-		getBudget(parseInt($page.params.id)).then((data) => {
+		getBudget(parseInt($page.params.budget)).then((data) => {
 			$budget = data;
 		});
 	});

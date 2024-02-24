@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 	import { createCategoryAPI, listCategories } from '@api/category';
 	import Button from '@components/Button.svelte';
 	import Widget from '@components/Layouts/Widget.svelte';
-	import CategoryCard from '@components/Category/CategoryCard.svelte';
+	import CategoryCard from './CategoryCard.svelte';
 	import CategoryModal from './CategoryModal.svelte';
+
+	export let budgetId: number;
 
 	let categories: any[];
 
@@ -14,7 +15,7 @@
 	let color: string;
 
 	function onCreate() {
-		createCategoryAPI(parseInt($page.params.id), label, color).then((data) => {
+		createCategoryAPI(budgetId, label, color).then((data) => {
 			categories.push(data);
 			categories = categories;
 		});
@@ -22,7 +23,7 @@
 	}
 
 	onMount(() => {
-		listCategories(parseInt($page.params.id)).then((data) => {
+		listCategories(budgetId).then((data) => {
 			categories = data;
 		});
 	});

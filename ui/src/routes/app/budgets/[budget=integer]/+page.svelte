@@ -82,7 +82,7 @@
 			}}
 		/>
 	</div>
-	<BudgetPeriod period_id={periods[currentPeriod].id} />
+	<!-- <BudgetPeriod period_id={periods[currentPeriod].id} /> -->
 {/if}
 
 <style>

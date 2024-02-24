@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CategoryModal from '@/routes/app/budgets/[id=integer]/settings/components/CategoryModal.svelte';
+	import CategoryModal from './CategoryModal.svelte';
 	import { updateCategory } from '@api/category';
 	import Button from '@components/Button.svelte';
 
