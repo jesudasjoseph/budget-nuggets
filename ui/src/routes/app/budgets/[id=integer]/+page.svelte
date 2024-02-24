@@ -1,52 +1,46 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { getBudget } from '@api/budget';
-	import { getPeriodByDate, createPeriod, listPeriods } from '@api/period';
-	import BudgetPeriod from '@components/BudgetPeriod.svelte';
+	import { onMount, getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
+
+	import { createPeriod, listPeriods, createNextPeriodAPI } from '@api/period';
+	import { getDate } from '@/utils';
+	import type { Budget } from '@models/budget';
+	import type { Period } from '@models/periods';
 	import Button from '@components/Button.svelte';
-	import { onMount } from 'svelte';
 
-	interface Period {
-		id: number;
-		start_date: Date;
-		end_date: Date;
-		label: string;
-		budget: number;
-	}
+	import BudgetPeriod from './components/BudgetPeriod.svelte';
 
-	let name = '';
-	let type = '';
-	let id = parseInt($page.params.id);
-	let users: number[] = [];
-	let owner: number | undefined = undefined;
-
-	let today = new Date(Date.now());
-
-	let period: Period;
-	let currentPeriod: number;
-
-	function createThisBudgetPeriod() {
-		createPeriod(today, id).then((data: Period) => {
-			periods.push(data);
-			currentPeriod = periods.length - 1;
-		});
-	}
+	const budget: Writable<Budget> = getContext('budget');
 
 	let periods: [Period];
 
-	onMount(() => {
-		getBudget(id).then((data) => {
-			name = data.name;
-			type = data.type;
-			users = data.users;
-			owner = data.owner;
-		});
+	let currentPeriod: number;
 
-		listPeriods(id).then((data: [Period]) => {
+	function createThisBudgetPeriod() {
+		createPeriod(getDate(), $budget.id).then((data: Period) => {
+			periods.push(data);
+			periods = periods;
+			currentPeriod = periods.findIndex(
+				(period) => period.start_date <= getDate() && period.end_date >= getDate()
+			);
+		});
+	}
+
+	function createNextPeriod() {
+		createNextPeriodAPI(periods[currentPeriod].id, $budget.id).then((period: Period) => {
+			periods.push(period);
+			periods = periods;
+			currentPeriod++;
+		});
+	}
+
+	onMount(() => {
+		listPeriods($budget.id).then((data: [Period]) => {
 			if (data.length) {
 				periods = data;
-				currentPeriod = periods.length - 1;
-				console.log(periods);
+				currentPeriod = periods.findIndex(
+					(period) => period.start_date <= getDate() && period.end_date >= getDate()
+				);
 			} else {
 				createThisBudgetPeriod();
 			}
@@ -55,10 +49,10 @@
 </script>
 
 <div class="header">
-	<h2>{name}</h2>
+	<h2>{$budget.name}</h2>
 	<Button
 		label="budget settings"
-		href={`/app/budgets/${id}/settings`}
+		href={`/app/budgets/${$budget.id}/settings`}
 		icon="settings"
 		iconOnly
 		variant="secondary"
@@ -79,7 +73,13 @@
 			label="Next Budget Period"
 			icon="arrow-right"
 			iconOnly
-			on:click={() => currentPeriod++}
+			on:click={() => {
+				if (currentPeriod !== periods.length - 1) {
+					currentPeriod++;
+				} else {
+					createNextPeriod();
+				}
+			}}
 		/>
 	</div>
 	<BudgetPeriod period_id={periods[currentPeriod].id} />

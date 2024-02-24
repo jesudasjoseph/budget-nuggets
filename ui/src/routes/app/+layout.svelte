@@ -24,22 +24,31 @@
 	});
 </script>
 
-<Header />
-{#if $fatalNavigationError}
-	<main class="error">
-		<h2>404</h2>
-		<p>The page does not exist!</p>
-	</main>
-{:else}
-	<main>
-		<slot />
-	</main>
-{/if}
+<div>
+	<Header />
+	{#if $fatalNavigationError}
+		<main class="error">
+			<h2>404</h2>
+			<p>The page does not exist!</p>
+		</main>
+	{:else}
+		<main>
+			<slot />
+		</main>
+	{/if}
+</div>
 
 <style>
+	div {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		overflow: auto;
+	}
 	main {
 		position: relative;
-		height: 100%;
 		padding: var(--space);
 		padding-top: var(--space-lg);
 		display: flex;

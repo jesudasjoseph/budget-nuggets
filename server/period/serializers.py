@@ -19,6 +19,11 @@ class PeriodCreateSerializer(serializers.Serializer):
     budget = serializers.PrimaryKeyRelatedField(queryset=Budget.objects.all())
 
 
+class PeriodCreateNextSerializer(serializers.Serializer):
+    period = serializers.PrimaryKeyRelatedField(queryset=Period.objects.all())
+    budget = serializers.PrimaryKeyRelatedField(queryset=Budget.objects.all())
+
+
 class PeriodUpdateSerializer(serializers.Serializer):
     start_date = serializers.DateField(required=False)
     end_date = serializers.DateField(required=False)

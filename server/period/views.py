@@ -1,22 +1,25 @@
 from datetime import date
 from calendar import monthrange
 
+from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from budget.models import Budget
-from category.models import Category
 
 from .models import Period, PeriodCategory
 from .serializers import (
     PeriodDetailSerializer,
     PeriodCreateSerializer,
+    PeriodCreateNextSerializer,
     PeriodUpdateSerializer,
     PeriodCategoryDetailSerializer,
     PeriodCategoryCreateSerializer,
     PeriodCategoryUpdateSerializer,
 )
+from .utils import get_next_date_range, get_date_range_from_date
 
 
 class PeriodViewSet(ViewSet):
@@ -46,23 +49,9 @@ class PeriodViewSet(ViewSet):
 
         requested_date = serializer.validated_data["date"]
 
-        def last_day_of_month(year: int, month: int):
-            return monthrange(year, month)[1]
-
-        start_date = date.today()
-        end_date = date.today()
-        if budget.type == Budget.MONTHLY:
-            start_date = date(requested_date.year, requested_date.month, 1)
-            end_date = date(
-                requested_date.year,
-                requested_date.month,
-                last_day_of_month(requested_date.year, requested_date.month),
-            )
-        elif budget.type == Budget.ANNUAL:
-            start_date = date(requested_date.year, 1, 1)
-            end_date = date(
-                requested_date.year, 12, last_day_of_month(requested_date.year, 12)
-            )
+        start_date, end_date = get_date_range_from_date(
+            requested_date=requested_date, period_type=budget.type
+        )
 
         period = Period(start_date=start_date, end_date=end_date, budget=budget)
         period.save()
@@ -109,6 +98,25 @@ class PeriodViewSet(ViewSet):
         period.delete()
 
         return Response(status=204)
+
+    @action(methods=["post"], detail=False)
+    def create_next(self, request):
+        serializer = PeriodCreateNextSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        budget = serializer.validated_data["budget"]
+
+        if budget.owner != request.user:
+            raise PermissionDenied()
+
+        period = serializer.validated_data["period"]
+
+        start_date, end_date = get_next_date_range(period.end_date, budget.type)
+
+        period = Period(start_date=start_date, end_date=end_date, budget=budget)
+        period.save()
+
+        return Response(PeriodDetailSerializer(period).data, status=201)
 
 
 class PeriodCategoryViewSet(ViewSet):

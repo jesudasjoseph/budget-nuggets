@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, createEventDispatcher } from 'svelte';
 	import { createCategoryAPI, listCategories } from '@api/category';
 	import type { Options } from '@models/general';
 	import Button from '@components/Button.svelte';
@@ -15,10 +15,11 @@
 	let selectedCategory: string | undefined = undefined;
 
 	let addingCategory = false;
-	let showCreateCategoryModal = false;
 
 	let categoryName = '';
 	let categoryValue = '0';
+
+	const dispatch = createEventDispatcher();
 
 	function createCategory() {
 		addingCategory = false;
@@ -29,7 +30,12 @@
 
 	function createPeriodCategory() {
 		addingCategory = false;
-		createPeriodCategoryAPI(period_id, parseInt(selectedCategory), categoryValue);
+		if (selectedCategory)
+			createPeriodCategoryAPI(period_id, parseInt(selectedCategory), categoryValue).then(
+				(response) => {
+					dispatch('add', response);
+				}
+			);
 	}
 
 	onMount(() => {
@@ -38,7 +44,7 @@
 			if (period_categories) {
 				rawCategories = data.filter((value: any) => {
 					!period_categories.filter((val) => {
-						val.category.id;
+						val.category.id === value.id;
 					});
 				});
 			}

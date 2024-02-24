@@ -3,11 +3,7 @@
 	import { page } from '$app/stores';
 	import { deletePeriodCategories, listPeriodCategories } from '@api/period';
 	import PeriodCategory from '@components/PeriodCategory.svelte';
-	import Button from '@components/Button.svelte';
 	import ConfirmationModal from '@components/Modals/ConfirmationModal.svelte';
-	import Modal from '@components/Modal.svelte';
-	import TextInput from '@components/TextInput.svelte';
-	import SelectInput from './SelectInput.svelte';
 	import { listCategories } from '@api/category';
 	import AddPeriodCategoryButton from './AddPeriodCategoryButton.svelte';
 
@@ -16,33 +12,33 @@
 	const budget_id: number = parseInt($page.params.id);
 
 	let selectedPeriodCategory: number;
-	let selectedCategory: string;
 
-	let showCreateCategoryModal = false;
 	let showConfirmationModal = false;
-	let addingCategory = false;
 
 	let categories: any[];
 	let budgetCategories: any[];
 
 	function onDeleteCategory(id: number) {
 		deletePeriodCategories(period_id, id)
-			.then((response) => {
+			.then(() => {
 				categories = categories.filter((periodCategory) => periodCategory.id !== id);
 			})
 			.catch();
 	}
 
-	function onCreatePeriodCategory() {}
+	function getCategories(periodId: number) {
+		listPeriodCategories(periodId).then((responseData: PeriodCategory[]) => {
+			categories = responseData;
+		});
+	}
 
 	onMount(() => {
-		listPeriodCategories(period_id).then((data) => {
-			categories = data;
-		});
 		listCategories(budget_id).then((data) => {
 			budgetCategories = data;
 		});
 	});
+
+	$: getCategories(period_id);
 </script>
 
 <ul>
@@ -60,7 +56,14 @@
 		{/each}
 	{/if}
 </ul>
-<AddPeriodCategoryButton period_categories={categories} {period_id} {budget_id} />
+<AddPeriodCategoryButton
+	on:add={(event) => {
+		categories.push(event.detail);
+	}}
+	period_categories={categories}
+	{period_id}
+	{budget_id}
+/>
 
 <ConfirmationModal
 	label="Confirm"
