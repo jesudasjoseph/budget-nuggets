@@ -69,7 +69,7 @@
 			]}
 		/>
 		<div class="button-layout">
-			<Button variant="close" label="Close" on:click={() => (showAddBudgetModal = false)} />
+			<Button variant="delete" label="Close" on:click={() => (showAddBudgetModal = false)} />
 			<Button variant="primary" label="Create" type="submit" />
 		</div>
 	</form>

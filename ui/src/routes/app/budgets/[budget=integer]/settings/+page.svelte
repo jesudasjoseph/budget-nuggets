@@ -24,7 +24,7 @@
 
 <div class="page-header">
 	<h2>{$budget.name} - Settings</h2>
-	<Button label="Go to Budget" href={`/app/budgets/${$budget.id}`} icon="arrow-right" />
+	<Button label="Go to Budget" href={`/app/budgets/${$budget.id}/periods`} icon="arrow-right" />
 </div>
 
 <CategoriesSection budgetId={$budget.id} />

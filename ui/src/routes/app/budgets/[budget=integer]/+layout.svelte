@@ -1,17 +1,29 @@
 <script lang="ts">
 	import { setContext, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { getBudget } from '@api/budget';
+
+	import { getBudgetAPI } from '@api/budget';
 	import type { Budget } from '@models/budget';
 
-	let budget: Writable<Budget | undefined> = writable();
+	const budget: Writable<Budget | undefined> = writable();
 	setContext('budget', budget);
 
-	onMount(() => {
-		getBudget(parseInt($page.params.budget)).then((data) => {
+	const getBudget = () => {
+		getBudgetAPI(parseInt($page.params.budget)).then((data) => {
 			$budget = data;
 		});
+	};
+
+	onMount(() => {
+		getBudget();
+	});
+
+	afterNavigate(() => {
+		if (parseInt($page.params.budget) != $budget?.id) {
+			getBudget();
+		}
 	});
 </script>
 
