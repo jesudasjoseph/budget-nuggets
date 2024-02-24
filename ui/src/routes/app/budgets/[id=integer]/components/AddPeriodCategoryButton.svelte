@@ -3,8 +3,8 @@
 	import { createCategoryAPI, listCategories } from '@api/category';
 	import type { Options } from '@models/general';
 	import Button from '@components/Button.svelte';
-	import SelectInput from './SelectInput.svelte';
-	import TextInput from './TextInput.svelte';
+	import SelectInput from '@components/SelectInput.svelte';
+	import TextInput from '@components/TextInput.svelte';
 	import { createPeriodCategoryAPI } from '@api/period';
 
 	export let period_categories: any[];
