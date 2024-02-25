@@ -8,7 +8,6 @@
 
 	import PeriodHeader from './components/PeriodHeader.svelte';
 	import PeriodCategoryCard from './components/PeriodCategoryCard.svelte';
-	import PeriodCategory from '@components/PeriodCategory.svelte';
 
 	const budget: Writable<Budget> = getContext('budget');
 	const period: Writable<Period> = getContext('period');

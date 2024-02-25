@@ -1,11 +1,20 @@
 <script lang="ts">
+	import Drawer from '@components/Drawer.svelte';
+
 	export let id: number;
 	export let value: string;
 	export let label: string;
 	export let color: string;
+
+	let openDialog = false;
 </script>
 
-<button style:--color={color}>
+<button
+	style:--color={color}
+	on:click={() => {
+		openDialog = true;
+	}}
+>
 	<span class="label">
 		{label}
 	</span>
@@ -13,6 +22,8 @@
 		${value}
 	</span>
 </button>
+
+<Drawer bind:open={openDialog}>{value}{id}{label}{color}</Drawer>
 
 <style>
 	button {
