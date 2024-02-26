@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
+	import { fly, fade } from 'svelte/transition';
 	import type { Writable } from 'svelte/store';
+	import { page } from '$app/stores';
 
 	import { listPeriodCategoriesAPI } from '@api/period';
 	import type { Period, PeriodCategory } from '@models/periods';
@@ -23,16 +25,20 @@
 </script>
 
 <PeriodHeader period={$period} periods={$periods} budgetId={$budget.id} />
-<div>
-	{#each periodCategories as periodCategory}
-		<PeriodCategoryCard
-			id={periodCategory.id}
-			value={periodCategory.value}
-			label={periodCategory.category.label}
-			color={periodCategory.category.color}
-		/>
-	{/each}
-</div>
+
+{#if periodCategories.length}
+	<div in:fly={{ y: '50vh' }} out:fade>
+		{#each periodCategories as periodCategory}
+			<PeriodCategoryCard
+				id={periodCategory.id}
+				value={periodCategory.value}
+				label={periodCategory.category.label}
+				color={periodCategory.category.color}
+				referer={`${$page.url}`}
+			/>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	div {

@@ -10,6 +10,7 @@
 	export let full = false;
 	export let icon: FeatherIconNames | undefined = undefined;
 	export let iconOnly = false;
+	export let iconOnLeft = false;
 	export let disabled = false;
 </script>
 
@@ -20,10 +21,13 @@
 		class:full
 		class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}
 	>
+		{#if icon && iconOnLeft}
+			<Icon {icon} />
+		{/if}
 		<span class={iconOnly ? 'sr-only' : ''}>
 			{label}
 		</span>
-		{#if icon}
+		{#if icon && !iconOnLeft}
 			<Icon {icon} />
 		{/if}
 	</a>
@@ -35,11 +39,14 @@
 		class:full
 		class={`${variant}-button button ${iconOnly ? 'icon-only' : ''} ${classes}`}
 	>
+		{#if icon && iconOnLeft}
+			<Icon {icon} />
+		{/if}
 		<span class={iconOnly ? 'sr-only' : ''}>
 			{label}
 		</span>
 
-		{#if icon}
+		{#if icon && !iconOnLeft}
 			<Icon {icon} />
 		{/if}
 	</button>

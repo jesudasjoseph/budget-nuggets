@@ -5,31 +5,26 @@
 	export let value: string;
 	export let label: string;
 	export let color: string;
+	export let referer: string;
 
 	let openDialog = false;
 </script>
 
-<button
-	style:--color={color}
-	on:click={() => {
-		openDialog = true;
-	}}
->
+<a style:--color={color} href={`${referer}/categories/${id}`}>
 	<span class="label">
 		{label}
 	</span>
 	<span class="value">
 		${value}
 	</span>
-</button>
+</a>
 
 <Drawer bind:open={openDialog}>{value}{id}{label}{color}</Drawer>
 
 <style>
-	button {
+	a {
 		appearance: none;
-		border: none;
-		background: none;
+		text-decoration: none;
 		border-left: 4px solid var(--color);
 		border-radius: 8px;
 		background-color: var(--gray-6);
@@ -41,7 +36,7 @@
 		padding: var(--space-xs);
 	}
 
-	button:hover {
+	a:hover {
 		background-color: var(--gray-5);
 	}
 

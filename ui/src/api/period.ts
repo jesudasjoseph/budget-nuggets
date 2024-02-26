@@ -58,6 +58,10 @@ export async function getPeriodByDate(date: Date, budget_id: number) {
 	);
 }
 
+export async function getPeriodCategoryAPI(period_id: number, period_category_id: number) {
+	return authenticatedAPICall('GET', `periods/${period_id}/categories/${period_category_id}/`, undefined, true)
+}
+
 export async function listPeriodCategoriesAPI(period_id: number) {
 	return authenticatedAPICall('GET', `periods/${period_id}/categories/`, undefined, true);
 }
