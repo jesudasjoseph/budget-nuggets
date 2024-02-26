@@ -1,15 +1,27 @@
 <script lang="ts">
-	import { page, navigating } from '$app/stores';
-	import { getPeriodCategoryAPI } from '@api/period';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import { getPeriodCategoryAPI, deletePeriodCategoryAPI } from '@api/period';
 	import BackButton from '@components/BackButton.svelte';
+	import Button from '@components/Button.svelte';
 	import type { Period, PeriodCategory } from '@models/periods';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 
 	const period: Writable<Period> = getContext('period');
 
 	let category: PeriodCategory;
+
+	const getBackURL = () => {
+		return `/app/budgets/${$page.params.budget}/periods/${$page.params.period}`;
+	};
+
+	const deleteCategory = () => {
+		deletePeriodCategoryAPI($period.id, category.id).then(() => {
+			goto(getBackURL());
+		});
+	};
 
 	$: if ($page.params.category) {
 		getPeriodCategoryAPI($period.id, parseInt($page.params.category)).then(
@@ -18,21 +30,18 @@
 			}
 		);
 	}
-
-	$: console.log($navigating);
-	$: console.log($page);
 </script>
 
-<div>
+<div class="heading">
 	<h3>
 		{$period.label}
 		{#if category}
 			<span transition:fade> - {category.category.label}</span>
 		{/if}
 	</h3>
-	<BackButton pageTitle="budget" />
+	<BackButton pageTitle="budget" urlOverride={getBackURL()} />
 </div>
-
+<Button label="Delete Category" variant="delete" on:click={deleteCategory} />
 {#if category}
 	<p transition:fade>
 		{category.category.color}
@@ -42,7 +51,7 @@
 Transactions
 
 <style>
-	div {
+	.heading {
 		display: flex;
 		width: 100%;
 		justify-content: space-between;

@@ -70,6 +70,6 @@ export async function createPeriodCategoryAPI(period_id: number, category_id: nu
 	return authenticatedAPICall('POST', `periods/${period_id}/categories/`, { period: period_id, category: category_id, value }, true)
 }
 
-export async function deletePeriodCategories(period_id: number, period_category_id: number) {
+export async function deletePeriodCategoryAPI(period_id: number, period_category_id: number) {
 	return authenticatedAPICall('DELETE', `periods/${period_id}/categories/${period_category_id}/`);
 }

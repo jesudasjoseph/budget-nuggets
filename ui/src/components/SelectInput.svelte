@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Options } from '@models/general';
+	import type { Option } from '@models/general';
 
 	export let value: string | undefined = undefined;
 	export let label: string;
 	export let hideLabel = false;
 	export let required = false;
-	export let options: Options[];
+	export let options: Option[];
 </script>
 
 <label>
@@ -21,5 +21,8 @@
 	select {
 		border-radius: var(--input-border-radius);
 		padding: var(--input-padding);
+		color: var(--blue-0);
+		background-color: var(--gray-7);
+		border: 3px solid var(--gray-5);
 	}
 </style>
