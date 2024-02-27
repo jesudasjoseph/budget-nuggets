@@ -61,7 +61,7 @@
 		newValue = '';
 	};
 
-	$: if (categories.length) {
+	$: if (periodCategories && categories.length) {
 		updateAvaialableCategories();
 	}
 </script>

@@ -41,14 +41,17 @@
 	</h3>
 	<BackButton pageTitle="budget" urlOverride={getBackURL()} />
 </div>
-<Button label="Delete Category" variant="delete" on:click={deleteCategory} />
 {#if category}
-	<p transition:fade>
-		{category.category.color}
-		{category.value}
-	</p>
+	<div class="widget" style:--bg={category.category.color} transition:fade>
+		<p>
+			{category.value}
+		</p>
+
+		<h4>Transactions</h4>
+
+		<Button label="Delete Category" variant="delete" on:click={deleteCategory} />
+	</div>
 {/if}
-Transactions
 
 <style>
 	.heading {
@@ -56,5 +59,14 @@ Transactions
 		width: 100%;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.widget {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		background-color: var(--gray-7);
+		padding: var(--space);
+		border-radius: 12px;
+		border-top: 4px solid var(--bg);
 	}
 </style>
