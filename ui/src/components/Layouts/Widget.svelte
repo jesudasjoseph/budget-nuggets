@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+
 	export let title: string;
 	export let headingLevel: 'h2' | 'h3' | 'h4' | 'h5' = 'h2';
 </script>
 
-<section>
+<section transition:fade>
 	<header>
 		{#if headingLevel === 'h2'}
 			<h2>{title}</h2>

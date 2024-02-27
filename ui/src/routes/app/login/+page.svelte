@@ -66,10 +66,6 @@
 		row-gap: 1rem;
 		width: 100%;
 	}
-	.form-layout input {
-		width: 100%;
-	}
-
 	.button-layout {
 		display: flex;
 		flex-direction: column;

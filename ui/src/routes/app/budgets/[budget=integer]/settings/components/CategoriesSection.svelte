@@ -29,8 +29,8 @@
 	});
 </script>
 
-<Widget title="Budget Categories">
-	{#if categories}
+{#if categories}
+	<Widget title="Budget Categories">
 		<div class="category-widget">
 			<ul>
 				{#each categories as category}
@@ -41,8 +41,8 @@
 			</ul>
 			<Button label="Add Category" variant="primary" on:click={() => (openAddCategory = true)} />
 		</div>
-	{/if}
-</Widget>
+	</Widget>
+{/if}
 
 <CategoryModal
 	title="Add Category"
