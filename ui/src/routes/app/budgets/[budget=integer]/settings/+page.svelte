@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 
 	import { deleteBudget } from '@api/budget';
