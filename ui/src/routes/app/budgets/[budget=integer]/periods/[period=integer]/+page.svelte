@@ -89,7 +89,13 @@
 			options={availableCategories}
 			bind:value={newCategory}
 		/>
-		<TextInput label="Category Value" placeholder="00.00" hideLabel bind:value={newValue} />
+		<TextInput
+			label="Category Value"
+			variant="currency"
+			placeholder="00.00"
+			hideLabel
+			bind:value={newValue}
+		/>
 		<Button label="Add category" variant="secondary" on:click={addCategory} />
 	</div>
 {/if}

@@ -12,7 +12,9 @@
 <style>
 	input {
 		padding: 0;
-		height: var(--space-lg);
+		height: calc(var(--space-sm) + var(--space-sm) + var(--font-size-md));
 		width: var(--space-xl);
+		border: 3px solid var(--gray-5);
+		border-radius: var(--input-border-radius);
 	}
 </style>

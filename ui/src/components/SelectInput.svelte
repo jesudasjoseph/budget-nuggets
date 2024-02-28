@@ -22,7 +22,8 @@
 		border-radius: var(--input-border-radius);
 		padding: var(--input-padding);
 		color: var(--blue-0);
-		background-color: var(--gray-7);
+		background-color: var(--gray-8);
 		border: 3px solid var(--gray-5);
+		font-size: var(--font-size-md);
 	}
 </style>

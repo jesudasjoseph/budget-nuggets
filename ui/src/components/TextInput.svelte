@@ -36,6 +36,8 @@
 			else {
 				value = value.slice(0, -2) + '.' + value.slice(-2);
 			}
+
+			if (value === '.') value = '';
 		}
 	};
 </script>
@@ -43,7 +45,7 @@
 <label>
 	<span class={hideLabel ? 'sr-only' : ''}>{label}</span>
 	{#if type === 'text'}
-		{#if (variant = 'currency')}
+		{#if variant === 'currency'}
 			<span class="overlay">
 				<input
 					type="text"
@@ -69,31 +71,36 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: var(--space-xxs);
-		width: 100%;
+		color: var(--blue-0);
 	}
 	input {
 		border-radius: var(--input-border-radius);
 		padding: var(--input-padding);
-		width: 100%;
+		min-width: var(--space-xl);
+		background-color: var(--gray-8);
+		border: 3px solid var(--gray-5);
+		color: var(--blue-0);
+		font-size: var(--font-size-md);
 	}
 	.overlay {
 		position: relative;
 		display: block;
-		width: 100%;
 	}
 	.overlay span {
 		position: absolute;
-		height: calc(var(--font-size-md) + var(--input-padding) + var(--input-padding));
 		left: var(--space-xs);
 		width: var(--space);
-		color: var(--gray-9);
+		color: var(--blue-0);
+		top: 0;
+		bottom: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		font-size: var(--font-size-md);
 	}
 	.overlay input {
-		position: absolute;
 		padding-left: calc(var(--space) + var(--space-xxs));
 		vertical-align: middle;
+		text-align: right;
 	}
 </style>
