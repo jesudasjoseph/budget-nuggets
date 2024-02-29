@@ -1,0 +1,26 @@
+post:
+  security:
+    - $ref: "openapi.yaml#/components/securitySchemes/api_key"
+  tags:
+    - budgets
+  description: "Returns pets based on ID"
+  summary: "Find pets by ID"
+  operationId: "getPetsById"
+  responses:
+    200:
+      description: "Success!"
+    404:
+      description: "Not Found"
+get:
+  security:
+    - $ref: "openapi.yaml#/components/securitySchemes/api_key"
+  tags:
+    - budgets
+  description: "Returns pets based on ID"
+  summary: "Find pets by ID"
+  operationId: "getsById"
+  responses:
+    200:
+      description: "Success!"
+    404:
+      description: "Not Found"

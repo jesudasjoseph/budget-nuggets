@@ -13,3 +13,13 @@ services:
       POSTGRES_PASSWORD: dev
     ports:
       - 15432:5432
+  
+  api-docs:
+    image: redocly/redoc
+    volumes:
+     - ./docs/api:/usr/share/nginx/html/api
+    restart: always
+    environment:
+      SPEC_URL: api/openapi.yaml
+    ports:
+      - 8080:80

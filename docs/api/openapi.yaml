@@ -1,0 +1,17 @@
+openapi: "3.1.0"
+servers:
+  - url: "http://localhost:8000"
+info:
+  title: budget-nuggets api
+  version: "1.0"
+  license: { name: "none", url: "dh" }
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+
+paths:
+  "/budgets":
+    $ref: "budgets.yaml"
