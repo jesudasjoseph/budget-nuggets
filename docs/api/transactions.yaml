@@ -1,0 +1,13 @@
+post:
+  security:
+    - $ref: "openapi.yaml#/components/securitySchemes/api_key"
+  tags:
+    - transactions
+  description: "Returns created Transaction"
+  summary: "Create a Transaction"
+  operationId: "createTransaction"
+  responses:
+    200:
+      description: "Success!"
+    404:
+      description: "Not Found!!"

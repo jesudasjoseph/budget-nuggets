@@ -9,9 +9,11 @@ components:
   securitySchemes:
     api_key:
       type: apiKey
-      name: api_key
       in: header
+      name: Authorization
 
 paths:
   "/budgets":
     $ref: "budgets.yaml"
+  "/transactions":
+    $ref: "transactions.yaml"
