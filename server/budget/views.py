@@ -11,6 +11,8 @@ from .serializers import (
 
 
 class BudgetViewSet(ViewSet):
+    lookup_value_regex = "\d+"
+
     def list(self, request):
         budget_qs = Budget.objects.filter(owner=request.user)
 

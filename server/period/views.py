@@ -1,13 +1,9 @@
 from datetime import date
-from calendar import monthrange
 
-from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.response import Response
 from rest_framework.decorators import action
-
-from budget.models import Budget
 
 from .models import Period, PeriodCategory
 from .serializers import (
@@ -23,6 +19,8 @@ from .utils import get_next_date_range, get_date_range_from_date
 
 
 class PeriodViewSet(ViewSet):
+    lookup_value_regex = "\d+"
+
     def list(self, request):
         if not request.query_params["budget"]:
             raise ValidationError("No budget search parameter provided")
@@ -120,6 +118,8 @@ class PeriodViewSet(ViewSet):
 
 
 class PeriodCategoryViewSet(ViewSet):
+    lookup_value_regex = "\d+"
+
     def list(self, request, period_id):
         try:
             period = Period.objects.get(pk=period_id)

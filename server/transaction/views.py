@@ -7,6 +7,8 @@ from .serializers import TransactionCreateSerializer, TransactionDetailSerialize
 
 
 class TransactionViewSet(ViewSet):
+    lookup_value_regex = "\d+"
+
     def list(self, request):
         pass
 

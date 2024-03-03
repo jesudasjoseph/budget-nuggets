@@ -11,6 +11,8 @@ from .serializers import (
 
 
 class CategoryViewSet(ViewSet):
+    lookup_value_regex = "\d+"
+
     def list(self, request):
         if not request.query_params["budget"]:
             raise ValidationError("No budget search parameter provided")
