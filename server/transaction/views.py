@@ -37,4 +37,13 @@ class TransactionViewSet(ViewSet):
         pass
 
     def destroy(self, request, pk=None):
-        pass
+        try:
+            transaction = Transaction.objects.get(pk=pk)
+        except Transaction.DoesNotExist:
+            raise NotFound()
+
+        if transaction.budget.owner != request.user:
+            raise PermissionDenied()
+
+        transaction.delete()
+        return Response(status=204)

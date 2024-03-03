@@ -6,9 +6,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
 from budget.models import Budget
-from category.models import Category
-
-from .models import Period, PeriodCategory
+from period.models import Period
+from .models import Transaction
 
 User = get_user_model()
 
@@ -41,18 +40,16 @@ class TransactionAPITestCase(TestCase):
         )
         cls.period1.save()
 
-        cls.category0 = Category(label="Test 1", budget=cls.budget)
-        cls.category0.save()
-
-        cls.category1 = Category(label="Test 2", budget=cls.budget)
-        cls.category1.save()
-
-        cls.period_category0 = PeriodCategory.objects.create(
-            category=cls.category0, value=45.00, period=cls.period
+        cls.transaction1 = Transaction(
+            value=105,
+            merchant="Chick Fil A",
+            notes="Some notes",
+            date="2024-01-02",
+            user=cls.user1,
+            budget=cls.budget,
+            period=cls.period,
         )
-        cls.period_category1 = PeriodCategory.objects.create(
-            category=cls.category1, value=55.00, period=cls.period
-        )
+        cls.transaction1.save()
 
     def test_transaction_create_api(self):
         client = APIClient()
@@ -120,3 +117,39 @@ class TransactionAPITestCase(TestCase):
         )
 
         assert response.status_code == 400
+
+    def test_transaction_delete_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+
+        response = client.delete(f"/api/transactions/{self.transaction1.id}/")
+
+        assert response.status_code == 204
+        self.assertRaises(
+            Transaction.DoesNotExist, Transaction.objects.get, pk=self.transaction1.id
+        )
+
+    def test_transaction_delete_api_unauthorized(self):
+        client = APIClient()
+        client.force_authenticate(self.user2)
+
+        response = client.delete(f"/api/transactions/{self.transaction1.id}/")
+
+        assert response.status_code == 403
+        assert Transaction.objects.filter(pk=self.transaction1.id).exists()
+
+    def test_transaction_delete_api_unauthenticated(self):
+        client = APIClient()
+
+        response = client.delete(f"/api/transactions/{self.transaction1.id}/")
+
+        assert response.status_code == 401
+        assert Transaction.objects.filter(pk=self.transaction1.id).exists()
+
+    def test_transaction_delete_api_not_found(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.delete(f"/api/transactions/999/")
+
+        assert response.status_code == 404
+        assert Transaction.objects.filter(pk=self.transaction1.id).exists()
