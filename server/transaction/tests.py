@@ -51,6 +51,58 @@ class TransactionAPITestCase(TestCase):
         )
         cls.transaction1.save()
 
+        cls.transaction2 = Transaction(
+            value=10.50,
+            merchant="Burger King",
+            date="2024-01-06",
+            user=cls.user1,
+            budget=cls.budget,
+            period=cls.period,
+        )
+        cls.transaction2.save()
+
+        cls.transaction3 = Transaction(
+            value=5.00,
+            merchant="Goodwill",
+            notes="Gift for Joe",
+            date="2024-01-07",
+            user=cls.user1,
+            budget=cls.budget,
+            period=cls.period,
+        )
+        cls.transaction3.save()
+
+        cls.transaction4 = Transaction(
+            value=80,
+            merchant="Del Alma",
+            date="2024-01-09",
+            user=cls.user1,
+            budget=cls.budget,
+            period=cls.period,
+        )
+        cls.transaction4.save()
+
+        cls.transaction5 = Transaction(
+            value=35,
+            merchant="Comcast",
+            notes="Internet Bill",
+            date="2024-01-20",
+            user=cls.user1,
+            budget=cls.budget,
+            period=cls.period,
+        )
+        cls.transaction5.save()
+
+        cls.transaction6 = Transaction(
+            value=1000,
+            merchant="Rent",
+            date="2024-01-21",
+            user=cls.user1,
+            budget=cls.budget,
+            period=cls.period,
+        )
+        cls.transaction6.save()
+
     def test_transaction_create_api(self):
         client = APIClient()
         client.force_authenticate(self.user1)
@@ -153,3 +205,13 @@ class TransactionAPITestCase(TestCase):
 
         assert response.status_code == 404
         assert Transaction.objects.filter(pk=self.transaction1.id).exists()
+
+    def test_transaction_list_api(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.get(
+            f"/api/transactions/?budget={self.budget.id}&period={self.period.id}&from_date=2024-01-06&to_date=2024-01-20"
+        )
+
+        assert response.status_code == 200
+        # finish tests

@@ -9,6 +9,15 @@ from .models import Transaction
 User = get_user_model()
 
 
+class TransactionParamSerializer(serializers.Serializer):
+    budget = serializers.PrimaryKeyRelatedField(queryset=Budget.objects.all())
+    period = serializers.PrimaryKeyRelatedField(
+        queryset=Period.objects.all(), required=False
+    )
+    from_date = serializers.DateField(required=False)
+    to_date = serializers.DateField(required=False)
+
+
 class TransactionDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
