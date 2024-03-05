@@ -44,7 +44,10 @@ class TransactionViewSet(ViewSet):
             transaction_qs = transaction_qs.filter(date__lte=to_date)
 
         return Response(
-            TransactionDetailSerializer(transaction_qs, many=True).data, status=200
+            TransactionDetailSerializer(
+                transaction_qs.order_by("date"), many=True
+            ).data,
+            status=200,
         )
 
     def create(self, request):

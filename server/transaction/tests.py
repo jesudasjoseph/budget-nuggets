@@ -214,4 +214,11 @@ class TransactionAPITestCase(TestCase):
         )
 
         assert response.status_code == 200
-        # finish tests
+        assert len(response.data) == 4
+        assert response.data[0]["id"] == self.transaction2.id
+        assert response.data[1]["id"] == self.transaction3.id
+        assert response.data[2]["id"] == self.transaction4.id
+        assert response.data[3]["id"] == self.transaction5.id
+
+    def test_transaction_list_unauthorized(self):
+        pass
