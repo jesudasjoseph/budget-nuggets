@@ -17,31 +17,28 @@ class TransactionViewSet(ViewSet):
         param_serializer = TransactionParamSerializer(data=request.query_params)
         param_serializer.is_valid(raise_exception=True)
 
-        budget = param_serializer.validated_data["budget"]
-        period = param_serializer.validated_data["period"]
-        from_date = param_serializer.validated_data["from_date"]
-        to_date = param_serializer.validated_data["to_date"]
+        params = param_serializer.validated_data
 
-        if not (period or from_date or to_date):
-            raise ValidationError(
-                "Please provide atleast one of the following query parameters: 'period', 'from_date' or, 'to_date'"
-            )
+        budget = params["budget"]
 
         if not budget:
             raise ValidationError("Please provide a 'budget' parameter.")
-        elif budget.owner != request.user:
+
+        if budget.owner != request.user:
             raise PermissionDenied()
 
         transaction_qs = Transaction.objects.filter(budget=budget)
 
-        if period:
-            transaction_qs = transaction_qs.filter(period=period)
+        if "period" in params:
+            if params["period"].budget != budget:
+                raise PermissionDenied()
+            transaction_qs = transaction_qs.filter(period=params["period"])
 
-        if from_date:
-            transaction_qs = transaction_qs.filter(date__gte=from_date)
+        if "from_date" in params:
+            transaction_qs = transaction_qs.filter(date__gte=params["from_date"])
 
-        if to_date:
-            transaction_qs = transaction_qs.filter(date__lte=to_date)
+        if "to_date" in params:
+            transaction_qs = transaction_qs.filter(date__lte=params["to_date"])
 
         return Response(
             TransactionDetailSerializer(
@@ -69,10 +66,10 @@ class TransactionViewSet(ViewSet):
         return Response(TransactionDetailSerializer(transaction).data, status=201)
 
     def retrieve(self, request, pk=None):
-        pass
+        return Response(status=501)
 
     def partial_update(self, request, pk=None):
-        pass
+        return Response(status=501)
 
     def destroy(self, request, pk=None):
         try:

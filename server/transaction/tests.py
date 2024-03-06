@@ -220,5 +220,35 @@ class TransactionAPITestCase(TestCase):
         assert response.data[2]["id"] == self.transaction4.id
         assert response.data[3]["id"] == self.transaction5.id
 
-    def test_transaction_list_unauthorized(self):
-        pass
+    def test_transaction_list_unauthorized_budget(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.get(
+            f"/api/transactions/?budget={self.budget1.id}&period={self.period.id}"
+        )
+
+        assert response.status_code == 403
+
+    def test_transaction_list_unauthorized_period(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.get(
+            f"/api/transactions/?budget={self.budget.id}&period={self.period1.id}"
+        )
+
+        assert response.status_code == 403
+
+    def test_transaction_list_unauthenticated(self):
+        client = APIClient()
+        response = client.get(
+            f"/api/transactions/?budget={self.budget.id}&period={self.period.id}"
+        )
+
+        assert response.status_code == 401
+
+    def test_transaction_list_missing_budget_param(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.get(f"/api/transactions/?period={self.period.id}")
+
+        assert response.status_code == 400
