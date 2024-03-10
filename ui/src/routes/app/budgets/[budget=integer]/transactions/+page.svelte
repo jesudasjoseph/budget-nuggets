@@ -6,6 +6,8 @@
 	import type { Transaction } from '@models/transactions';
 	import Button from '@components/Button.svelte';
 
+	import TransactionCard from './TransactionCard.svelte';
+
 	const budget: Writable<Budget> = getContext('budget');
 	let transactions: Transaction[] = [];
 
@@ -17,8 +19,13 @@
 <h2>All Transactions</h2>
 
 {#each transactions as transaction}
-	{transaction.id}
-	{transaction.date}
+	<TransactionCard
+		id={transaction.id}
+		value={transaction.value}
+		merchant={transaction.merchant}
+		date={transaction.date}
+		categories={transaction.period_categories}
+	/>
 {/each}
 
 <Button label="Add transaction" />

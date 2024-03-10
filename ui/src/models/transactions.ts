@@ -1,3 +1,5 @@
+import PeriodCategory from "@components/PeriodCategory.svelte"
+
 export interface Transaction {
     id: number
     value: string
@@ -7,5 +9,5 @@ export interface Transaction {
     budget: number
     period: number
     user: number
-    period_categories: number[]
+    period_categories: PeriodCategory[]
 }

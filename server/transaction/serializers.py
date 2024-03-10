@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from budget.models import Budget
 from period.models import Period
 
+from period.serializers import PeriodCategoryDetailSerializer
+
 from .models import Transaction
 
 User = get_user_model()
@@ -19,6 +21,8 @@ class TransactionParamSerializer(serializers.Serializer):
 
 
 class TransactionDetailSerializer(serializers.ModelSerializer):
+    period_categories = PeriodCategoryDetailSerializer(many=True, read_only=True)
+
     class Meta:
         model = Transaction
         fields = "__all__"
