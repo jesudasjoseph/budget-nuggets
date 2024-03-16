@@ -6,7 +6,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
 from budget.models import Budget
-from period.models import Period
+from category.models import Category
+from period.models import Period, PeriodCategory
 from .models import Transaction
 
 User = get_user_model()
@@ -39,6 +40,22 @@ class TransactionAPITestCase(TestCase):
             budget=cls.budget1,
         )
         cls.period1.save()
+
+        cls.category = Category(label="Household Supply", budget=cls.budget)
+        cls.category.save()
+
+        cls.category1 = Category(label="Groceries", budget=cls.budget)
+        cls.category1.save()
+
+        cls.period_category = PeriodCategory(
+            category=cls.category, value=80.00, period=cls.period
+        )
+        cls.period_category.save()
+
+        cls.period_category1 = PeriodCategory(
+            category=cls.category1, value=100.00, period=cls.period
+        )
+        cls.period_category1.save()
 
         cls.transaction1 = Transaction(
             value=105,
@@ -115,7 +132,12 @@ class TransactionAPITestCase(TestCase):
                 "date": "2024-04-09",
                 "budget": self.budget.id,
                 "period": self.period.id,
+                "period_categories": [
+                    {"period_category": self.period_category.id, "value": 25.00},
+                    {"period_category": self.period_category1.id, "value": 25.50},
+                ],
             },
+            format="json",
         )
 
         assert response.status_code == 201
@@ -169,6 +191,68 @@ class TransactionAPITestCase(TestCase):
         )
 
         assert response.status_code == 400
+
+    def test_transaction_create_api_invalid_period_category_total(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.post(
+            f"/api/transactions/",
+            {
+                "value": 50.50,
+                "merchant": "Sushi",
+                "notes": "Some notes",
+                "date": "2024-04-09",
+                "budget": self.budget.id,
+                "period": self.period.id,
+                "period_categories": [
+                    {"period_category": self.period_category.id, "value": 25.00},
+                    {"period_category": self.period_category1.id, "value": 20.50},
+                ],
+            },
+            format="json",
+        )
+
+        assert response.status_code == 400
+
+    def test_transaction_create_api_invalid_period_category(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.post(
+            f"/api/transactions/",
+            {
+                "value": 50.50,
+                "merchant": "Sushi",
+                "notes": "Some notes",
+                "date": "2024-04-09",
+                "budget": self.budget.id,
+                "period": self.period.id,
+                "period_categories": [
+                    {"period_category": "f", "value": 25.00},
+                    {"period_category": self.period_category1.id, "value": 25.50},
+                ],
+            },
+            format="json",
+        )
+
+        assert response.status_code == 400
+
+    def test_transaction_create_api_no_period_categories(self):
+        client = APIClient()
+        client.force_authenticate(self.user1)
+        response = client.post(
+            f"/api/transactions/",
+            {
+                "value": 50.50,
+                "merchant": "Sushi",
+                "notes": "Some notes",
+                "date": "2024-04-09",
+                "budget": self.budget.id,
+                "period": self.period.id,
+            },
+            format="json",
+        )
+
+        assert response.status_code == 201
 
     def test_transaction_delete_api(self):
         client = APIClient()

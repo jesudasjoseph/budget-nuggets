@@ -1,4 +1,4 @@
-import PeriodCategory from "@components/PeriodCategory.svelte"
+import type { PeriodCategory } from "./periods.ts"
 
 export interface Transaction {
     id: number

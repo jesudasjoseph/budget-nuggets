@@ -20,3 +20,25 @@ export async function listTransactions(budget: number, period: number | undefine
         true
     )
 }
+
+interface PeriodCategory {
+    "value": number;
+    "period_category": number;
+}
+
+export async function createTransaction(budget: number, period: number, value: number, merchant: string | undefined, notes: string | undefined, date: Date, periodCategories: PeriodCategory[] = []) {
+    return authenticatedAPICall(
+        'POST',
+        'transactions/',
+        {
+            budget,
+            period,
+            value,
+            merchant,
+            notes,
+            date,
+            "period_categories": periodCategories
+        },
+        true
+    )
+}

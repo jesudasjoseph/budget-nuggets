@@ -2,6 +2,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.response import Response
 
+
 from .models import Transaction
 from .serializers import (
     TransactionCreateSerializer,
@@ -52,15 +53,22 @@ class TransactionViewSet(ViewSet):
         serializer.is_valid(raise_exception=True)
 
         budget = serializer.validated_data["budget"]
-        period = serializer.validated_data["period"]
 
         if budget.owner != request.user:
             raise PermissionDenied()
 
-        if period.budget != budget:
-            raise ValidationError()
+        transaction_data = serializer.validated_data.copy()
+        period_categories = transaction_data.pop("period_categories", [])
 
-        transaction = Transaction(**serializer.validated_data, user=request.user)
+        transaction = Transaction(**transaction_data, user=request.user)
+        transaction.save()
+
+        for data in period_categories:
+            transaction.period_categories.add(
+                data["period_category"],
+                through_defaults={"value": data["value"]},
+            )
+
         transaction.save()
 
         return Response(TransactionDetailSerializer(transaction).data, status=201)

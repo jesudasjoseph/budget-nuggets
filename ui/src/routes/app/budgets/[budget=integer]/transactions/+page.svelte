@@ -18,14 +18,24 @@
 
 <h2>All Transactions</h2>
 
-{#each transactions as transaction}
-	<TransactionCard
-		id={transaction.id}
-		value={transaction.value}
-		merchant={transaction.merchant}
-		date={transaction.date}
-		categories={transaction.period_categories}
-	/>
-{/each}
+<section>
+	{#each transactions as transaction}
+		<TransactionCard
+			id={transaction.id}
+			value={transaction.value}
+			merchant={transaction.merchant}
+			date={transaction.date}
+			categories={transaction.period_categories}
+		/>
+	{/each}
+</section>
 
 <Button label="Add transaction" />
+
+<style lang="scss">
+	section {
+		display: flex;
+		flex-direction: column;
+		row-gap: var(--space);
+	}
+</style>
