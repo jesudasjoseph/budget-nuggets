@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PeriodCategory from '@components/PeriodCategory.svelte';
+	import type { PeriodCategory } from '@models/periods';
 	import type { Budget } from '@models/budget';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
@@ -14,10 +14,12 @@
 </script>
 
 <a href={`/app/budgets/${$budget.id}/transactions/${id}`}>
-	<p class="value">${value}</p>
-	<div>
-		<p>{merchant}</p>
-		<p>{date}</p>
+	<div class="left-section">
+		<p class="value">${value}</p>
+		<div>
+			<p>{merchant}</p>
+			<p>{date}</p>
+		</div>
 	</div>
 
 	{#if categories.length}
@@ -32,10 +34,17 @@
 <style lang="scss">
 	a {
 		display: flex;
+		justify-content: space-between;
 		text-decoration: none;
 		border-radius: 8px;
 		background-color: var(--gray-7);
 		padding: var(--space-sm);
+		align-items: center;
+		column-gap: var(--space-xs);
+	}
+
+	.left-section {
+		display: flex;
 		align-items: center;
 		column-gap: var(--space-xs);
 	}
