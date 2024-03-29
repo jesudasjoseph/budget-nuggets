@@ -1,7 +1,6 @@
 import { authenticatedAPICall } from './util';
-import { getDateFromISOString } from '@/utils';
 
-export async function listTransactions(budget: number, period: number | undefined = undefined, from_date: Date | undefined = undefined, to_date: Date | undefined = undefined) {
+export async function listTransactions(budget: number, period: number | undefined = undefined, from_date: Date | undefined = undefined, to_date: Date | undefined = undefined, period_category: number | undefined = undefined) {
     let params = `?budget=${budget}`
 
     if (period)
@@ -13,6 +12,9 @@ export async function listTransactions(budget: number, period: number | undefine
     if (to_date)
         params += `&to_date=${to_date}`
 
+    if (period_category)
+        params += `&period_category=${period_category}`
+
     return authenticatedAPICall(
         'GET',
         `transactions/${params}`,
@@ -22,11 +24,11 @@ export async function listTransactions(budget: number, period: number | undefine
 }
 
 interface PeriodCategory {
-    "value": number;
-    "period_category": number;
+    "value": string;
+    "period_category": string;
 }
 
-export async function createTransaction(budget: number, period: number, value: number, merchant: string | undefined, notes: string | undefined, date: Date, periodCategories: PeriodCategory[] = []) {
+export async function createTransaction(budget: number, period: number, value: string, merchant: string | undefined, notes: string | undefined, date: Date | string, periodCategories: PeriodCategory[] = []) {
     return authenticatedAPICall(
         'POST',
         'transactions/',

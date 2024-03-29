@@ -6,7 +6,7 @@
 	export let required = false;
 	export let pattern: string | undefined = undefined;
 	export let variant: 'default' | 'currency' = 'default';
-	export let type: 'text' | 'password' = 'text';
+	export let type: 'text' | 'password' | 'date' = 'text';
 
 	const onKeypress = (event: KeyboardEvent) => {
 		if (
@@ -23,7 +23,8 @@
 			event.key === 'Backspace' ||
 			event.key === 'Delete' ||
 			event.key === 'ArrowLeft' ||
-			event.key === 'ArrowRight'
+			event.key === 'ArrowRight' ||
+			event.key === 'Tab'
 		)
 			return true;
 		else event.preventDefault();
@@ -61,8 +62,10 @@
 		{:else}
 			<input type="text" {pattern} {placeholder} {required} bind:value />
 		{/if}
-	{:else}
+	{:else if type === 'password'}
 		<input type="password" {pattern} {placeholder} {required} bind:value />
+	{:else if type === 'date'}
+		<input type="date" {pattern} {required} bind:value />
 	{/if}
 </label>
 
@@ -76,7 +79,7 @@
 	input {
 		border-radius: var(--input-border-radius);
 		padding: var(--input-padding);
-		min-width: var(--space-xl);
+		width: 100%;
 		background-color: var(--gray-8);
 		border: 3px solid var(--gray-5);
 		color: var(--blue-0);

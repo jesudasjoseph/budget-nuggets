@@ -30,7 +30,7 @@
 	{/each}
 </section>
 
-<Button label="Add transaction" />
+<Button label="Add transaction" href={`/app/budgets/${$budget.id}/transactions/create`} />
 
 <style lang="scss">
 	section {

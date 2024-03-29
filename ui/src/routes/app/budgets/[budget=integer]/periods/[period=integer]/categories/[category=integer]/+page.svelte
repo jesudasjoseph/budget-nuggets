@@ -8,10 +8,14 @@
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
+	import { listTransactions } from '@api/transactions';
+	import type { Transaction } from '@models/transactions';
+	import TransactionCard from '../../../../transactions/TransactionCard.svelte';
 
 	const period: Writable<Period> = getContext('period');
 
 	let category: PeriodCategory;
+	let transactions: Transaction[] = [];
 
 	const getBackURL = () => {
 		return `/app/budgets/${$page.params.budget}/periods/${$page.params.period}`;
@@ -27,6 +31,14 @@
 		getPeriodCategoryAPI($period.id, parseInt($page.params.category)).then(
 			(response: PeriodCategory) => {
 				category = response;
+			}
+		);
+	}
+
+	$: if (category) {
+		listTransactions($period.budget, undefined, undefined, undefined, category.id).then(
+			(response: Transaction[]) => {
+				transactions = response;
 			}
 		);
 	}
@@ -47,6 +59,17 @@
 			<p>
 				$55.00 / ${category.value}
 			</p>
+		</div>
+		<div class="category-transactions">
+			{#each transactions as transaction}
+				<TransactionCard
+					id={transaction.id}
+					date={transaction.date}
+					value={transaction.value}
+					merchant={transaction.merchant}
+					categories={transaction.period_categories}
+				/>
+			{/each}
 		</div>
 		<Button label="Delete Category" variant="delete" on:click={deleteCategory} />
 	</div>

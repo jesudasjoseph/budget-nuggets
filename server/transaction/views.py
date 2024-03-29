@@ -41,6 +41,11 @@ class TransactionViewSet(ViewSet):
         if "to_date" in params:
             transaction_qs = transaction_qs.filter(date__lte=params["to_date"])
 
+        if "period_category" in params:
+            transaction_qs = transaction_qs.filter(
+                period_categories__id=params["period_category"]
+            )
+
         return Response(
             TransactionDetailSerializer(
                 transaction_qs.order_by("date"), many=True

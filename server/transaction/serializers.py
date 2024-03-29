@@ -24,6 +24,7 @@ class TransactionParamSerializer(serializers.Serializer):
     period = serializers.PrimaryKeyRelatedField(
         queryset=Period.objects.all(), required=False
     )
+    period_category = serializers.IntegerField(required=False)
     from_date = serializers.DateField(required=False)
     to_date = serializers.DateField(required=False)
 

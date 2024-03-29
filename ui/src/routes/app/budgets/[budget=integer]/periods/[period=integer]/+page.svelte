@@ -100,6 +100,8 @@
 	</div>
 {/if}
 
+<Button label="Transaction" iconOnLeft icon="plus" href={`${$period.id}/transactions/create`} />
+
 <style>
 	.category-list {
 		display: flex;

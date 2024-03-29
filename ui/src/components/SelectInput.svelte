@@ -6,6 +6,10 @@
 	export let hideLabel = false;
 	export let required = false;
 	export let options: Option[];
+
+	$: if (options.length && !value) {
+		value = options[0].value;
+	}
 </script>
 
 <label>

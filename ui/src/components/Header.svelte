@@ -40,6 +40,8 @@
 		/>
 
 		{#if open}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<nav on:click={() => (open = false)}>
 				<Button label="Dashboard" href="/app/dashboard" />
 				<Button label="Budgets" href="/app/budgets" />
@@ -57,6 +59,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: center;
 	}
 	h1 {
 		font-size: var(--font-size-lg);
