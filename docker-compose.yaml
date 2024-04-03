@@ -5,6 +5,7 @@ services:
 
   db:
     build: ./docker/database
+    hostname: budget_nuggets_database
     volumes:
     - ./docker/database/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
     restart: always
@@ -13,6 +14,21 @@ services:
       POSTGRES_PASSWORD: dev
     ports:
       - 15432:5432
+  
+  # server:
+  #   build: ./server
+  #   volumes:
+  #   - ./server:/server
+  #   command: ./manage.py runserver 0.0.0.0:8000
+  #   ports:
+  #     - 8000:8000
+  #   env_file: ./server/.env
+  #   environment:
+  #     - DATABASE_HOST=budget_nuggets_database
+  #     - DATABASE_PORT=5432
+  #   depends_on:
+  #     - db
+
   
   api-docs:
     image: redocly/redoc
