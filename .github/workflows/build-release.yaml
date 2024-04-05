@@ -16,7 +16,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Container
         run: |
-          docker buildx build ./server -t server
+          docker buildx build ./server -t server --load
       - name: List Images
         run: |
           docker image list
