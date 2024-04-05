@@ -16,13 +16,10 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Container
         run: |
-          docker buildx build ./server -t server --load
-      - name: List Images
+          docker buildx build --output type=tar[,parameters] .
+      - name: Show Dir
         run: |
-          docker image list
-      - name: Save Image
-        run: |
-          docker save --output server.tar server
+          ls
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -33,13 +30,3 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./server.tar
-          asset_name: server-image.tar
-          asset_content_type: application/x-tar
