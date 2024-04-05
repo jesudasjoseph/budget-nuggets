@@ -17,8 +17,12 @@ jobs:
       - name: Build Container
         run: |
           docker buildx build ./server -t server
-          && docker image list
-          && docker save --output server.tar server
+      - name: List Images
+        run: |
+          docker image list
+      - name: Save Image
+        run: |
+          docker save --output server.tar server
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
